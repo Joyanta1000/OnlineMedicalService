@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ScheduleController;
+use Illuminate\Support\Facades\Redirect;
+//use Session;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +21,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/add_doctors_schedule',[ScheduleController::class, 'add_doctors_schedule']);
+Route::get('/add_doctors_schedules',[ScheduleController::class, 'add_doctors_schedules']);

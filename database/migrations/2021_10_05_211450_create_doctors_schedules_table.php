@@ -17,10 +17,11 @@ class CreateDoctorsSchedulesTable extends Migration
         $table->bigIncrements('id');
         $table->unsignedBigInteger('doctors_id')->nullable();
         $table->foreign('doctors_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-        $table->string('schedule_date');
-        $table->string('schedule_day');
-        $table->string('schedule_starting_time');
-        $table->string('schedule_ending_time');
+        $table->longText('schedule')->nullable();
+        // $table->string('schedule_date');
+        // $table->string('schedule_day');
+        // $table->string('schedule_starting_time');
+        // $table->string('schedule_ending_time');
         $table->timestamps();
             
         });

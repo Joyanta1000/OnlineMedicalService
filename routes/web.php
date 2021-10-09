@@ -17,6 +17,7 @@ use App\Http\Controllers\MedicineTypeController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ScheduleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +31,7 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts.app');
 });
 
 Route::middleware(['isAdmin'])->group(function () {
@@ -213,13 +214,24 @@ Route::get('/User_Login', function () {
 
 Route::post('/login',[UserController::class, 'redirectTo']);
 
+Route::get('/loggedinSession',[UserController::class, 'loggedinSession']);
+
 Route::middleware(['isDoctor'])->group(function () {
 
 Route::get('/doctor_dashboard', function () {
     return view('doctor.pages.index');
 });
 
+Route::get('/add_schedule', function () {
+    return view('doctor.pages.add_schedule');
 });
+
+
+
+});
+
+//Route::get('/add_doctors_schedule',[ScheduleController::class, 'add_doctors_schedules']);
+
 
 Route::middleware(['isPatient'])->group(function () {
 
@@ -239,6 +251,8 @@ Route::middleware(['isPharmacist'])->group(function () {
 
     Route::get('/doctors',[UserController::class, 'doctors']);
 
+    
+
 Route::get('/reset', function () {
     return view('authentication.info_for_reset');
 });
@@ -248,3 +262,6 @@ Route::post('/send_mail_to_reset_password',[UserController::class, 'send_mail_to
 Route::get('/reset_password/{token}',[UserController::class, 'reset_password']);
 
 Route::post('/reset_user_password/{email}',[UserController::class, 'reset_user_password']);
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

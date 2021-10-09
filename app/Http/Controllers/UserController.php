@@ -586,6 +586,13 @@ class UserController extends Controller
         ->where('password','=',$password)
         ->first();
     if($obj){
+
+            $response = array(
+                'data' => $obj,
+            );
+            echo json_encode($response);
+
+        $request->session()->put('id',$obj->id);
         $request->session()->put('email',$obj->email);
         $request->session()->put('password',$obj->password);
         $request->session()->put('role',$obj->role);
@@ -622,9 +629,18 @@ class UserController extends Controller
     }
 }
 
-    public function IndexForAdmin()
+public function IndexForAdmin()
      {
         return redirect('admin');
+     }
+
+    public function loggedinSession()
+     {
+        $SessionId = Session::get('id');
+        return response()->json([
+                    'data' => $SessionId ?  $SessionId : null,
+                    'message' => $SessionId ? 'Successfully Retrieved' : 'Error',
+                  ], 200);
      }
 
      public function IndexForDoctor()
