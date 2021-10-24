@@ -29,14 +29,14 @@ class AreaController extends Controller
             ->select('areas.*', 'countries.country', 'cities.city', 'thanas.thana')
             ->get();
 
-        return view('admin.areas',compact('areas'));
+        return view('admin.areas', compact('areas'));
     }
 
     public function countries_for_area()
     {
         $countries = country::all();
 
-        return view('admin.add_area',compact('countries'));
+        return view('admin.add_area', compact('countries'));
     }
 
     /**
@@ -57,17 +57,17 @@ class AreaController extends Controller
             ->select('thanas.*')
             ->where('thanas.cities_id', '=', $id)
             ->get();
-            //dd($cities_info);
+        //dd($cities_info);
         //$countries_info = country::all();
 
         //dd($countries_info);
 
-            //dd($cities_info);
-            $response = array(
-                'data' => $thanas_info,
-            );
-            echo json_encode($response);
-            //dd($c);
+        //dd($cities_info);
+        $response = array(
+            'data' => $thanas_info,
+        );
+        echo json_encode($response);
+        //dd($c);
 
         //return view('admin.add_state_or_district',compact('response'));
     }
@@ -80,17 +80,17 @@ class AreaController extends Controller
             ->select('areas.*')
             ->where('areas.thanas_id', '=', $id)
             ->get();
-            //dd($cities_info);
+        //dd($cities_info);
         //$countries_info = country::all();
 
         //dd($countries_info);
 
-            //dd($cities_info);
-            $response = array(
-                'data' => $areas_info,
-            );
-            echo json_encode($response);
-            //dd($c);
+        //dd($cities_info);
+        $response = array(
+            'data' => $areas_info,
+        );
+        echo json_encode($response);
+        //dd($c);
 
         //return view('admin.add_state_or_district',compact('response'));
     }
@@ -115,25 +115,23 @@ class AreaController extends Controller
             'area' => 'required|string|min:1|max:255|unique:areas,area'
             // 'email' => 'required|string|email|max:255'
         ];
-        $validator = Validator::make($request->all(),$rules);
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return redirect('add_area')
-            ->withInput()
-            ->withErrors($validator);
-        }
-        else{
+                ->withInput()
+                ->withErrors($validator);
+        } else {
             $data = $request->input();
-            try{
+            try {
                 $thanas = new area;
                 $thanas->countries_id = $data['countries_id'];
                 $thanas->cities_id = $data['cities_id'];
                 $thanas->thanas_id = $data['thanas_id'];
                 $thanas->area = $data['area'];
                 $thanas->save();
-                return redirect('add_area')->with('status',"Area added successfully");
-            }
-            catch(Exception $e){
-                return redirect('add_area')->with('failed',"operation failed");
+                return redirect('add_area')->with('status', "Area added successfully");
+            } catch (Exception $e) {
+                return redirect('add_area')->with('failed', "operation failed");
             }
         }
     }
@@ -165,12 +163,12 @@ class AreaController extends Controller
             ->select('areas.*', 'countries.country', 'cities.city', 'thanas.thana')
             ->where('areas.id', '=', $id)
             ->get();
-            //dd($areas_info);
+        //dd($areas_info);
         $countries_info = country::all();
 
         //dd($countries_info);
 
-        return view('admin.edit_area',compact('areas_info', 'countries_info'));
+        return view('admin.edit_area', compact('areas_info', 'countries_info'));
     }
 
     public function edit($id)
@@ -200,25 +198,23 @@ class AreaController extends Controller
             // 'city_name' => 'required|string|min:3|max:255',
             // 'email' => 'required|string|email|max:255'
         ];
-        $validator = Validator::make($request->all(),$rules);
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return redirect()->back()
-            ->withInput()
-            ->withErrors($validator);
-        }
-        else{
+                ->withInput()
+                ->withErrors($validator);
+        } else {
             $data = $request->input();
-            try{
+            try {
                 $areas = area::find($id);
                 $areas->countries_id = $data['countries_id'];
                 $areas->cities_id = $data['cities_id'];
                 $areas->thanas_id = $data['thanas_id'];
                 $areas->area = $data['area'];
                 $areas->save();
-                return redirect()->back()->with('status',"Areas information updated successfully");
-            }
-            catch(Exception $e){
-                return redirect()->back()->with('failed',"operation failed");
+                return redirect()->back()->with('status', "Areas information updated successfully");
+            } catch (Exception $e) {
+                return redirect()->back()->with('failed', "operation failed");
             }
         }
     }
@@ -236,12 +232,11 @@ class AreaController extends Controller
 
     public function delete_areas_information($id)
     {
-            try{
-                area::find($id)->delete();
-                return redirect()->back()->with('status',"Areas information deleted successfully");
-            }
-            catch(Exception $e){
-                return redirect()->back()->with('failed',"operation failed");
-            }
+        try {
+            area::find($id)->delete();
+            return redirect()->back()->with('status', "Areas information deleted successfully");
+        } catch (Exception $e) {
+            return redirect()->back()->with('failed', "operation failed");
+        }
     }
 }

@@ -60,7 +60,7 @@ class UserController extends Controller
         $countries = country::all();
         $genders = gender::all();
 
-        return view('authentication.doctors_registration',compact('countries', 'genders'));
+        return view('authentication.doctors_registration', compact('countries', 'genders'));
     }
 
     public function countries_for_area_for_patients_registration()
@@ -69,14 +69,14 @@ class UserController extends Controller
         $genders = gender::all();
         $marital_statuses = marital_status::all();
 
-        return view('authentication.patients_registration',compact('countries', 'genders', 'marital_statuses'));
+        return view('authentication.patients_registration', compact('countries', 'genders', 'marital_statuses'));
     }
 
     public function countries_for_area_for_pharmacists_registration()
     {
         $countries = country::all();
 
-        return view('authentication.pharmacists_registration',compact('countries'));
+        return view('authentication.pharmacists_registration', compact('countries'));
     }
 
     public function thanas_for_area($id)
@@ -87,17 +87,17 @@ class UserController extends Controller
             ->select('thanas.*')
             ->where('thanas.cities_id', '=', $id)
             ->get();
-            //dd($cities_info);
+        //dd($cities_info);
         //$countries_info = country::all();
 
         //dd($countries_info);
 
-            //dd($cities_info);
-            $response = array(
-                'data' => $thanas_info,
-            );
-            echo json_encode($response);
-            //dd($c);
+        //dd($cities_info);
+        $response = array(
+            'data' => $thanas_info,
+        );
+        echo json_encode($response);
+        //dd($c);
 
         //return view('admin.add_state_or_district',compact('response'));
     }
@@ -158,21 +158,20 @@ class UserController extends Controller
             'phonenumber' => 'required',
             // 'email' => 'required|string|email|max:255'
         ];
-        $validator = Validator::make($request->all(),$rules);
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return redirect()
-            ->back()
-            ->withInput()
-            ->withErrors($validator);
-        }
-        else{
+                ->back()
+                ->withInput()
+                ->withErrors($validator);
+        } else {
             $data = $request->input();
-            try{
+            try {
 
 
                 set_time_limit(1000);
 
-                $id = IdGenerator::generate(['table' => 'users', 'length' => 10, 'prefix' =>date('ym')]);
+                $id = IdGenerator::generate(['table' => 'users', 'length' => 10, 'prefix' => date('ym')]);
                 $code = Str::random(30);
                 $to_email = $data['email'];
                 $to_name = $data['first_name'];
@@ -203,8 +202,8 @@ class UserController extends Controller
                 $profile_picture = $request->file('profile_picture');
                 $profile_pictures_name = time() . '.' . $code . '.' . $extra_1 . '.' . $profile_picture->getClientOriginalExtension();
                 $profile_pictures_path = public_path('/Doctors_Files/Doctors_Profile_Pictures/');
-                $profile_picture->move($profile_pictures_path,$profile_pictures_name);
-                $doctors_profile_picture->profile_picture ='/Doctors_Files/Doctors_Profile_Pictures/' . $profile_pictures_name;
+                $profile_picture->move($profile_pictures_path, $profile_pictures_name);
+                $doctors_profile_picture->profile_picture = '/Doctors_Files/Doctors_Profile_Pictures/' . $profile_pictures_name;
                 $doctors_profile_picture->save();
 
                 $extra_2 = Str::random(32);
@@ -214,8 +213,8 @@ class UserController extends Controller
                 $pdf_file_of_certificate = $request->file('pdf_file_of_certificate');
                 $name_of_pdf_file_of_certificate = time() . '.' . $code . '.' . $extra_2 . '.' . $pdf_file_of_certificate->getClientOriginalExtension();
                 $path_of_pdf_file_of_certificate = public_path('/Doctors_Files/Doctors_Certificates_Pdf_Files/');
-                $pdf_file_of_certificate->move($path_of_pdf_file_of_certificate,$name_of_pdf_file_of_certificate);
-                $doctors_file->pdf_file_of_certificate ='/Doctors_Files/Doctors_Certificates_Pdf_Files/' . $name_of_pdf_file_of_certificate;
+                $pdf_file_of_certificate->move($path_of_pdf_file_of_certificate, $name_of_pdf_file_of_certificate);
+                $doctors_file->pdf_file_of_certificate = '/Doctors_Files/Doctors_Certificates_Pdf_Files/' . $name_of_pdf_file_of_certificate;
                 $doctors_file->save();
 
                 $contact_information = new contact_information;
@@ -227,8 +226,8 @@ class UserController extends Controller
                 $contact_information->save();
 
                 $amount_of_social_network_link = count($data['social_network_link']);
-                for($i=0; $i < $amount_of_social_network_link; $i++){
- 
+                for ($i = 0; $i < $amount_of_social_network_link; $i++) {
+
                     $social_network = new social_networks;
                     $social_network->doctors_id = $id;
                     $social_network->social_network_link = $data['social_network_link'][$i];
@@ -262,8 +261,8 @@ class UserController extends Controller
                 $important_information->save();
 
                 $amount_of_specialization_of_doctor = count($data['specialist_of']);
-                for($i=0; $i < $amount_of_specialization_of_doctor; $i++){
- 
+                for ($i = 0; $i < $amount_of_specialization_of_doctor; $i++) {
+
                     $doctors_speciality = new doctors_specialities;
                     $doctors_speciality->doctors_id = $id;
                     $doctors_speciality->specialist_of = $data['specialist_of'][$i];
@@ -277,22 +276,20 @@ class UserController extends Controller
                 $photo_of_signature = $request->file('photo_of_signature');
                 $name_of_the_photo_of_signature = time() . '.' . $code . '.' . $extra_3 . '.' . $photo_of_signature->getClientOriginalExtension();
                 $path_of_the_photo_of_signature = public_path('/Doctors_Files/Doctors_Photo_of_Signature/');
-                $photo_of_signature->move($path_of_the_photo_of_signature,$name_of_the_photo_of_signature);
-                $doctors_other_information->photo_of_signature ='/Doctors_Files/Doctors_Photo_of_Signature/' . $name_of_pdf_file_of_certificate;
+                $photo_of_signature->move($path_of_the_photo_of_signature, $name_of_the_photo_of_signature);
+                $doctors_other_information->photo_of_signature = '/Doctors_Files/Doctors_Photo_of_Signature/' . $name_of_pdf_file_of_certificate;
                 $doctors_other_information->save();
 
                 $confirmation_code = array('confirmation_code' => $code);
 
-                Mail::send('authentication/emailverify', $confirmation_code, function($message) use ($to_email, $to_name) {
-         $message->to( $to_email , $to_name )->subject
-            ('Email verification mail');
-         $message->from('example@gmail.com','Example');
-      });
+                Mail::send('authentication/emailverify', $confirmation_code, function ($message) use ($to_email, $to_name) {
+                    $message->to($to_email, $to_name)->subject('Email verification mail');
+                    $message->from('example@gmail.com', 'Example');
+                });
 
-                return redirect()->back()->with('status',"You Registered Successfully, Please Verify Your Email ID");
-            }
-            catch(Exception $e){
-                return redirect()->back()->with('failed',"operation failed");
+                return redirect()->back()->with('status', "You Registered Successfully, Please Verify Your Email ID");
+            } catch (Exception $e) {
+                return redirect()->back()->with('failed', "operation failed");
             }
         }
     }
@@ -325,21 +322,20 @@ class UserController extends Controller
             'patients_profile_picture' => 'required',
             // 'email' => 'required|string|email|max:255'
         ];
-        $validator = Validator::make($request->all(),$rules);
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return redirect()
-            ->back()
-            ->withInput()
-            ->withErrors($validator);
-        }
-        else{
+                ->back()
+                ->withInput()
+                ->withErrors($validator);
+        } else {
             $data = $request->input();
-            try{
+            try {
 
 
                 set_time_limit(1000);
 
-                $id = IdGenerator::generate(['table' => 'users', 'length' => 10, 'prefix' =>date('ym')]);
+                $id = IdGenerator::generate(['table' => 'users', 'length' => 10, 'prefix' => date('ym')]);
                 $code = Str::random(30);
                 $to_email = $data['email'];
                 $to_name = $data['first_name'];
@@ -371,8 +367,8 @@ class UserController extends Controller
                 $profile_picture = $request->file('patients_profile_picture');
                 $profile_pictures_name = time() . '.' . $code . '.' . $extra_1 . '.' . $profile_picture->getClientOriginalExtension();
                 $profile_pictures_path = public_path('/Patients_Files/Patients_Profile_Pictures/');
-                $profile_picture->move($profile_pictures_path,$profile_pictures_name);
-                $patients_profile_picture->patients_profile_picture ='/Patients_Files/Patients_Profile_Pictures/' . $profile_pictures_name;
+                $profile_picture->move($profile_pictures_path, $profile_pictures_name);
+                $patients_profile_picture->patients_profile_picture = '/Patients_Files/Patients_Profile_Pictures/' . $profile_pictures_name;
                 $patients_profile_picture->save();
 
                 $extra_2 = Str::random(32);
@@ -382,11 +378,11 @@ class UserController extends Controller
                 $pdf_file_of_report = $request->file('patients_report');
                 $name_of_pdf_file_of_report = time() . '.' . $code . '.' . $extra_2 . '.' . $pdf_file_of_report->getClientOriginalExtension();
                 $path_of_pdf_file_of_report = public_path('/Patients_Files/Patients_Reports_Pdf_Files/');
-                $pdf_file_of_report->move($path_of_pdf_file_of_report,$name_of_pdf_file_of_report);
-                $patients_files->patients_report ='/Patients_Files/Patients_Reports_Pdf_Files/' . $name_of_pdf_file_of_report;
+                $pdf_file_of_report->move($path_of_pdf_file_of_report, $name_of_pdf_file_of_report);
+                $patients_files->patients_report = '/Patients_Files/Patients_Reports_Pdf_Files/' . $name_of_pdf_file_of_report;
                 $patients_files->save();
 
-                
+
 
                 $address = new address;
                 $address->patients_id = $id;
@@ -411,16 +407,14 @@ class UserController extends Controller
 
                 $confirmation_code = array('confirmation_code' => $code);
 
-                Mail::send('authentication/emailverify', $confirmation_code, function($message) use ($to_email, $to_name) {
-         $message->to( $to_email , $to_name )->subject
-            ('Email verification mail');
-         $message->from('example@gmail.com','Example');
-      });
+                Mail::send('authentication/emailverify', $confirmation_code, function ($message) use ($to_email, $to_name) {
+                    $message->to($to_email, $to_name)->subject('Email verification mail');
+                    $message->from('example@gmail.com', 'Example');
+                });
 
-                return redirect()->back()->with('status',"You Registered Successfully, Please Verify Your Email ID");
-            }
-            catch(Exception $e){
-                return redirect()->back()->with('failed',"operation failed");
+                return redirect()->back()->with('status', "You Registered Successfully, Please Verify Your Email ID");
+            } catch (Exception $e) {
+                return redirect()->back()->with('failed', "operation failed");
             }
         }
     }
@@ -448,21 +442,20 @@ class UserController extends Controller
             'evidence' => 'required',
             // 'email' => 'required|string|email|max:255'
         ];
-        $validator = Validator::make($request->all(),$rules);
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return redirect()
-            ->back()
-            ->withInput()
-            ->withErrors($validator);
-        }
-        else{
+                ->back()
+                ->withInput()
+                ->withErrors($validator);
+        } else {
             $data = $request->input();
-            try{
+            try {
 
 
                 set_time_limit(1000);
 
-                $id = IdGenerator::generate(['table' => 'users', 'length' => 10, 'prefix' =>date('ym')]);
+                $id = IdGenerator::generate(['table' => 'users', 'length' => 10, 'prefix' => date('ym')]);
                 $code = Str::random(30);
                 $to_email = $data['email'];
                 $to_name = $data['phermacies_name'];
@@ -488,8 +481,8 @@ class UserController extends Controller
                 $profile_picture = $request->file('pharmacies_profile_picture');
                 $profile_pictures_name = time() . '.' . $code . '.' . $extra_1 . '.' . $profile_picture->getClientOriginalExtension();
                 $profile_pictures_path = public_path('/Pharmacies_Files/Pharmacies_Profile_Pictures/');
-                $profile_picture->move($profile_pictures_path,$profile_pictures_name);
-                $pharmacies_profile_picture->pharmacies_profile_picture ='/Pharmacies_Files/Pharmacies_Profile_Pictures/' . $profile_pictures_name;
+                $profile_picture->move($profile_pictures_path, $profile_pictures_name);
+                $pharmacies_profile_picture->pharmacies_profile_picture = '/Pharmacies_Files/Pharmacies_Profile_Pictures/' . $profile_pictures_name;
                 $pharmacies_profile_picture->save();
 
                 $extra_2 = Str::random(32);
@@ -499,11 +492,11 @@ class UserController extends Controller
                 $pdf_file_of_evidence = $request->file('evidence');
                 $name_of_pdf_file_of_evidence = time() . '.' . $code . '.' . $extra_2 . '.' . $pdf_file_of_evidence->getClientOriginalExtension();
                 $path_of_pdf_file_of_evidence = public_path('/Pharmacies_Files/Pharmacies_Evidences/');
-                $pdf_file_of_evidence->move($path_of_pdf_file_of_evidence,$name_of_pdf_file_of_evidence);
-                $pharmacies_files->evidence ='/Pharmacies_Files/Pharmacies_Evidences/' . $name_of_pdf_file_of_evidence;
+                $pdf_file_of_evidence->move($path_of_pdf_file_of_evidence, $name_of_pdf_file_of_evidence);
+                $pharmacies_files->evidence = '/Pharmacies_Files/Pharmacies_Evidences/' . $name_of_pdf_file_of_evidence;
                 $pharmacies_files->save();
 
-                
+
 
                 $address = new address;
                 $address->patients_id = $id;
@@ -528,16 +521,14 @@ class UserController extends Controller
 
                 $confirmation_code = array('confirmation_code' => $code);
 
-                Mail::send('authentication/emailverify', $confirmation_code, function($message) use ($to_email, $to_name) {
-         $message->to( $to_email , $to_name )->subject
-            ('Email verification mail');
-         $message->from('example@gmail.com','Example');
-      });
+                Mail::send('authentication/emailverify', $confirmation_code, function ($message) use ($to_email, $to_name) {
+                    $message->to($to_email, $to_name)->subject('Email verification mail');
+                    $message->from('example@gmail.com', 'Example');
+                });
 
-                return redirect()->back()->with('status',"You Registered Successfully, Please Verify Your Email ID");
-            }
-            catch(Exception $e){
-                return redirect()->back()->with('failed',"operation failed");
+                return redirect()->back()->with('status', "You Registered Successfully, Please Verify Your Email ID");
+            } catch (Exception $e) {
+                return redirect()->back()->with('failed', "operation failed");
             }
         }
     }
@@ -550,9 +541,8 @@ class UserController extends Controller
 
     public function verified($token)
     {
-        $verified = DB::table('users')->where('token', $token)->update([ 'is_active'=> 1 ]);
+        $verified = DB::table('users')->where('token', $token)->update(['is_active' => 1]);
         if ($verified) {
-            
         }
         return view('authentication.verification_message')->with('status', 'Your email id verified successfully');
     }
@@ -563,145 +553,142 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function redirectTo(Request $request){
+    public function redirectTo(Request $request)
+    {
 
         $rules = [
             'email' => 'required|email',
             'password' => 'required'
         ];
-        $validator = Validator::make($request->all(),$rules);
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return redirect()
-            ->back()
-            ->withInput()
-            ->withErrors($validator);
-        }
-        else{
+                ->back()
+                ->withInput()
+                ->withErrors($validator);
+        } else {
             $data = $request->input();
-            try{
-        $email = $request->email;
-        $password = md5($request->password);
-    
-        $obj = User::where('email','=',$email)
-        ->where('password','=',$password)
-        ->first();
-    if($obj){
+            try {
 
-            $response = array(
-                'data' => $obj,
-            );
-            echo json_encode($response);
+                $email = $request->email;
+                $password = md5($request->password);
 
-        $request->session()->put('id',$obj->id);
-        $request->session()->put('email',$obj->email);
-        $request->session()->put('password',$obj->password);
-        $request->session()->put('role',$obj->role);
-        $request->session()->put('is_active',$obj->is_active);
-    
-        //Session::put('email', $value);
-    
-        switch ($obj->role) {
-            case 1:
-                return $this->IndexForAdmin();
-            break;
-            case 2:
-                return $this->IndexForDoctor();
-            break;
-            case 3:
-                return $this->IndexForPatient();
-            break;
-            case 4:
-                return $this->IndexForPharmacist();
-            break;
-            default:
-            $this->redirectTo = '/User_Login';
-                return $this->redirectTo->with('failed', 'Invalid login info');
-            break;
+                $obj = User::where('email', '=', $email)
+                    ->where('password', '=', $password)
+                    ->first();
+                    
+                if ($obj) {
+
+                    // $response = array(
+                    //     'data' => $obj,
+                    // );
+                    // return json_encode($response);
+
+                    $request->session()->put('id', $obj->id);
+                    $request->session()->put('email', $obj->email);
+                    $request->session()->put('password', $obj->password);
+                    $request->session()->put('role', $obj->role);
+                    $request->session()->put('is_active', $obj->is_active);
+
+                    //Session::put('email', $value);
+                        //dd($obj->role);
+                    switch ($obj->role) {
+                        case 1:
+                            return $this->IndexForAdmin();
+                            break;
+                        case 2:
+                            return $this->IndexForDoctor();
+                            break;
+                        case 3:
+                            return $this->IndexForPatient();
+                            break;
+                        case 4:
+                            return $this->IndexForPharmacist();
+                            break;
+                        default:
+                            $this->redirectTo = '/User_Login';
+                            return $this->redirectTo->with('failed', 'Invalid login info');
+                            break;
+                    }
+                } else {
+                    return redirect()->back()->with('failed', "Invalid login info");
+                }
+            } catch (Exception $e) {
+                return redirect()->back()->with('failed', "operation failed");
+            }
         }
     }
-    else{
-        return redirect()->back()->with('failed',"Invalid login info");
-    }
-}
-    catch(Exception $e){
-        return redirect()->back()->with('failed',"operation failed");
-    }
-    }
-}
 
-public function IndexForAdmin()
-     {
+    public function IndexForAdmin()
+    {
         return redirect('admin');
-     }
+    }
 
     public function loggedinSession()
-     {
+    {
         $SessionId = Session::get('id');
         return response()->json([
-                    'data' => $SessionId ?  $SessionId : null,
-                    'message' => $SessionId ? 'Successfully Retrieved' : 'Error',
-                  ], 200);
-     }
+            'data' => $SessionId ?  $SessionId : null,
+            'message' => $SessionId ? 'Successfully Retrieved' : 'Error',
+        ], 200);
+    }
 
-     public function IndexForDoctor()
-     {
+    public function IndexForDoctor()
+    {
         return redirect('doctor_dashboard');
-     }
+    }
 
-     public function IndexForPatient()
-     {
+    public function IndexForPatient()
+    {
         return redirect('patient_dashboard');
-     }
+    }
 
-     public function IndexForPharmacist()
-     {
+    public function IndexForPharmacist()
+    {
         return redirect('pharmacist_dashboard');
-     }
+    }
 
-     public function send_mail_to_reset_password(Request $request)
+    public function send_mail_to_reset_password(Request $request)
     {
         $rules = [
             'email' => 'required|string|min:1|max:255|exists:users,email',
             // 'city_name' => 'required|string|min:3|max:255',
             // 'email' => 'required|string|email|max:255'
         ];
-        $validator = Validator::make($request->all(),$rules);
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return redirect()->back()
-            ->withInput()
-            ->withErrors($validator);
-        }
-        else{
+                ->withInput()
+                ->withErrors($validator);
+        } else {
             $data = $request->input();
-            try{
+            try {
 
-set_time_limit(1000);
-
-
-
-$to_email = $data['email'];
-
-
-$user = User::where('email','=',$to_email)
-    ->first();
-
-               $token = $user->token;
+                set_time_limit(1000);
 
 
 
+                $to_email = $data['email'];
 
-$token = array('token' => $token);
 
-                Mail::send('authentication/reset_password_mail', $token, function($message) use ($to_email) {
-         $message->to( $to_email )->subject
-            ('Reset Your Password');
-         $message->from('example@gmail.com','Example');
-      });
+                $user = User::where('email', '=', $to_email)
+                    ->first();
 
-                return redirect()->back()->with('status',"Your mail send successfully");
-            }
-            catch(Exception $e){
-                return redirect()->back()->with('failed',"operation failed");
+                $token = $user->token;
+
+
+
+
+                $token = array('token' => $token);
+
+                Mail::send('authentication/reset_password_mail', $token, function ($message) use ($to_email) {
+                    $message->to($to_email)->subject('Reset Your Password');
+                    $message->from('example@gmail.com', 'Example');
+                });
+
+                return redirect()->back()->with('status', "Your mail send successfully");
+            } catch (Exception $e) {
+                return redirect()->back()->with('failed', "operation failed");
             }
         }
     }
@@ -714,10 +701,9 @@ $token = array('token' => $token);
     public function reset_password($token)
     {
 
-        $user = User::where('token','=',$token)->first();
+        $user = User::where('token', '=', $token)->first();
 
-        return view('authentication.reset_password',compact('user'));
-               
+        return view('authentication.reset_password', compact('user'));
     }
 
     public function reset_user_password(Request $request, $email)
@@ -728,27 +714,24 @@ $token = array('token' => $token);
             // 'city_name' => 'required|string|min:3|max:255',
             // 'email' => 'required|string|email|max:255'
         ];
-        $validator = Validator::make($request->all(),$rules);
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return redirect()->back()
-            ->withInput()
-            ->withErrors($validator);
-        }
-        else{
+                ->withInput()
+                ->withErrors($validator);
+        } else {
             $data = $request->input();
-            try{
+            try {
 
-set_time_limit(1000);
+                set_time_limit(1000);
 
-$code = Str::random(30);
+                $code = Str::random(30);
 
-$user = DB::table('users')->where('email', $email)->update([ 'password'=> md5($data['password']), 'token' =>  $code]);
+                $user = DB::table('users')->where('email', $email)->update(['password' => md5($data['password']), 'token' =>  $code]);
 
- return redirect('User_Login')->with('status',"Your password updated successfully");
-
-            }
-            catch(Exception $e){
-                return redirect()->back()->with('failed',"operation failed");
+                return redirect('User_Login')->with('status', "Your password updated successfully");
+            } catch (Exception $e) {
+                return redirect()->back()->with('failed', "operation failed");
             }
         }
     }
@@ -761,13 +744,12 @@ $user = DB::table('users')->where('email', $email)->update([ 'password'=> md5($d
             ->join('doctors_profile_pictures', 'users.id', '=', 'doctors_profile_pictures.doctors_id')
             ->join('doctors_files', 'users.id', '=', 'doctors_files.doctors_id')
             ->join('contact_informations', 'users.id', '=', 'contact_informations.doctors_id')
-            
             ->join('addresses', 'users.id', '=', 'addresses.doctors_id')
             ->join('permanent_addresses', 'users.id', '=', 'permanent_addresses.doctors_id')
             ->join('important_informations', 'users.id', '=', 'important_informations.doctors_id')
-            
             ->join('doctors_other_informations', 'users.id', '=', 'doctors_other_informations.doctors_id')
-            ->select('users.id as user_id', 'doctors.*', 'doctors_profile_pictures.*', 'doctors_files.*', 'contact_informations.*', 'addresses.*', 'permanent_addresses.*', 'important_informations.*', 'doctors_other_informations.*')
+            ->join('doctors_schedules', 'users.id', '=', 'doctors_schedules.doctors_id')
+            ->select('users.id as user_id', 'doctors.*', 'doctors_profile_pictures.*', 'doctors_files.*', 'contact_informations.*', 'addresses.*', 'permanent_addresses.*', 'important_informations.*', 'doctors_other_informations.*', 'doctors_schedules.schedule')
             ->paginate(4);
 
         $doctors_social_networks = DB::table('users')
@@ -787,8 +769,8 @@ $user = DB::table('users')->where('email', $email)->update([ 'password'=> md5($d
             ->join('areas', 'addresses.area_id', '=', 'areas.id')
             ->select('addresses.*', 'countries.*', 'cities.*', 'thanas.*', 'areas.*')
             ->get();
-            //dd($doctors);
-        return view('patient.pages.doctors',compact('doctors', 'doctors_social_networks', 'doctors_specialities', 'doctors_addresses'));
+        //dd($doctors);
+        return view('patient.pages.doctors', compact('doctors', 'doctors_social_networks', 'doctors_specialities', 'doctors_addresses'));
     }
 
     /**
