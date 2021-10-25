@@ -49,7 +49,7 @@
 
   <form action="/register_patient" method="post" enctype="multipart/form-data">
 
-    <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+    @csrf
 
 <div class="wrapper">
   <!-- Navbar -->
@@ -57,11 +57,11 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  
+
   <!-- Content Wrapper. Contains page content -->
   <!-- <div class="content-wrapper"> -->
     <!-- Content Header (Page header) -->
-    
+
     <hr>
 
     <!-- Main content -->
@@ -221,35 +221,35 @@
               </div>
               <div class="card-body">
                 <div id="actions" class="row">
-                  
+
 <p>
             <input type="file" name="photo" onchange="previewFile(this);" required>
         </p>
         <img id="previewImg" src="" style="height: 100px; width: 100px;" alt="Placeholder">
-                  
+
                 </div>
-                
+
               </div>
-              
+
               <div class="card-footer">
                 Visit <a href="https://www.dropzonejs.com">dropzone.js documentation</a> for more examples and information about the plugin.
               </div>
             </div>
-           
+
           </div>
         </div> -->
 
 <!-- <script>
     function previewFile(input){
         var file = $("input[type=file]").get(0).files[0];
- 
+
         if(file){
             var reader = new FileReader();
- 
+
             reader.onload = function(){
                 $("#previewImg").attr("src", reader.result);
             }
- 
+
             reader.readAsDataURL(file);
         }
     }
@@ -267,17 +267,17 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              
+
                 <div class="card-body">
 
                   <div class="form-group">
                     <label for="country">Country</label>
                     <select class="form-control" id="country" v-model="countries_id" name="country_id" value="{{old('country_id')}}">
-                      
+
                       <option value="">--Select--</option>
 
                       @foreach ($countries as $country)
-                      
+
                       <option @click="fetchData({{ $country->id}})" value="{{ $country->id}}">
                         {{ $country->country}}
                       </option>
@@ -327,7 +327,7 @@
                   </div>
 
                   <!-- <div class="form-group">
-                    
+
                   </div> -->
                   <!-- <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
@@ -358,7 +358,7 @@
             </div>
           </div>
           </div>
-        
+
 </div>
 
 
@@ -384,11 +384,11 @@
                   <div class="form-group">
                     <label for="country">Country</label>
                     <select class="form-control" id="country" v-model="countries_id" name="permanent_country_id" value="{{old('countries_id')}}">
-                      
+
                       <option value="">--Select--</option>
 
                       @foreach ($countries as $country)
-                      
+
                       <option @click="fetchData({{ $country->id}})" value="{{ $country->id}}">
                         {{ $country->country}}
                       </option>
@@ -438,7 +438,7 @@
                   </div>
 
                   <!-- <div class="form-group">
-                    
+
                   </div> -->
                   <!-- <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
@@ -469,7 +469,7 @@
             </div>
           </div>
           </div>
-        
+
 </div>
 
 <!-- Marital Statuses -->
@@ -491,11 +491,11 @@
                   <div class="form-group">
                     <label for="country">Marital Status</label>
                     <select class="form-control" name="marital_status_id" value="{{old('marital_status_id')}}">
-                      
+
                       <option value="">--Select--</option>
 
                       @foreach ($marital_statuses as $marital_status)
-                      
+
                       <option value="{{ $marital_status->id}}">
                         {{ $marital_status->marital_status}}
                       </option>
@@ -504,14 +504,14 @@
                   </div>
 
 
-                  
+
 
                   <div>
     <!-- -->
                   </div>
 
                   <!-- <div class="form-group">
-                    
+
                   </div> -->
                   <!-- <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
@@ -542,13 +542,13 @@
             </div>
           </div>
           </div>
-        
+
 </div>
 
 <!-- Marital Statuses -->
 <!-- Permanent Address -->
 
-       
+
         <!-- <div class="card card-default">
           <div class="card-header">
             <h3 class="card-title">Select2 (Default Theme)</h3>
@@ -562,7 +562,7 @@
               </button>
             </div>
           </div>
-          
+
           <div class="card-body">
             <div class="row">
               <div class="col-md-6">
@@ -578,7 +578,7 @@
                     <option>Washington</option>
                   </select>
                 </div>
-                
+
                 <div class="form-group">
                   <label>Disabled</label>
                   <select class="form-control select2" disabled="disabled" style="width: 100%;">
@@ -591,9 +591,9 @@
                     <option>Washington</option>
                   </select>
                 </div>
-                
+
               </div>
-             
+
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Multiple</label>
@@ -607,7 +607,7 @@
                     <option>Washington</option>
                   </select>
                 </div>
-                
+
                 <div class="form-group">
                   <label>Disabled Result</label>
                   <select class="form-control select2" style="width: 100%;">
@@ -620,11 +620,11 @@
                     <option>Washington</option>
                   </select>
                 </div>
-                
+
               </div>
-             
+
             </div>
-           
+
 
             <h5>Custom Color Variants</h5>
             <div class="row">
@@ -641,9 +641,9 @@
                     <option>Washington</option>
                   </select>
                 </div>
-                
+
               </div>
-              
+
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label>Multiple (.select2-purple)</label>
@@ -659,13 +659,13 @@
                     </select>
                   </div>
                 </div>
-                
+
               </div>
-             
+
             </div>
-           
+
           </div>
-          
+
           <div class="card-footer">
             Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and information about
             the plugin.
@@ -687,7 +687,7 @@
               </button>
             </div>
           </div>
-          
+
           <div class="card-body">
             <div class="row">
               <div class="col-md-6">
@@ -703,7 +703,7 @@
                     <option>Washington</option>
                   </select>
                 </div>
-                
+
                 <div class="form-group">
                   <label>Disabled</label>
                   <select class="form-control select2bs4" disabled="disabled" style="width: 100%;">
@@ -716,9 +716,9 @@
                     <option>Washington</option>
                   </select>
                 </div>
-                
+
               </div>
-              
+
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Multiple</label>
@@ -733,7 +733,7 @@
                     <option>Washington</option>
                   </select>
                 </div>
-                
+
                 <div class="form-group">
                   <label>Disabled Result</label>
                   <select class="form-control select2bs4" style="width: 100%;">
@@ -746,13 +746,13 @@
                     <option>Washington</option>
                   </select>
                 </div>
-               
+
               </div>
-              
+
             </div>
-            
+
           </div>
-          
+
           <div class="card-footer">
             Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and information about
             the plugin.
@@ -773,7 +773,7 @@
               </button>
             </div>
           </div>
-          
+
           <div class="card-body">
             <div class="row">
               <div class="col-12">
@@ -789,19 +789,19 @@
                     <option>Washington</option>
                   </select>
                 </div>
-                
+
               </div>
-              
+
             </div>
-            
+
           </div>
-          
+
           <div class="card-footer">
             Visit <a href="https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox#readme">Bootstrap Duallistbox</a> for more examples and information about
             the plugin.
           </div>
         </div> -->
-        
+
 
         <!-- <div class="row">
           <div class="col-md-6">
@@ -811,7 +811,7 @@
                 <h3 class="card-title">Input masks</h3>
               </div>
               <div class="card-body">
-                
+
                 <div class="form-group">
                   <label>Date masks:</label>
 
@@ -821,11 +821,11 @@
                     </div>
                     <input type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask>
                   </div>
-                  
-                </div>
-                
 
-                
+                </div>
+
+
+
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-prepend">
@@ -833,9 +833,9 @@
                     </div>
                     <input type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="mm/dd/yyyy" data-mask>
                   </div>
-                  
+
                 </div>
-                
+
                 <div class="form-group">
                   <label>US phone mask:</label>
 
@@ -845,9 +845,9 @@
                     </div>
                     <input type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>
                   </div>
-                  
+
                 </div>
-                
+
                 <div class="form-group">
                   <label>Intl US phone mask:</label>
 
@@ -858,9 +858,9 @@
                     <input type="text" class="form-control"
                            data-inputmask="'mask': ['999-999-9999 [x99999]', '+099 99 99 9999[9]-9999']" data-mask>
                   </div>
-                  
+
                 </div>
-               
+
                 <div class="form-group">
                   <label>IP mask:</label>
 
@@ -870,26 +870,26 @@
                     </div>
                     <input type="text" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
                   </div>
-                 
+
                 </div>
-                
+
 
               </div>
-              
+
             </div>
-            
+
 
             <div class="card card-info">
               <div class="card-header">
                 <h3 class="card-title">Color & Time Picker</h3>
               </div>
               <div class="card-body">
-               
+
                 <div class="form-group">
                   <label>Color picker:</label>
                   <input type="text" class="form-control my-colorpicker1">
                 </div>
-                
+
                 <div class="form-group">
                   <label>Color picker with addon:</label>
 
@@ -900,9 +900,9 @@
                       <span class="input-group-text"><i class="fas fa-square"></i></span>
                     </div>
                   </div>
-                  
+
                 </div>
-                
+
                 <div class="bootstrap-timepicker">
                   <div class="form-group">
                     <label>Time picker:</label>
@@ -913,24 +913,24 @@
                           <div class="input-group-text"><i class="far fa-clock"></i></div>
                       </div>
                       </div>
-                    
+
                   </div>
-                  
+
                 </div>
               </div>
-              
+
             </div>
-            
+
 
           </div>
-         
+
           <div class="col-md-6">
             <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title">Date picker</h3>
               </div>
               <div class="card-body">
-                
+
                 <div class="form-group">
                   <label>Date:</label>
                     <div class="input-group date" id="reservationdate" data-target-input="nearest">
@@ -940,7 +940,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                   <label>Date range:</label>
 
@@ -952,9 +952,9 @@
                     </div>
                     <input type="text" class="form-control float-right" id="reservation">
                   </div>
-                  
+
                 </div>
-                
+
                 <div class="form-group">
                   <label>Date and time range:</label>
 
@@ -964,11 +964,11 @@
                     </div>
                     <input type="text" class="form-control float-right" id="reservationtime">
                   </div>
-                 
-                </div>
-                
 
-                
+                </div>
+
+
+
                 <div class="form-group">
                   <label>Date range button:</label>
 
@@ -979,24 +979,24 @@
                     </button>
                   </div>
                 </div>
-               
+
               </div>
                 <div class="card-footer">
                   Visit <a href="https://tempusdominus.github.io/bootstrap-4/Usage/">tempusdominus </a> for more examples and information about
                   the plugin.
                 </div>
-             
+
             </div>
-            
+
             <div class="card card-success">
               <div class="card-header">
                 <h3 class="card-title">iCheck Bootstrap - Checkbox &amp; Radio Inputs</h3>
               </div>
               <div class="card-body">
-                
+
                 <div class="row">
                   <div class="col-sm-6">
-                    
+
                     <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">
                         <input type="checkbox" id="checkboxPrimary1" checked>
@@ -1017,7 +1017,7 @@
                     </div>
                   </div>
                   <div class="col-sm-6">
-                    
+
                     <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">
                         <input type="radio" id="radioPrimary1" name="r1" checked>
@@ -1038,10 +1038,10 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="row">
                   <div class="col-sm-6">
-                    
+
                     <div class="form-group clearfix">
                       <div class="icheck-danger d-inline">
                         <input type="checkbox" checked id="checkboxDanger1">
@@ -1062,7 +1062,7 @@
                     </div>
                   </div>
                   <div class="col-sm-6">
-                    
+
                     <div class="form-group clearfix">
                       <div class="icheck-danger d-inline">
                         <input type="radio" name="r2" checked id="radioDanger1">
@@ -1083,10 +1083,10 @@
                     </div>
                   </div>
                 </div>
-               
+
                 <div class="row">
                   <div class="col-sm-6">
-                   
+
                     <div class="form-group clearfix">
                       <div class="icheck-success d-inline">
                         <input type="checkbox" checked id="checkboxSuccess1">
@@ -1107,7 +1107,7 @@
                     </div>
                   </div>
                   <div class="col-sm-6">
-                    
+
                     <div class="form-group clearfix">
                       <div class="icheck-success d-inline">
                         <input type="radio" name="r3" checked id="radioSuccess1">
@@ -1129,12 +1129,12 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="card-footer">
                 Many more skins available. <a href="https://bantikyan.github.io/icheck-bootstrap/">Documentation</a>
               </div>
             </div>
-            
+
             <div class="card card-secondary">
               <div class="card-header">
                 <h3 class="card-title">Bootstrap Switch</h3>
@@ -1144,9 +1144,9 @@
                 <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
               </div>
             </div>
-            
+
           </div>
-          
+
         </div> -->
         <!-- /.row -->
         <div class="row">
@@ -1198,11 +1198,11 @@
                             <!-- <input type="file" class="custom-file-input" id="exampleInputFile"> -->
 
             <input type="file" class="custom-file-input" id="exampleInputFile" name="patients_profile_picture" onchange="previewFile(this);" value="{{old('profile_picture')}}" required>
-        
-        
+
+
                             <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                           </div>
-                          
+
                           <div class="input-group-append">
                             <span class="input-group-text">Upload</span>
                           </div>
@@ -1231,14 +1231,14 @@
         <script>
     function previewFile(input){
         var file = $("input[type=file]").get(0).files[0];
- 
+
         if(file){
             var reader = new FileReader();
- 
+
             reader.onload = function(){
                 $("#previewImg").attr("src", reader.result);
             }
- 
+
             reader.readAsDataURL(file);
         }
     }
@@ -1262,9 +1262,9 @@
                             <!-- <input type="file" class="custom-file-input" id="exampleInputFile"> -->
 <caption style="color: red;">You have to combine all certificates images in one pdf</caption>
             <input type="file" id="exampleInputFile" name="patients_report" class="form-control" value="{{old('pdf_file_of_certificate')}}" required>
-        
+
                           </div>
-                          
+
                           <div class="input-group-append">
                             <span class="input-group-text">Upload</span>
                           </div>
@@ -1346,9 +1346,9 @@
             <!-- /.card -->
           </div>
         </div>
-        
 
-        
+
+
 
 
         <!-- Social Links -->
@@ -1363,14 +1363,14 @@
 <!-- <script>
     function previewFileOne(input){
         var file = $("input[type=file]").get(0).files[0];
- 
+
         if(file){
             var reader = new FileReader();
- 
+
             reader.onload = function(){
                 $("#previewImgOne").attr("src", reader.result);
             }
- 
+
             reader.readAsDataURL(file);
         }
     }
@@ -1402,7 +1402,7 @@ By giving your information, you are giving the right to invastigate about you.
 Thanks for being with us.
 <!--  -->
 
-  
+
 
 <!-- <div id="inserted_item_data"></div> -->
 
@@ -1478,7 +1478,7 @@ Thanks for being with us.
             <!-- /.row -->
 
             <h5></h5>
-            
+
             <!-- /.row -->
           </div>
           <!-- /.card-body -->
@@ -1557,24 +1557,24 @@ Thanks for being with us.
                   </div>
                 </div>
               </div>
-              
+
               <div class="card-footer">
                 Visit <a href="https://www.dropzonejs.com">dropzone.js documentation</a> for more examples and information about the plugin.
               </div>
             </div>
-            
+
           </div>
         </div> -->
-       
+
       </div>
-      
+
     </section>
-   
-  
+
+
   <aside class="control-sidebar control-sidebar-dark">
-    
+
   </aside>
-  
+
 </div>
 
 
@@ -1623,7 +1623,7 @@ Thanks for being with us.
       count = count+1;
       var html_code = "<tr id='row"+count+"'>";
       html_code += "<td ><input class='item_name' type='text' name='social_network_link[]' style='width: 100%;'></td>";
-      
+
       html_code += "<td><button type='button' name='remove' data-row='row"+count+"' class='bt btn-danger btn-xs remove'><i class='icon-remove'>Remove</i></button></td>";
       html_code += "</tr>";
       $('#crud_table').append(html_code);
@@ -1854,7 +1854,7 @@ if (!this.countries_id) {
     console.log(id);
    axios.get('/get_city_for_thana/' + id).then(response=>{
     console.log(response.data.data);
-    
+
     this.cities_values = response.data.data,
     app.cities_id = '';
     //this.cities_values,
@@ -1873,7 +1873,7 @@ if (!this.countries_id) {
     console.log(id);
    axios.get('/get_thana_for_area/' + id).then(response=>{
     console.log(response.data.data);
-    
+
     this.thanas_values = response.data.data,
     app.thanas_id = '';
     //this.cities_values,
@@ -1892,7 +1892,7 @@ if (!this.countries_id) {
     console.log(id);
    axios.get('/get_area_for_address/' + id).then(response=>{
     console.log(response.data.data);
-    
+
     this.areas_values = response.data.data,
     app.areas_id = '';
     //this.cities_values,
@@ -1912,7 +1912,7 @@ if (!this.countries_id) {
     //   return re.test(email);
     // },
     login: function() {
-      
+
     }
    }
   })
@@ -2003,7 +2003,7 @@ if (!this.countries_id) {
     console.log(id);
    axios.get('/get_city_for_thana/' + id).then(response=>{
     console.log(response.data.data);
-    
+
     this.cities_values = response.data.data,
     application.cities_id = '';
     //this.cities_values,
@@ -2022,7 +2022,7 @@ if (!this.countries_id) {
     console.log(id);
    axios.get('/get_thana_for_area/' + id).then(response=>{
     console.log(response.data.data);
-    
+
     this.thanas_values = response.data.data,
     application.thanas_id = '';
     //this.cities_values,
@@ -2041,7 +2041,7 @@ if (!this.countries_id) {
     console.log(id);
    axios.get('/get_area_for_address/' + id).then(response=>{
     console.log(response.data.data);
-    
+
     this.areas_values = response.data.data,
     application.areas_id = '';
     //this.cities_values,
@@ -2061,7 +2061,7 @@ if (!this.countries_id) {
     //   return re.test(email);
     // },
     login: function() {
-      
+
     }
    }
   })

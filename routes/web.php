@@ -18,6 +18,7 @@ use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\AppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -189,7 +190,6 @@ Route::post('/update_problems_info/{id}', [ProblemController::class, 'update_pro
 Route::get('/delete_problems_info/{id}', [ProblemController::class, 'delete_problems_info']);
 
 
-
 Route::get('/doctors_registration', [UserController::class, 'countries_for_area']);
 
 Route::post('/register_doctor', [UserController::class, 'register_doctor']);
@@ -227,7 +227,6 @@ Route::middleware(['isDoctor'])->group(function () {
     });
 
     Route::post('/add_doctors_schedule', [ScheduleController::class, 'add_doctors_schedule'])->name('add_doctors_schedule');
-
 });
 
 //Route::get('/add_doctors_schedule',[ScheduleController::class, 'add_doctors_schedules']);
@@ -238,7 +237,18 @@ Route::middleware(['isPatient'])->group(function () {
     Route::get('/patient_dashboard', function () {
         return view('patient.pages.index');
     });
+
 });
+
+//Route::prefix('doctors')->group(function () {
+
+Route::prefix('appointment')->group(function () {
+    //Route::resource('checkout',AppointmentController::class);
+    Route::get('/checkout/index/{id}', [AppointmentController::class, 'index'])->name('appointment.checkout.index');
+    Route::post('/checkout/store/{id}', [AppointmentController::class, 'store'])->name('appointment.checkout.store');
+});
+
+//});
 
 Route::middleware(['isPharmacist'])->group(function () {
 
@@ -247,8 +257,7 @@ Route::middleware(['isPharmacist'])->group(function () {
     });
 });
 
-Route::get('/doctors', [UserController::class, 'doctors']);
-
+Route::get('/doctors', [UserController::class, 'doctors'])->name('doctors');
 
 
 Route::get('/reset', function () {

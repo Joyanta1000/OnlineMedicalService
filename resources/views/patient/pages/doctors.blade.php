@@ -112,9 +112,11 @@
                                                     <li class="small"><span class="fa-li"><i
                                                                 class="fas fa-lg fa-clock"></i></span> Schedule
                                                         #: @php $jsn = json_decode($doctor->schedule)  @endphp
+                                                        <table>
                                                     @foreach( $jsn as $key => $value )
-                                                        <li>{{$key}} : {{$value}}</li>
+                                                                <tr><td>{{$key}}</td> <td>{{$value}}</td></tr>
                                                         @endforeach
+                                                </table>
                                                         @php @endphp
                                                         </li>
                                                 </ul>
@@ -131,8 +133,8 @@
                                             <a href="#" class="btn btn-sm bg-teal">
                                                 <i class="fas fa-comments"></i>
                                             </a>
-                                            <a href="#" class="btn btn-sm btn-primary">
-                                                <i class="fas fa-user"></i> View Profile
+                                            <a href="{{route('appointment.checkout.index', $doctor->doctors_id)}}" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-user"></i> Make Appointment
                                             </a>
                                         </div>
                                     </div>

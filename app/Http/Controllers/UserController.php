@@ -296,6 +296,7 @@ class UserController extends Controller
 
     public function register_patient(Request $request)
     {
+        //dd($request);
         $rules = [
             'first_name' => 'required',
             'last_name' => 'required',
@@ -576,7 +577,7 @@ class UserController extends Controller
                 $obj = User::where('email', '=', $email)
                     ->where('password', '=', $password)
                     ->first();
-                    
+
                 if ($obj) {
 
                     // $response = array(
