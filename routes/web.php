@@ -246,6 +246,7 @@ Route::prefix('appointment')->group(function () {
     //Route::resource('checkout',AppointmentController::class);
     Route::get('/checkout/index/{id}', [AppointmentController::class, 'index'])->name('appointment.checkout.index');
     Route::post('/checkout/store/{id}', [AppointmentController::class, 'store'])->name('appointment.checkout.store');
+    Route::get('/list', [AppointmentController::class, 'list'])->name('appointment.list');
 });
 
 //});

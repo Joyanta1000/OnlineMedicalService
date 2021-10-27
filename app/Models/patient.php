@@ -20,8 +20,8 @@ class patient extends Model
         'marital_status_id'
     ];
 
-    public function users()
+    public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'patients_id');
     }
 }

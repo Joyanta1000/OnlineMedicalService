@@ -18,4 +18,12 @@ class Appointment extends Model
         'payment_method_types',
         'is_active'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'doctor_id');
+        return $this->belongsTo(User::class, 'patient_id');
+    }
+    
+
 }
