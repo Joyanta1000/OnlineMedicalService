@@ -19,6 +19,7 @@ use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\ChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -247,6 +248,7 @@ Route::prefix('appointment')->group(function () {
     Route::get('/checkout/index/{id}', [AppointmentController::class, 'index'])->name('appointment.checkout.index');
     Route::post('/checkout/store/{id}', [AppointmentController::class, 'store'])->name('appointment.checkout.store');
     Route::get('/list', [AppointmentController::class, 'list'])->name('appointment.list');
+    Route::get('/status_change/{id}', [AppointmentController::class, 'changeStatus'])->name('appointment.status_change');
 });
 
 //});
@@ -270,6 +272,9 @@ Route::post('/send_mail_to_reset_password', [UserController::class, 'send_mail_t
 Route::get('/reset_password/{token}', [UserController::class, 'reset_password']);
 
 Route::post('/reset_user_password/{email}', [UserController::class, 'reset_user_password']);
+
+Route::resource('chat', ChatController::class);
+
 // Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

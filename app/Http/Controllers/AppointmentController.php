@@ -7,14 +7,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\patient;
 use App\Models\doctor;
+use App\Models\chats;
 
 class AppointmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index($id)
     {
 
@@ -39,22 +36,11 @@ class AppointmentController extends Controller
         return view('patient.pages.pay',compact('intent', 'id'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request, $id)
     {
 
@@ -69,21 +55,23 @@ class AppointmentController extends Controller
             'payment_method_types' => 'card',
         ]);
 
-        if($appointed) {
+        $addedToChat = chats::create([
+            'recievers_id' => $id,
+            'senders_id' => session()->get('id'),
+            'message' => 'Wanted to consult',
+        ]);
+
+        if($appointed && $addedToChat) {
 //            return back()->with('status', "Payment received successfully and you appointed, wait for doctors message");
-            return redirect()->route('doctors')->withSuccess('Payment received successfully and you appointed, wait for doctors message');
+            return redirect()->route('doctors')->withSuccess([
+                'success' => 'The provided credentials do not match our records.',
+            ]);
         }
         else{
             return back()->with('failed', "Payment Not Received successfully");
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Appointment  $appointment
-     * @return \Illuminate\Http\Response
-     */
     public function list(Appointment $appointments)
     {
         // $doctor = $users->with('patient','appointment')->where('id', session()->get('id'))->get();
@@ -96,35 +84,26 @@ class AppointmentController extends Controller
         return view('doctor.pages.appointments', compact('appointed'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Appointment  $appointment
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Appointment $appointment)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Appointment  $appointment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Appointment $appointment)
+    public function changeStatus($id, Appointment $appointment)
     {
-        //
+        if($appointment->where('id', $id)->first()->is_active == 0){
+            if($appointment->where('id', $id)->update(['is_active' => 1]))
+            {
+                return back()->withSuccess('Appointed');
+            }
+        }
+        else if ($appointment->where('id', $id)->first()->is_active == 1) {
+            if ($appointment->where('id', $id)->update(['is_active' => 0])) {
+                return back()->with('failed', "Not Appointed");
+            }
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Appointment  $appointment
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Appointment $appointment)
     {
         //

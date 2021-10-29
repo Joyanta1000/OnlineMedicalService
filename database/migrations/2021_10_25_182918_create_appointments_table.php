@@ -21,7 +21,7 @@ class CreateAppointmentsTable extends Migration
             $table->string('amount')->nullable();
             $table->string('payment_from')->nullable();
             $table->string('payment_method_types')->nullable();
-            $table->boolean('is_active')->default(1);
+            $table->boolean('is_active')->default(0);
             $table->timestamps();
         });
     }

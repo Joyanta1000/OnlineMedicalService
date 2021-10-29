@@ -24,7 +24,7 @@
     <div class="wrapper">
         <!-- Navbar -->
         <!-- <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    
+
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
@@ -37,7 +37,7 @@
       </li>
     </ul>
 
-    
+
     <form class="form-inline ml-3">
       <div class="input-group input-group-sm">
         <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
@@ -49,9 +49,9 @@
       </div>
     </form>
 
-  
+
     <ul class="navbar-nav ml-auto">
-    
+
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-comments"></i>
@@ -59,7 +59,7 @@
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <a href="#" class="dropdown-item">
-            
+
             <div class="media">
               <img src="../../dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
               <div class="media-body">
@@ -71,11 +71,11 @@
                 <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
               </div>
             </div>
-           
+
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
-            
+
             <div class="media">
               <img src="../../dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
               <div class="media-body">
@@ -87,11 +87,11 @@
                 <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
               </div>
             </div>
-           
+
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
-            
+
             <div class="media">
               <img src="../../dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
               <div class="media-body">
@@ -103,13 +103,13 @@
                 <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
               </div>
             </div>
-            
+
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
         </div>
       </li>
-      
+
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
@@ -153,13 +153,13 @@
 
         <!-- Main Sidebar Container -->
         <!-- <aside class="main-sidebar sidebar-dark-primary elevation-4">
-   
+
     <a href="../../index3.html" class="brand-link">
       <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">AdminLTE 3</span>
     </a>
 
-    
+
     <div class="sidebar">
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
@@ -170,7 +170,7 @@
         </div>
       </div>
 
-     
+
       <div class="form-inline">
         <div class="input-group" data-widget="sidebar-search">
           <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
@@ -185,7 +185,7 @@
       ->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          
+
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -819,9 +819,9 @@
           </li>
         </ul>
       </nav>
-     
+
     </div>
-    
+
   </aside> -->
 
         @include('doctor.includes.sidebar')
@@ -1336,9 +1336,9 @@
                                                     <td>{{ $appointment->payment_method_types }}</td>
                                                     <td>
                                                         @if ($appointment->is_active == 1)
-                                                            <a href="" class="btn btn-primary">Appointed</a>
+                                                            <a href="{{route('appointment.status_change', $appointment->id)}}" class="btn btn-primary">Appointed</a>
                                                         @else
-                                                            <a href="" class="btn btn-danger">Not Appointed</a>
+                                                            <a href="{{route('appointment.status_change', $appointment->id)}}" class="btn btn-danger">Not Appointed</a>
                                                         @endif
                                                     </td>
                                                     <td>
@@ -1359,11 +1359,13 @@
                                         <tfoot>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Country</th>
-                                                <th>City</th>
-                                                <th>Thana</th>
-                                                <th>Area</th>
-                                                <th>Action(s)</th>
+                                                <th>Patient</th>
+                                                <th>Description</th>
+                                                <th>Amount</th>
+                                                <th>Payment From</th>
+                                                <th>Payment Method Type</th>
+                                                <th>Actiive/Inactive</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </tfoot>
                                     </table>
