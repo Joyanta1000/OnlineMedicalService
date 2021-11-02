@@ -57,4 +57,9 @@ class User extends Authenticatable
         return $this->hasMany(Appointment::class, 'patient_id');
     }
 
+    public function chat()
+    {
+        return $this->hasMany(Chat::class, 'senders_id', 'recievers_id');
+    }
+
 }

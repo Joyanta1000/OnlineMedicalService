@@ -275,6 +275,10 @@ Route::post('/reset_user_password/{email}', [UserController::class, 'reset_user_
 
 Route::resource('chat', ChatController::class);
 
+Route::get('/message/contactList', [ChatController::class, 'contactList'])->name('message.contactList');
+
+Route::get('/message/chatData', [ChatController::class, 'chatData'])->name('message.chatData');
+
 // Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

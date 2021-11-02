@@ -21,4 +21,9 @@ class chats extends Model
         'is_deleted',
 
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class,'senders_id', 'recievers_id');
+    }
+    
 }
