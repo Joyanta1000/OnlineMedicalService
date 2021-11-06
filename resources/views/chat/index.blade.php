@@ -833,9 +833,9 @@
 </head>
 
 <body>
-    <!-- 
+    <!--
 
-A concept for a chat interface. 
+A concept for a chat interface.
 
 Try writing a new message! :)
 
@@ -1074,7 +1074,7 @@ Website: http://emilcarlsson.se/
     </script>
 
     <script>
-      
+
       function myFunction(senders_id) {
 
         $.ajax({
@@ -1082,12 +1082,12 @@ Website: http://emilcarlsson.se/
                 type: "GET",
                 data: {
                     _token: '{{ csrf_token() }}',
-                    id: senders_id
+                    senders_id: senders_id
                 },
                 cache: false,
                 dataType: 'json',
                 success: function(dataResult) {
-                    console.log(dataResult.data.id);
+                    console.log(dataResult);
                     console.log(dataResult.data.patients_first_name);
                     var resultData = dataResult.data;
                     var messageData = '';
@@ -1097,13 +1097,13 @@ Website: http://emilcarlsson.se/
                         //var fetchSingleChat = url + '/' + row.id;
                       // if(row.is_seen == 0){
                         messageData +="<div class='contact-profile'><img style='height: 45px;' src='"+resultData.patients_profile_picture+"' alt='' /><p>"+resultData.patients_first_name+"</p><div class='social-media'><i class='fa fa-facebook' aria-hidden='true'></i><i class='fa fa-twitter' aria-hidden='true'></i><i class='fa fa-instagram' aria-hidden='true'></i></div></div>"
-                        if(resultData.senders_id != session_id){
+                        // if(resultData.senders_id != session_id){
                         messageData +="<div class='messages'><ul><li class='sent'><img style='height: 32px;' src='"+resultData.patients_profile_picture+"' alt='' /><p>"+resultData.message+"</p></li>";
-                        }
-                        else{
+                        // }
+                        // else{
                         messageData +="<li class='replies'><img style='height: 32px;' src='"+resultData.profile_picture+"' alt='' /><p>"+resultData.message+"</p></li></ul></div>";
-                        }
-                        messageData += "<div class='message-input'><div class='wrap'><input type='text' placeholder='Write your message...' /><input type='file' name='file' class='fa fa-paperclip attachment'><button class='submit'><i class='fa fa-paper-plane' aria-hidden='true'></i></button></div></div>";
+                        // }
+                        messageData += "<div class='message-input'><div class='wrap'><input type='text' placeholder='Write your message...' /><br><input type='file' name='file' class='fa fa-paperclip attachment'><button class='submit'><i class='fa fa-paper-plane' aria-hidden='true'></i></button></div></div>";
                       // }
                       // else{
                       //   messageData +="<div style=' color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>"
@@ -1117,7 +1117,7 @@ Website: http://emilcarlsson.se/
             });
 
             }
-      
+
         $(document).ready(function() {
             var url = "{{ route('message.chatData') }}";
             $.ajax({
@@ -1136,12 +1136,12 @@ Website: http://emilcarlsson.se/
                     $.each(resultData, function(index, row) {
                         var fetchSingleChat = url + '/' + row.id;
                       if(row.is_seen == 0){
-                        bodyData +="<div style='background-color: black; color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>"
+                        bodyData +="<div style='background-color: black; color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.senders_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>"
                         bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p><p class='preview'>" + row.message + "</p></div>";
                         bodyData += "</div></li></a></div>";
                       }
                       else{
-                        bodyData +="<div style=' color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>"
+                        bodyData +="<div style=' color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.senders_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>"
                         bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p><p class='preview'>" + row.message + "</p></div>";
                         bodyData += "</div></li></a></div>";
                       }
@@ -1151,7 +1151,7 @@ Website: http://emilcarlsson.se/
                 }
             });
 
-            
+
 
             // $(document).on("click", ".delete", function() {
             //     var $ele = $(this).parent().parent();
