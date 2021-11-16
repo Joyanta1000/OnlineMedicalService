@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\patient;
 use App\Models\doctor;
 use App\Models\chats;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class AppointmentController extends Controller
 {
@@ -55,10 +56,13 @@ class AppointmentController extends Controller
             'payment_method_types' => 'card',
         ]);
 
+        $message_id = IdGenerator::generate(['table' => 'chats','field' => 'message_id', 'length' => 10, 'prefix' => date('ym')]);
+
         $addedToChat = chats::create([
             'recievers_id' => $id,
             'senders_id' => session()->get('id'),
-            'message' => 'Wanted to consult',
+            'message_id' => $message_id ? $message_id : 00001,
+            'message' => 'Patient wanted to consult',
         ]);
 
         if($appointed && $addedToChat) {

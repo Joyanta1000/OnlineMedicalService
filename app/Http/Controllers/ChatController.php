@@ -26,6 +26,17 @@ class ChatController extends Controller
      */
     public function contactList()
     {
+
+        $session_id = session()->get('id');
+        // dd($session_id);
+        $distinctedData = DB::table('chats')
+            ->where('chats.recievers_id', session()->get('id'))
+            ->orWhere('chats.senders_id', session()->get('id'))
+            ->where('chats.senders_id', session()->get('id'))
+            ->orWhere('chats.recievers_id', session()->get('id'))
+            ->distinct()
+            ->get('senders_id');
+
         $userData = DB::table('chats')
             ->join('users', function ($join) {
                 $join->on(DB::raw('find_in_set(chats.recievers_id, users.id)'), DB::raw('find_in_set(chats.senders_id, users.id)'));
@@ -42,15 +53,30 @@ class ChatController extends Controller
             ->join('doctors_profile_pictures', function ($join) {
                 $join->on('chats.recievers_id', '=', 'doctors_profile_pictures.doctors_id')->orOn('chats.senders_id', '=', 'doctors_profile_pictures.doctors_id');
             })
-
-            ->select('chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture')
             ->where('chats.recievers_id', session()->get('id'))
-            ->groupBy('chats.senders_id')
-            ->orderBy('chats.senders_id', 'desc')
-            ->get();
+            ->orWhere('chats.senders_id', session()->get('id'))
+            ->select('chats.message_id','chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture')
 
-        return json_encode(array('data' => $userData));
+            // ->where('chats.senders_id', 'chats.senders_id')
+            //->groupBy('message_id')
+            //->orderBy('DESC')
+            ->orderBy('message_id', 'DESC')
+         //->distinct('message_id')
+        //->select(DB::raw(1))
+        ->get()->unique('message_id');
+        
+            //->select('chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture');
+            
+
+        //$select_group = $userData->first();
+
+
+        //$select_group = $userData->first();
+
+        return json_encode(array('data' => $userData, 'session_id' => session()->get('id'), 'distinctedData' => $distinctedData));
     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -87,7 +113,8 @@ class ChatController extends Controller
             ->where('chats.senders_id', session()->get('id'))
             ->orWhere('chats.recievers_id', session()->get('id'))
             ->select('chats.*', 'users.email', 'patients_profile_pictures.patients_profile_picture', 'doctors_profile_pictures.profile_picture', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name')
-            ->first();
+            ->get();
+
         return json_encode(array('data' => $messageData));
     }
 
@@ -104,7 +131,7 @@ class ChatController extends Controller
      */
     public function show(chats $chats)
     {
-        //
+        
     }
 
     /**
@@ -115,7 +142,7 @@ class ChatController extends Controller
      */
     public function edit(chats $chats)
     {
-        //
+        
     }
 
     /**

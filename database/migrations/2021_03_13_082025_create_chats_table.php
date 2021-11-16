@@ -19,6 +19,7 @@ class CreateChatsTable extends Migration
             $table->foreign('senders_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('recievers_id')->nullable();
             $table->foreign('recievers_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('message_id')->nullable();
             $table->string('senders_full_name')->nullable();
             $table->string('message')->nullable();
             $table->string('file')->nullable();

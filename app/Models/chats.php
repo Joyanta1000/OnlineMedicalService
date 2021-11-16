@@ -12,6 +12,7 @@ class chats extends Model
     protected $fillable = [
         'senders_id',
         'recievers_id',
+        'message_id',
         'senders_full_name',
         'message',
         'file',
