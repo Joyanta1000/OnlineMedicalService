@@ -6,6 +6,7 @@ use App\Models\chats;
 use App\Models\User;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Str;
 
 class ChatController extends Controller
 {
@@ -55,18 +56,18 @@ class ChatController extends Controller
             })
             ->where('chats.recievers_id', session()->get('id'))
             ->orWhere('chats.senders_id', session()->get('id'))
-            ->select('chats.message_id','chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture')
+            ->select('chats.id', 'chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture')
 
             // ->where('chats.senders_id', 'chats.senders_id')
             //->groupBy('message_id')
-            //->orderBy('DESC')
+            ->latest('chats.created_at')
             ->orderBy('message_id', 'DESC')
-         //->distinct('message_id')
-        //->select(DB::raw(1))
-        ->get()->unique('message_id');
-        
-            //->select('chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture');
-            
+            //->distinct('message_id')
+            //->select(DB::raw(1))
+            ->get()->unique('message_id');
+
+        //->select('chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture');
+
 
         //$select_group = $userData->first();
 
@@ -113,9 +114,52 @@ class ChatController extends Controller
             ->where('chats.senders_id', session()->get('id'))
             ->orWhere('chats.recievers_id', session()->get('id'))
             ->select('chats.*', 'users.email', 'patients_profile_pictures.patients_profile_picture', 'doctors_profile_pictures.profile_picture', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name')
+            // ->orderBy('chats.created_at', 'DESC')
             ->get();
 
-        return json_encode(array('data' => $messageData));
+        return json_encode(array('data' => $messageData, 'seen' => $updateChat));
+    }
+
+    public function submitMsg(Request $request)
+    {
+        $code = Str::random(30);
+        $extra_1 = Str::random(32);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $file_name = time() . '.' . $code . '.' . $extra_1 . '.' . $file->getClientOriginalExtension();
+            $file_path = public_path('/Chat_Files/');
+            $file->move($file_path, $file_name);
+
+            $insertChat = chats::create([
+                    'message' => $request->message,
+                    'file' => '/Chat_Files/' . $file_name,
+                    'recievers_id' => $request->recievers_id,
+                    'senders_id' => $request->senders_id,
+                    'message_id' => $request->message_id,
+                ]);
+
+            return json_encode(array('data' => $insertChat));
+        } else {
+            $insertChat = chats::create([
+                    'message' => $request->message,
+                    'recievers_id' => $request->recievers_id,
+                    'senders_id' => session()->get('id'),
+                    'message_id' => $request->message_id,
+                ]);
+
+            return json_encode(array('data' => $insertChat));
+        }
+
+// dd('hey', request()->all());
+
+
+
+        // $pharmacies_profile_picture = new pharmacies_profile_pictures;
+        // $pharmacies_profile_picture->phermacies_id = $id;
+
+        // $pharmacies_profile_picture->pharmacies_profile_picture = '/Pharmacies_Files/Pharmacies_Profile_Pictures/' . $profile_pictures_name;
+        // $pharmacies_profile_picture->save();
     }
 
     public function store(Request $request)
@@ -131,7 +175,6 @@ class ChatController extends Controller
      */
     public function show(chats $chats)
     {
-        
     }
 
     /**
@@ -142,7 +185,6 @@ class ChatController extends Controller
      */
     public function edit(chats $chats)
     {
-        
     }
 
     /**

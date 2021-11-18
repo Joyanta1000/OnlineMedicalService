@@ -1,22 +1,21 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
 <!------ Include the above in your HEAD tag ---------->
 
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
 
 <!DOCTYPE html>
 <html class=''>
-
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script
       src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'>
 </script>
     <meta charset='UTF-8'>
     <meta name="robots" content="noindex">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" type="image/x-icon"
         href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
     <link rel="mask-icon" type=""
@@ -25,8 +24,13 @@
     <link rel="canonical" href="https://codepen.io/emilcarlsson/pen/ZOQZaV?limit=all&page=74&q=contact+" />
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet'
         type='text/css'>
-
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://use.typekit.net/hoy3lrg.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script>
         try {
             Typekit.load({
@@ -38,6 +42,9 @@
     <link rel='stylesheet prefetch'
         href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
     <style class="cp-pen-styles">
+        .hide {
+  display: none;
+}
         body {
             display: flex;
             align-items: center;
@@ -889,10 +896,12 @@ Website: http://emilcarlsson.se/
                 <ul id="bodyData">
 
                     <div class="card-body">
+                        <form enctype="multipart/form-data">
             <div class="scroll scroll-pull message-scroll" data-mobile-height="350">
               <div class="messages" id="messages">
               </div>
             </div>
+                        </form>
           </div>
 
                     {{-- <li class="contact">
@@ -1004,11 +1013,12 @@ Website: http://emilcarlsson.se/
         </div>
 
 <div class="scroll scroll-pull message-scroll" data-mobile-height="350">
-              
-                   <div class="messages content" id="messageData">
+              {{-- <form enctype="multipart/form-data"> --}}
+            
+                <div class="messages content" id="messageData">
 
         </div>
-              
+              {{-- </form> --}}
             </div>
        
 
@@ -1018,6 +1028,7 @@ Website: http://emilcarlsson.se/
     <script
         src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'>
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(".messages").animate({
             scrollTop: $(document).height()
@@ -1080,40 +1091,57 @@ Website: http://emilcarlsson.se/
             }
         });
 
-        // $(".messageData").animate({
-        //     scrollTop: $(document).height()
-        // }, "fast");
         
-        //# sourceURL=pen.js
     </script>
 
     <script>
 
-      function myFunction(senders_id) {
-          
 
+        $(document).ready(function() {
+            contactList();
+  $('.fileInput').change(function() {
+    $file = $(this).val();
+    $file = $file.replace(/.*[\/\\]/, ''); //grab only the file name not the path
+    $('.filename-container').append("<span  class='filename'>" + $file + "</span>").show();
+  })
+
+})
+    </script>
+
+    <script type="text/javascript">
+
+function m(){  
+window.value=100;
+} 
+
+      function myFunction(id, senders_id) {
         $.ajax({
                 url: "{{ route('message.chatData') }}",
                 type: "GET",
                 data: {
                     _token: '{{ csrf_token() }}',
+                    id: id,
                     senders_id: senders_id
                 },
                 cache: false,
                 dataType: 'json',
                 success: function(dataResult) {
+                    $("#bodyData").html('');
+                    contactList();
                     $("#messageData").html('');
                      console.log(dataResult);
-                    // console.log(dataResult.data.patients_first_name);
+                    console.log(dataResult.data[0].recievers_id);
+                    console.log(dataResult.data[0].senders_id);
+                    var recievers_id = dataResult.data[0].recievers_id;
+                    var senders_id = dataResult.data[0].senders_id;
+                    var message_id = dataResult.data[0].message_id;
                     var resultData = dataResult.data;
                     var messageData = '';
                     var i = 1;
                     var session_id = '{{ Session::get('id');}}';
-                    // alert(session_id);
+                    
                     $.each(resultData, function(index, row) {
-                        //var fetchSingleChat = url + '/' + row.id;
-                      // if(row.is_seen == 0){
-                        // alert(row.recievers_id);
+                       
                         if(row.recievers_id === session_id){
                             
                                 messageData +="<div class='contact-profile'><img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><p>"+row.patients_first_name+"</p><div class='social-media'><i class='fa fa-facebook' aria-hidden='true'></i><i class='fa fa-twitter' aria-hidden='true'></i><i class='fa fa-instagram' aria-hidden='true'></i></div></div>";
@@ -1125,39 +1153,43 @@ Website: http://emilcarlsson.se/
                     messageData+= "<div class='messages'><ul>";
                     
                     $.each(resultData, function(index, row) {
-                        //var fetchSingleChat = url + '/' + row.id;
-                      // if(row.is_seen == 0){
+                       
                         
                         if(row.senders_id != session_id){
                         messageData +="<li class='replies'><img style='height: 32px;' src='"+row.patients_profile_picture+"' alt='' /><p>"+row.message+"</p></li>";
-                        }
+                    
+
+                      
+
+window.value=row.senders_id;
+   
+                    }
                         else{
+                            
                         messageData +="<li class='sent'><img style='height: 32px;' src='"+row.profile_picture+"' alt='' /><p>"+row.message+"</p></li>";
                         }
-                      // }
-                      // else{
-                      //   messageData +="<div style=' color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>"
-                      //   messageData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p><p class='preview'>" + row.message + "</p></div>";
-                      //   messageData += "</div></li></a></div>";
-                      // }
+                      
 
                     })
 
                     messageData+= "</ul></div>";
-                    messageData += "<div class='message-input'><div class='wrap'><input type='text' placeholder='Write your message...' /><br><input type='file' name='file' class='fa fa-paperclip attachment'><button class='submit'><i class='fa fa-paper-plane' aria-hidden='true'></i></button></div></div>";
+                    messageData += "<div class='message-input'><div class='wrap'><input type='text' name='message' id='message' placeholder='Write your message...' /><label for='fileInput'><i class='fa fa-paperclip attachment' aria-hidden='true'></i></label><input type='file' name='file' class='fileInput hide' id='fileInput'><button class='submit' onclick='submitMessage("+recievers_id+","+senders_id+","+message_id+")'><i class='fa fa-paper-plane' aria-hidden='true'></i></button></div></div>";
                     $("#messageData").append(messageData);
-                    scrollBottom();
+                    $(".messages").animate({
+                scrollTop: $(document).height(),
+            }, "fast");
                 }
             });
 
             }
 
             function scrollBottom() {
-        $('.message-scroll').scrollTop(parseInt($("#messages").height()));
+        $('.message-scroll').scrollTop(parseInt($(".messages").height()));
       }
 
 
-        $(document).ready(function() {
+        // $(document).ready(function() {
+            function contactList(){
             var url = "{{ route('message.chatData') }}";
             $.ajax({
                 url: "{{ route('message.contactList') }}",
@@ -1176,12 +1208,12 @@ Website: http://emilcarlsson.se/
                     $.each(resultData, function(index, row) {
                         var fetchSingleChat = url + '/' + row.id;
                       if(row.is_seen == 0){
-                        bodyData +="<div style='background-color: black; color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.senders_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>"
+                        bodyData +="<div style='background-color: black; color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>"
                         bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p><p class='preview'>" + row.message + "</p></div>";
                         bodyData += "</div></li></a></div>";
                       }
                       else{
-                        bodyData +="<div style=' color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.senders_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>"
+                        bodyData +="<div style=' color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>"
                         bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p><p class='preview'>" + row.message + "</p></div>";
                         bodyData += "</div></li></a></div>";
                       }
@@ -1191,30 +1223,67 @@ Website: http://emilcarlsson.se/
                 }
             });
 
+        // });
+            }
+
+        function submitMessage(recievers_id, senders_id, message_id) {
+
+        console.log($("#message").val());
+        console.log(fileInput.files[0]);
+        console.log(recievers_id, 'hey');
+        console.log(senders_id);
+        console.log(message_id);
+        console.log({{ Session::get('id');}});
+
+        var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+ 
+        let formData = new FormData();
+        var url = "{{ route('message.submitMsg') }}";
+        if(recievers_id != {{ Session::get('id');}}){
+            t_rcv = recievers_id;
+        }
+        else if(recievers_id == {{ Session::get('id');}}){
+            t_rcv = senders_id;
+        }
+        formData.append("recievers_id", t_rcv);
+        formData.append("senders_id", {{ Session::get('id');}});
+        formData.append("message_id", message_id);
+    formData.append("message", $("#message").val());
+    formData.append("file", fileInput.files[0]);
+    formData.append("_token", CSRF_TOKEN);
+        
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+    $.ajax({
+                url: "{{ route('message.submitMsg') }}",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                cache: false,
+                dataType: 'json',
+                success: function(dataResult) {
+                    console.log(dataResult);
+                    $("#bodyData").html('');
+                    contactList();
+                    myFunction(dataResult.data.id, dataResult.data.senders_id);
+                }
+            });
 
 
-            // $(document).on("click", ".delete", function() {
-            //     var $ele = $(this).parent().parent();
-            //     var id = $(this).val();
-            //     var url = "{{ URL('userData') }}";
-            //     var dltUrl = url + "/" + id;
-            //     $.ajax({
-            //         url: dltUrl,
-            //         type: "DELETE",
-            //         cache: false,
-            //         data: {
-            //             _token: '{{ csrf_token() }}'
-            //         },
-            //         success: function(dataResult) {
-            //             var dataResult = JSON.parse(dataResult);
-            //             if (dataResult.statusCode == 200) {
-            //                 $ele.fadeOut().remove();
-            //             }
-            //         }
-            //     });
-            // });
-
-        });
+    // await fetch(url, {
+    //   method: "POST",
+    //   _token: '{{ csrf_token() }}',
+    //   data: formData,
+    // //   cache: false,
+    // //   dataType: 'json',
+    // });    
+    // alert('The file has been uploaded successfully.');
+        }
     </script>
 </body>
 

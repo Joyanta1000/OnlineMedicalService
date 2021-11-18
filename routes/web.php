@@ -279,6 +279,8 @@ Route::get('/message/contactList', [ChatController::class, 'contactList'])->name
 
 Route::get('/message/chatData', [ChatController::class, 'chatData'])->name('message.chatData');
 
+Route::post('/message/submitMsg', [ChatController::class, 'submitMsg'])->name('message.submitMsg');
+
 // Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
