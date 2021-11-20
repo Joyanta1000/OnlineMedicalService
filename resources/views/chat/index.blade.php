@@ -1098,7 +1098,7 @@ Website: http://emilcarlsson.se/
 
 
         $(document).ready(function() {
-            contactList();
+            
   $('.fileInput').change(function() {
     $file = $(this).val();
     $file = $file.replace(/.*[\/\\]/, ''); //grab only the file name not the path
@@ -1109,29 +1109,59 @@ Website: http://emilcarlsson.se/
     </script>
 
     <script type="text/javascript">
+var role = '{{ Session::get('role');}}';
+alert(role);
+    //var id = location;
+    let url_str = location;
+
+let url = new URL(url_str);
+let search_params = url.searchParams; 
+
+let id = search_params.get('id');
+let senders_id = search_params.get('senders_id');
+let recievers_id = search_params.get('recievers_id');
+// alert(id);
+// alert(senders_id);
+if(id != null&&senders_id != null&&recievers_id != null){
+    myFunction(id, senders_id, recievers_id);
+}
+else{
+    contactList();
+}
+
+    //alert(search_params.get('senders_id'));
 
 function m(){  
 window.value=100;
 } 
 
-      function myFunction(id, senders_id) {
+      function myFunction(id, senders_id, recievers_id) {
+          let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + id +'&'+ 'senders_id=' + senders_id +'&'+ 'recievers_id=' + recievers_id;
+          window.history.pushState({
+            path: newUrl
+          }, '', newUrl);
+
         $.ajax({
                 url: "{{ route('message.chatData') }}",
                 type: "GET",
                 data: {
                     _token: '{{ csrf_token() }}',
                     id: id,
-                    senders_id: senders_id
+                    senders_id: senders_id,
+                    recievers_id: recievers_id
                 },
                 cache: false,
                 dataType: 'json',
                 success: function(dataResult) {
                     $("#bodyData").html('');
-                    contactList();
+                    
                     $("#messageData").html('');
-                     console.log(dataResult);
+                    
+                     console.log(dataResult, 'messages');
                     console.log(dataResult.data[0].recievers_id);
                     console.log(dataResult.data[0].senders_id);
+                    console.log(dataResult.RecieversProfilePicture.searchable.patients_profile_picture);
+                    console.log(dataResult.SendersProfilePicture.searchable.profile_picture);
                     var recievers_id = dataResult.data[0].recievers_id;
                     var senders_id = dataResult.data[0].senders_id;
                     var message_id = dataResult.data[0].message_id;
@@ -1140,15 +1170,15 @@ window.value=100;
                     var i = 1;
                     var session_id = '{{ Session::get('id');}}';
                     
-                    $.each(resultData, function(index, row) {
+                    // $.each(resultData, function(index, row) {
                        
-                        if(row.recievers_id === session_id){
+                    //     if(row.recievers_id === session_id){
                             
-                                messageData +="<div class='contact-profile'><img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><p>"+row.patients_first_name+"</p><div class='social-media'><i class='fa fa-facebook' aria-hidden='true'></i><i class='fa fa-twitter' aria-hidden='true'></i><i class='fa fa-instagram' aria-hidden='true'></i></div></div>";
+                    //             messageData +="<div class='contact-profile'><img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><p>"+row.patients_first_name+"</p><div class='social-media'><i class='fa fa-facebook' aria-hidden='true'></i><i class='fa fa-twitter' aria-hidden='true'></i><i class='fa fa-instagram' aria-hidden='true'></i></div></div>";
                     
-                                }
+                    //             }
 
-                    });
+                    // });
 
                     messageData+= "<div class='messages'><ul>";
                     
@@ -1156,9 +1186,35 @@ window.value=100;
                        
                         
                         if(row.senders_id != session_id){
-                        messageData +="<li class='replies'><img style='height: 32px;' src='"+row.patients_profile_picture+"' alt='' /><p>"+row.message+"</p></li>";
-                    
-
+                            // if(role==2){
+                                if(dataResult.SendersProfilePicture.title == row.senders_id){
+                                    if(dataResult.SendersProfilePicture.searchable.profile_picture != null){
+messageData +="<li class='replies'><img style='height: 32px;' src='"+dataResult.SendersProfilePicture.searchable.profile_picture+"' alt='' />";
+}
+else if(dataResult.SendersProfilePicture.searchable.patients_profile_picture != null){
+messageData +="<li class='replies'><img style='height: 32px;' src='"+dataResult.SendersProfilePicture.searchable.patients_profile_picture+"' alt='' />";
+}
+                                }
+                                else if(dataResult.RecieversProfilePicture.title == row.senders_id){
+                                    if(dataResult.RecieversProfilePicture.searchable.profile_picture != null){
+messageData +="<li class='replies'><img style='height: 32px;' src='"+dataResult.RecieversProfilePicture.searchable.profile_picture+"' alt='' />";
+}
+else if(dataResult.RecieversProfilePicture.searchable.patients_profile_picture != null){
+messageData +="<li class='replies'><img style='height: 32px;' src='"+dataResult.RecieversProfilePicture.searchable.patients_profile_picture+"' alt='' />";
+}
+                                }
+                                
+                            // }
+                            // else if(role==3){
+                            //     messageData +="<li class='replies'><img style='height: 32px;' src='"+row.patients_profile_picture+"' alt='' />";
+                            // }
+                    if(row.message != null){
+                        messageData +="<p>"+row.message+"</p>";
+                    }
+                            if(row.file != null){
+                        messageData += "<br><p style='margin-right: 20px;'><img style='height: 100px; width: 100px; border-radius: 2px;' src='"+row.file+"' alt='' /></p>";
+                    }
+                    messageData += "</li>";
                       
 
 window.value=row.senders_id;
@@ -1166,15 +1222,48 @@ window.value=row.senders_id;
                     }
                         else{
                             
-                        messageData +="<li class='sent'><img style='height: 32px;' src='"+row.profile_picture+"' alt='' /><p>"+row.message+"</p></li>";
-                        }
+                        // if(role==2){
+                                // messageData +="<li class='sent'><img style='height: 32px;' src='"+row.profile_picture+"' alt='' />";
+                            // }
+                            // else if(role==3){
+                            //     messageData +="<li class='sent'><img style='height: 32px;' src='"+row.patients_profile_picture+"' alt='' />";
+                            // }
+
+                            if(dataResult.SendersProfilePicture.title == row.senders_id){
+                                    if(dataResult.SendersProfilePicture.searchable.profile_picture != null){
+messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.SendersProfilePicture.searchable.profile_picture+"' alt='' />";
+}
+else if(dataResult.SendersProfilePicture.searchable.patients_profile_picture != null){
+messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.SendersProfilePicture.searchable.patients_profile_picture+"' alt='' />";
+}
+                                }
+                                else if(dataResult.RecieversProfilePicture.title == row.senders_id){
+                                    if(dataResult.RecieversProfilePicture.searchable.profile_picture != null){
+messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.RecieversProfilePicture.searchable.profile_picture+"' alt='' />";
+}
+else if(dataResult.RecieversProfilePicture.searchable.patients_profile_picture != null){
+messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.RecieversProfilePicture.searchable.patients_profile_picture+"' alt='' />";
+}
+                                }
+                    
+                    if(row.message != null){
+                        messageData +="<p>"+row.message+"</p>";
+                    }
+
+                    if(row.file != null){
+                        messageData += "<br><p style='margin-left: 20px;'><img style='height: 100px; width: 100px; border-radius: 2px;' src='"+row.file+"' alt='' /></p>";
+                    }
+                    messageData += "</li>";    
+                    }
                       
 
-                    })
+                    });
 
                     messageData+= "</ul></div>";
                     messageData += "<div class='message-input'><div class='wrap'><input type='text' name='message' id='message' placeholder='Write your message...' /><label for='fileInput'><i class='fa fa-paperclip attachment' aria-hidden='true'></i></label><input type='file' name='file' class='fileInput hide' id='fileInput'><button class='submit' onclick='submitMessage("+recievers_id+","+senders_id+","+message_id+")'><i class='fa fa-paper-plane' aria-hidden='true'></i></button></div></div>";
                     $("#messageData").append(messageData);
+                    $("#bodyData").html('');
+                    contactList();
                     $(".messages").animate({
                 scrollTop: $(document).height(),
             }, "fast");
@@ -1208,13 +1297,40 @@ window.value=row.senders_id;
                     $.each(resultData, function(index, row) {
                         var fetchSingleChat = url + '/' + row.id;
                       if(row.is_seen == 0){
-                        bodyData +="<div style='background-color: black; color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>"
-                        bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p><p class='preview'>" + row.message + "</p></div>";
+                        bodyData +="<div style='background-color: black; color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+","+row.recievers_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
+                        
+                        if(role==2){
+                            bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.doctors_first_name + "</p>";
+                        }
+                        else if(role==3){
+                            bodyData +="<img style='height: 45px;' src='"+row.profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p>";
+                        } 
+                        if(row.message != null){
+                            bodyData += "<p class='preview'>" + row.message + "</p>";
+                        }
+                        else{
+                            bodyData += "<p class='preview'>Sent a file</p>";
+                        }
+                        bodyData += "</div>";
                         bodyData += "</div></li></a></div>";
                       }
                       else{
-                        bodyData +="<div style=' color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>"
-                        bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p><p class='preview'>" + row.message + "</p></div>";
+                        bodyData +="<div style=' color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+","+row.recievers_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
+                        if(role==2){
+                            bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.doctors_first_name + "</p>";
+                        }
+                        else if(role==3){
+                            bodyData +="<img style='height: 45px;' src='"+row.profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p>";
+                        } 
+                        
+                        if(row.message != null){
+                            bodyData += "<p class='preview'>" + row.message + "</p>";
+                        }
+                        else{
+                            bodyData += "<p class='preview'>Sent a file</p>";
+                        }
+                        bodyData += "</div>";
+                        
                         bodyData += "</div></li></a></div>";
                       }
 
@@ -1270,7 +1386,8 @@ $.ajaxSetup({
                     console.log(dataResult);
                     $("#bodyData").html('');
                     contactList();
-                    myFunction(dataResult.data.id, dataResult.data.senders_id);
+                    $("#bodyData").html('');
+                    myFunction(dataResult.data.id, dataResult.data.senders_id, dataResult.data.recievers_id);
                 }
             });
 

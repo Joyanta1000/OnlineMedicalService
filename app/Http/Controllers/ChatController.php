@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\chats;
+use App\Models\doctors_profile_pictures;
+use App\Models\patients_profile_picture;
 use App\Models\User;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Str;
+use Spatie\Searchable\Search;
 
 class ChatController extends Controller
 {
@@ -116,8 +119,36 @@ class ChatController extends Controller
             ->select('chats.*', 'users.email', 'patients_profile_pictures.patients_profile_picture', 'doctors_profile_pictures.profile_picture', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name')
             // ->orderBy('chats.created_at', 'DESC')
             ->get();
+        //     $sendersId = $request->senders_id;
+        //     $recieversId = session()->get('id');
 
-        return json_encode(array('data' => $messageData, 'seen' => $updateChat));
+
+        $SendersProfilePicture = (new Search())
+            ->registerModel(doctors_profile_pictures::class, 'doctors_id')
+            ->registerModel(patients_profile_picture::class, 'patients_id')
+            ->perform($request->senders_id)
+            ->first();
+
+        $RecieversProfilePicture = (new Search())
+            ->registerModel(doctors_profile_pictures::class, 'doctors_id')
+            ->registerModel(patients_profile_picture::class, 'patients_id')
+            ->perform($request->recievers_id)
+            ->first();
+
+        //  $DESC = $SendersProfilePicture->sortByDesc('id');
+        //     $SendersProfilePicture =  doctors_profile_pictures::where('doctors_id', $sendersId)
+        //     // I need this album if any of its user's name matches the given input
+        //     ->orWhereHas('patients_profile_pictures', function ($q) use ($sendersId) {
+        //         return $q->where('patients_id', $sendersId );
+        //     })->get();
+
+        // $RecieversProfilePicture =  doctors_profile_pictures::where('doctors_id', $recieversId)
+        // // I need this album if any of its user's name matches the given input
+        // ->orWhereHas('patients_profile_pictures', function ($q) use ($recieversId) {
+        //     return $q->where('patients_id', $recieversId);
+        // })->get();
+
+        return json_encode(array('data' => $messageData, 'seen' => $updateChat, 'SendersProfilePicture' => $SendersProfilePicture, 'RecieversProfilePicture' => $RecieversProfilePicture));
     }
 
     public function submitMsg(Request $request)
@@ -132,26 +163,26 @@ class ChatController extends Controller
             $file->move($file_path, $file_name);
 
             $insertChat = chats::create([
-                    'message' => $request->message,
-                    'file' => '/Chat_Files/' . $file_name,
-                    'recievers_id' => $request->recievers_id,
-                    'senders_id' => $request->senders_id,
-                    'message_id' => $request->message_id,
-                ]);
+                'message' => $request->message,
+                'file' => '/Chat_Files/' . $file_name,
+                'recievers_id' => $request->recievers_id,
+                'senders_id' => $request->senders_id,
+                'message_id' => $request->message_id,
+            ]);
 
             return json_encode(array('data' => $insertChat));
         } else {
             $insertChat = chats::create([
-                    'message' => $request->message,
-                    'recievers_id' => $request->recievers_id,
-                    'senders_id' => session()->get('id'),
-                    'message_id' => $request->message_id,
-                ]);
+                'message' => $request->message,
+                'recievers_id' => $request->recievers_id,
+                'senders_id' => session()->get('id'),
+                'message_id' => $request->message_id,
+            ]);
 
             return json_encode(array('data' => $insertChat));
         }
 
-// dd('hey', request()->all());
+        // dd('hey', request()->all());
 
 
 
