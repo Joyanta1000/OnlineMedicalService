@@ -12,7 +12,8 @@ class patients_profile_picture extends Model implements Searchable
     use HasFactory;
 
     protected $fillable = [
-        'patients_id'
+        'patients_id',
+        'patients_profile_picture'
     ];
 
     public function getSearchResult(): SearchResult
@@ -21,7 +22,7 @@ class patients_profile_picture extends Model implements Searchable
 
         return new SearchResult(
             $this,
-            $this->patients_id,
+            $this->patients_id
             // $url
         );
     }

@@ -14,7 +14,8 @@ class doctors_profile_pictures extends Model implements Searchable
     use HasFactory;
 
     protected $fillable = [
-        'doctors_id'
+        'doctors_id',
+        'profile_picture'
     ];
 
     public function getSearchResult(): SearchResult

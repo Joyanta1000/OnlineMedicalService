@@ -31,6 +31,7 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="//js.pusher.com/3.0/pusher.min.js"></script>
     <script>
         try {
             Typekit.load({
@@ -685,16 +686,16 @@
         }
 
         #frame .content .messages {
-            height: auto;
-            min-height: calc(100% - 93px);
-            max-height: calc(100% - 93px);
-            overflow-y: scroll;
-            overflow-x: hidden;
-        }
+    height: auto;
+    min-height: calc(100% - 60px);
+    max-height: calc(100% - 60px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
 
         @media screen and (max-width: 735px) {
             #frame .content .messages {
-                max-height: calc(100% - 105px);
+                max-height: calc(100% - 60px);
             }
         }
 
@@ -721,7 +722,7 @@
         }
 
         #frame .content .messages ul li.sent img {
-            margin: 6px 8px 0 0;
+            margin: 0 0 0 0;
         }
 
         #frame .content .messages ul li.sent p {
@@ -731,7 +732,7 @@
 
         #frame .content .messages ul li.replies img {
             float: right;
-            margin: 6px 0 0 8px;
+            margin: 0 0 0 0;
         }
 
         #frame .content .messages ul li.replies p {
@@ -858,9 +859,10 @@ Website: http://emilcarlsson.se/
         <div id="sidepanel">
             <div id="profile">
                 <div class="wrap">
-                    <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online"
+                    <img id="profile-img" src="{{url($ProPic)}}" class="online"
                         alt="" />
-                    <p>Mike Ross</p>
+                        
+                    <p>{{ $Name }}</p>
                     <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
                     <div id="status-options">
                         <ul>
@@ -890,7 +892,7 @@ Website: http://emilcarlsson.se/
             </div>
             <div id="search">
                 <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-                <input type="text" placeholder="Search contacts..." />
+                <input type="text" id = "name" placeholder="Search contacts..." onkeyup = "searchContact()"/>
             </div>
             <div id="contacts">
                 <ul id="bodyData">
@@ -1081,7 +1083,7 @@ Website: http://emilcarlsson.se/
         };
 
         $('.submit').click(function() {
-            newMessage();
+            submitMessage(recievers_id, senders_id, message_id);
         });
 
         $(window).on('keydown', function(e) {
@@ -1109,8 +1111,84 @@ Website: http://emilcarlsson.se/
     </script>
 
     <script type="text/javascript">
+
+function searchContact(){
+    console.log($("#name").val());
+    $.ajax({
+                url: "{{ route('message.contactList') }}",
+                type: "GET",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    name: $("#name").val()
+                },
+                cache: false,
+                dataType: 'json',
+                success: function(dataResult) {
+                    $("#bodyData").html('');
+                    console.log(dataResult);
+                    var resultData = dataResult.data;
+                    var session_id = dataResult.session_id;
+                    var bodyData = '';
+                    var i = 1;
+                    $.each(resultData, function(index, row) {
+                        var fetchSingleChat = url + '/' + row.id;
+                        if(row.senders_id == session_id || row.recievers_id == session_id){
+                            if(row.is_seen == 0){
+                        bodyData +="<div style=' color: white; font-weight: bold; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+","+row.recievers_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
+                        
+                        if(role==2){
+                            bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p>";
+                        }
+                        else if(role==3){
+                            bodyData +="<img style='height: 45px;' src='"+row.profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.doctors_first_name + "</p>";
+                        } 
+                        if(row.message != null){
+                            bodyData += "<p class='preview'>";
+                            if(row.senders_id == session_id){
+                                bodyData += "<caption>you: &nbsp;</caption>";
+                            }
+                            bodyData += row.message + "</p>";
+                        }
+                        else{
+                            bodyData += "<p class='preview'>Sent a file</p>";
+                        }
+                        bodyData += "</div>";
+                        bodyData += "</div></li></a></div>";
+                      }
+                      else{
+                        bodyData +="<div style=' color: gray; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+","+row.recievers_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
+                        if(role==2){
+                            bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p>";
+                        }
+                        else if(role==3){
+                            bodyData +="<img style='height: 45px;' src='"+row.profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.doctors_first_name + "</p>";
+                        } 
+                        
+                        if(row.message != null){
+                            bodyData += "<p class='preview'>";
+                            if(row.senders_id == session_id){
+                                bodyData += "<caption>you: &nbsp;</caption>";
+                            }
+                            bodyData += row.message + "</p>";
+                        }
+                        else{
+                            bodyData += "<p class='preview'>Sent a file</p>";
+                        }
+                        bodyData += "</div>";
+                        
+                        bodyData += "</div></li></a></div>";
+                      }
+                        }
+                      
+
+                    })
+                    $("#bodyData").append(bodyData);
+                }
+            });
+}
+
 var role = '{{ Session::get('role');}}';
-alert(role);
+
     //var id = location;
     let url_str = location;
 
@@ -1123,7 +1201,12 @@ let recievers_id = search_params.get('recievers_id');
 // alert(id);
 // alert(senders_id);
 if(id != null&&senders_id != null&&recievers_id != null){
-    myFunction(id, senders_id, recievers_id);
+    // setInterval(alert(role) ,3000);
+// function intervalSet(){
+myFunction(id, senders_id, recievers_id);
+// }
+     
+//     setInterval(intervalSet,1000);
 }
 else{
     contactList();
@@ -1264,9 +1347,11 @@ messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.Rec
                     $("#messageData").append(messageData);
                     $("#bodyData").html('');
                     contactList();
+                    
                     $(".messages").animate({
-                scrollTop: $(document).height(),
+                scrollTop: 100000000000000000000000000
             }, "fast");
+            // window.scrollTo(0,4000);
                 }
             });
 
@@ -1297,16 +1382,20 @@ messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.Rec
                     $.each(resultData, function(index, row) {
                         var fetchSingleChat = url + '/' + row.id;
                       if(row.is_seen == 0){
-                        bodyData +="<div style='background-color: black; color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+","+row.recievers_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
+                        bodyData +="<div style=' color: white; font-weight: bold; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+","+row.recievers_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
                         
                         if(role==2){
-                            bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.doctors_first_name + "</p>";
+                            bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p>";
                         }
                         else if(role==3){
-                            bodyData +="<img style='height: 45px;' src='"+row.profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p>";
+                            bodyData +="<img style='height: 45px;' src='"+row.profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.doctors_first_name + "</p>";
                         } 
                         if(row.message != null){
-                            bodyData += "<p class='preview'>" + row.message + "</p>";
+                            bodyData += "<p class='preview'>";
+                            if(row.senders_id == session_id){
+                                bodyData += "<caption>you: &nbsp;</caption>";
+                            }
+                            bodyData += row.message + "</p>";
                         }
                         else{
                             bodyData += "<p class='preview'>Sent a file</p>";
@@ -1315,16 +1404,20 @@ messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.Rec
                         bodyData += "</div></li></a></div>";
                       }
                       else{
-                        bodyData +="<div style=' color: white; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+","+row.recievers_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
+                        bodyData +="<div style=' color: gray; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+","+row.recievers_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
                         if(role==2){
-                            bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.doctors_first_name + "</p>";
+                            bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p>";
                         }
                         else if(role==3){
-                            bodyData +="<img style='height: 45px;' src='"+row.profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p>";
+                            bodyData +="<img style='height: 45px;' src='"+row.profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.doctors_first_name + "</p>";
                         } 
                         
                         if(row.message != null){
-                            bodyData += "<p class='preview'>" + row.message + "</p>";
+                            bodyData += "<p class='preview'>";
+                            if(row.senders_id == session_id){
+                                bodyData += "<caption>you: &nbsp;</caption>";
+                            }
+                            bodyData += row.message + "</p>";
                         }
                         else{
                             bodyData += "<p class='preview'>Sent a file</p>";
@@ -1351,7 +1444,9 @@ messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.Rec
         console.log(message_id);
         console.log({{ Session::get('id');}});
 
-        var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+        if ($("#message").val() != "" || fileInput.files[0] != undefined) {
+    
+    var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
  
         let formData = new FormData();
         var url = "{{ route('message.submitMsg') }}";
@@ -1361,6 +1456,7 @@ messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.Rec
         else if(recievers_id == {{ Session::get('id');}}){
             t_rcv = senders_id;
         }
+        
         formData.append("recievers_id", t_rcv);
         formData.append("senders_id", {{ Session::get('id');}});
         formData.append("message_id", message_id);
@@ -1385,11 +1481,18 @@ $.ajaxSetup({
                 success: function(dataResult) {
                     console.log(dataResult);
                     $("#bodyData").html('');
-                    contactList();
-                    $("#bodyData").html('');
+                    // contactList();
+                    
                     myFunction(dataResult.data.id, dataResult.data.senders_id, dataResult.data.recievers_id);
                 }
             });
+  }
+  else{
+    //   alert("Any one must be filled out");
+      return false;
+  }
+
+        
 
 
     // await fetch(url, {

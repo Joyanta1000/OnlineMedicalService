@@ -5,7 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class patient extends Model
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
+
+class patient extends Model implements Searchable
 {
     use HasFactory;
 
@@ -24,4 +27,16 @@ class patient extends Model
     {
         return $this->belongsTo(User::class, 'patients_id');
     }
+
+    public function getSearchResult(): SearchResult
+    {
+        // $url = route('categories.show', $this->id);
+
+        return new SearchResult(
+            $this,
+            $this->patients_id
+            // $url
+        );
+    }
+    
 }

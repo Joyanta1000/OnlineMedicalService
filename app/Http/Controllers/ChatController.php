@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\chats;
+use App\Models\doctor;
 use App\Models\doctors_profile_pictures;
+use App\Models\patient;
 use App\Models\patients_profile_picture;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,7 +22,29 @@ class ChatController extends Controller
      */
     public function index()
     {
-        return view('chat.index');
+        $session_id = session()->get('id');
+        $ProfilePicture = (new Search())
+            ->registerModel(doctors_profile_pictures::class, 'doctors_id')
+            ->registerModel(patients_profile_picture::class, 'patients_id')
+            ->perform($session_id)
+            ->first();
+
+        $Name = (new Search())
+        ->registerModel(doctor::class, 'doctors_id')
+        ->registerModel(patient::class, 'patients_id')
+        ->perform($session_id)
+        ->first();
+
+            
+        if (!empty($ProfilePicture->searchable->profile_picture)) {
+            $ProPic = $ProfilePicture->searchable->profile_picture;
+        } else if (!empty($ProfilePicture->searchable->patients_profile_picture)) {
+            $ProPic = $ProfilePicture->searchable->patients_profile_picture;
+        }
+
+        $Name = $Name->searchable->first_name;
+         //dd($ProPic, $Name);
+        return view('chat.index', compact('ProPic', 'Name'));
     }
 
     /**
@@ -41,33 +65,68 @@ class ChatController extends Controller
             ->distinct()
             ->get('senders_id');
 
-        $userData = DB::table('chats')
-            ->join('users', function ($join) {
-                $join->on(DB::raw('find_in_set(chats.recievers_id, users.id)'), DB::raw('find_in_set(chats.senders_id, users.id)'));
-            })
-            ->join('doctors', function ($join) {
-                $join->on('chats.recievers_id', '=', 'doctors.doctors_id')->orOn('chats.senders_id', '=', 'doctors.doctors_id');
-            })
-            ->join('patients', function ($join) {
-                $join->on('chats.recievers_id', '=', 'patients.patients_id')->orOn('chats.senders_id', '=', 'patients.patients_id');
-            })
-            ->join('patients_profile_pictures', function ($join) {
-                $join->on('chats.recievers_id', '=', 'patients_profile_pictures.patients_id')->orOn('chats.senders_id', '=', 'patients_profile_pictures.patients_id');
-            })
-            ->join('doctors_profile_pictures', function ($join) {
-                $join->on('chats.recievers_id', '=', 'doctors_profile_pictures.doctors_id')->orOn('chats.senders_id', '=', 'doctors_profile_pictures.doctors_id');
-            })
-            ->where('chats.recievers_id', session()->get('id'))
-            ->orWhere('chats.senders_id', session()->get('id'))
-            ->select('chats.id', 'chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture')
+        if (!empty(request()->get('name'))) {
+            $userData = DB::table('chats')
+                ->join('users', function ($join) {
+                    $join->on(DB::raw('find_in_set(chats.recievers_id, users.id)'), DB::raw('find_in_set(chats.senders_id, users.id)'));
+                })
+                ->join('doctors', function ($join) {
+                    $join->on('chats.recievers_id', '=', 'doctors.doctors_id')->orOn('chats.senders_id', '=', 'doctors.doctors_id');
+                })
+                ->join('patients', function ($join) {
+                    $join->on('chats.recievers_id', '=', 'patients.patients_id')->orOn('chats.senders_id', '=', 'patients.patients_id');
+                })
+                ->join('patients_profile_pictures', function ($join) {
+                    $join->on('chats.recievers_id', '=', 'patients_profile_pictures.patients_id')->orOn('chats.senders_id', '=', 'patients_profile_pictures.patients_id');
+                })
+                ->join('doctors_profile_pictures', function ($join) {
+                    $join->on('chats.recievers_id', '=', 'doctors_profile_pictures.doctors_id')->orOn('chats.senders_id', '=', 'doctors_profile_pictures.doctors_id');
+                })
 
-            // ->where('chats.senders_id', 'chats.senders_id')
-            //->groupBy('message_id')
-            ->latest('chats.created_at')
-            ->orderBy('message_id', 'DESC')
-            //->distinct('message_id')
-            //->select(DB::raw(1))
-            ->get()->unique('message_id');
+
+                ->select('chats.id', 'chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture')
+                ->where('doctors.first_name', 'like', '%' . request()->get('name') . '%')
+                ->orWhere('patients.first_name', 'like', '%' . request()->get('name') . '%')
+                // ->where('chats.recievers_id', session()->get('id'))
+                // ->orWhere('chats.senders_id', session()->get('id'))
+                // ->where('chats.senders_id', 'chats.senders_id')
+                //->groupBy('message_id')
+                ->latest('chats.created_at')
+                ->orderBy('message_id', 'DESC')
+                //->distinct('message_id')
+                //->select(DB::raw(1))
+                ->get()->unique('message_id');
+        } else {
+            $userData = DB::table('chats')
+                ->join('users', function ($join) {
+                    $join->on(DB::raw('find_in_set(chats.recievers_id, users.id)'), DB::raw('find_in_set(chats.senders_id, users.id)'));
+                })
+                ->join('doctors', function ($join) {
+                    $join->on('chats.recievers_id', '=', 'doctors.doctors_id')->orOn('chats.senders_id', '=', 'doctors.doctors_id');
+                })
+                ->join('patients', function ($join) {
+                    $join->on('chats.recievers_id', '=', 'patients.patients_id')->orOn('chats.senders_id', '=', 'patients.patients_id');
+                })
+                ->join('patients_profile_pictures', function ($join) {
+                    $join->on('chats.recievers_id', '=', 'patients_profile_pictures.patients_id')->orOn('chats.senders_id', '=', 'patients_profile_pictures.patients_id');
+                })
+                ->join('doctors_profile_pictures', function ($join) {
+                    $join->on('chats.recievers_id', '=', 'doctors_profile_pictures.doctors_id')->orOn('chats.senders_id', '=', 'doctors_profile_pictures.doctors_id');
+                })
+                ->where('chats.recievers_id', session()->get('id'))
+                ->orWhere('chats.senders_id', session()->get('id'))
+                ->select('chats.id', 'chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture')
+
+                // ->where('chats.senders_id', 'chats.senders_id')
+                //->groupBy('message_id')
+                ->latest('chats.created_at')
+                ->orderBy('message_id', 'DESC')
+                //->distinct('message_id')
+                //->select(DB::raw(1))
+                ->get()->unique('message_id');
+        }
+
+
 
         //->select('chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture');
 
@@ -77,7 +136,7 @@ class ChatController extends Controller
 
         //$select_group = $userData->first();
 
-        return json_encode(array('data' => $userData, 'session_id' => session()->get('id'), 'distinctedData' => $distinctedData));
+        return json_encode(array('data' => $userData, 'session_id' => session()->get('id'), 'distinctedData' => $distinctedData, 'name' => request()->get('name')));
     }
 
 
@@ -92,9 +151,13 @@ class ChatController extends Controller
 
     public function chatData(Request $request)
     {
-        $updateChat = DB::table('chats')
-            ->where('id', $request->id)
-            ->update(['is_seen' => 1]);
+        $updateChat = "";
+        if ($request->senders_id != session()->get('id')) {
+            $updateChat = DB::table('chats')
+                ->where('id', $request->id)
+                ->update(['is_seen' => 1]);
+        }
+
 
         $messageData = DB::table('chats')
             ->join('users', function ($join) {
@@ -118,6 +181,7 @@ class ChatController extends Controller
             ->orWhere('chats.recievers_id', session()->get('id'))
             ->select('chats.*', 'users.email', 'patients_profile_pictures.patients_profile_picture', 'doctors_profile_pictures.profile_picture', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name')
             // ->orderBy('chats.created_at', 'DESC')
+            ->distinct('chats.id')
             ->get();
         //     $sendersId = $request->senders_id;
         //     $recieversId = session()->get('id');
