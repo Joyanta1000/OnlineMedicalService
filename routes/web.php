@@ -20,6 +20,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\PrescriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -251,6 +252,11 @@ Route::prefix('appointment')->group(function () {
     Route::get('/status_change/{id}', [AppointmentController::class, 'changeStatus'])->name('appointment.status_change');
 });
 
+Route::prefix('prescription')->group(
+    function () {
+        Route::resource('prescriptions', PrescriptionController::class);
+    }
+);
 //});
 
 Route::middleware(['isPharmacist'])->group(function () {
