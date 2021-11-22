@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Duration;
+use App\Models\FoodTime;
+use App\Models\Frequency;
+use App\Models\medicines;
+use App\Models\medicines_for_patients;
 use App\Models\prescriptions;
+use App\Models\Quantity;
 use Illuminate\Http\Request;
 
 class PrescriptionController extends Controller
@@ -14,7 +20,9 @@ class PrescriptionController extends Controller
      */
     public function index()
     {
-        dd('PrescriptionController@index');
+        $medicines = medicines::all();
+        // dd($medicines);
+        return view('prescription.index', compact('medicines'));
     }
 
     /**
@@ -35,7 +43,44 @@ class PrescriptionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
+        $createPrescription = prescriptions::create([
+            'doctors_id' => 2111000001,
+            'patients_id' => 2111000002,
+        ]);
+
+        foreach ($request->medicines_id as $key => $value) {
+            
+            $medicines_for_patients = medicines_for_patients::create([
+                'prescriptions_id' => $createPrescription->id,
+                'medicines_id' => $value,
+            ]);
+        }
+        
+        $frequency = Frequency::create([
+            'prescriptions_id' => $createPrescription->id,
+            'mn' => json_encode($request->mn),
+            'af' => json_encode($request->af),
+            'en' => json_encode($request->en),
+            'nt' => json_encode($request->nt),
+        ]);
+
+        $foodTime = FoodTime::create([
+            'prescriptions_id' => $createPrescription->id,
+            'before_food' => json_encode($request->before_food),
+            'after_food' => json_encode($request->after_food),
+        ]);
+
+        $duration = Duration::create([
+            'prescriptions_id' => $createPrescription->id,
+            'duration' => json_encode($request->duration),
+        ]);
+
+        $duration = Quantity::create([
+            'prescriptions_id' => $createPrescription->id,
+            'qty' => json_encode($request->qty),
+        ]);
     }
 
     /**
