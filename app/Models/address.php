@@ -8,4 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 class address extends Model
 {
     use HasFactory;
+
+    public function country()
+    {
+        return $this->belongsTo(country::class, 'country_id');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(city::class, 'city_id');
+    }
+
+    public function thana()
+    {
+        return $this->belongsTo(thana::class, 'thana_id');
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(area::class, 'area_id');
+    }
+
 }

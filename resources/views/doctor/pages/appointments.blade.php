@@ -850,12 +850,12 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
+                            {{-- <div class="card"> --}}
+                                {{-- <div class="card-header">
                                     <h3 class="card-title">DataTable with minimal features & hover style</h3>
-                                </div>
+                                </div> --}}
                                 <!-- /.card-header -->
-                                <div class="card-body">
+                                {{-- <div class="card-body">
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
@@ -1285,9 +1285,9 @@
                                             </tr>
                                         </tfoot>
                                     </table>
-                                </div>
+                                </div> --}}
                                 <!-- /.card-body -->
-                            </div>
+                            {{-- </div> --}}
                             <!-- /.card -->
 
                             <div class="card">
@@ -1335,11 +1335,7 @@
                                                     <td>{{ $appointment->payment_from }}</td>
                                                     <td>{{ $appointment->payment_method_types }}</td>
                                                     <td>
-                                                        @if ($appointment->is_active == 1)
-                                                            <a href="{{route('appointment.status_change', $appointment->id)}}" class="btn btn-primary">Appointed</a>
-                                                        @else
-                                                            <a href="{{route('appointment.status_change', $appointment->id)}}" class="btn btn-danger">Not Appointed</a>
-                                                        @endif
+                                                            <a href="{{route('appointment.status_change', $appointment->id)}}" class="{{$appointment->is_active==1?'btn btn-primary':'btn btn-danger'}}">{{$appointment->is_active==1?"Appointed":"Not Appointed"}}</a>
                                                     </td>
                                                     <td>
                                                         <div class="btn-group">
@@ -1350,7 +1346,7 @@
                                                                 href="{{ URL::to('delete_areas_information/' . $appointment->id) }}"
                                                                 onclick="return confirm('Are you sure to delete?')">Delete</a> --}}
                                                             {{-- @endcan --}}
-                                                            N/A
+                                                            <a href="{{route('prescriptions.index', ['id' => $appointment->patient_id])}}" class="btn btn-success">Prescribe</a>
                                                         </div>
                                                     </td>
                                                 </tr>

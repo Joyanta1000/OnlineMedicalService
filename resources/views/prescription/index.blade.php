@@ -61,7 +61,7 @@
 
     <style>
         .header {
-            background-color: #070707;
+            background-color: #2c2f33;
             color: white;
             /* text-align: center; */
             max-width: 100%;
@@ -72,9 +72,22 @@
         .h {
             float: right;
             color: rgb(248, 244, 244);
-            margin-left: 30px;
+            margin-left: 0px;
+            margin-top: 10px;
+            font-size: 10px;
         }
 
+        h1{
+            font-size: 20px;
+        }
+
+        h2{
+            font-size: 20px;
+        }
+
+        h3{
+            font-size: 20px;
+        }
         .img {
             margin: 30px;
         }
@@ -89,6 +102,8 @@
         .another_div {
             display: flex;
             max-height: 400px;
+            margin-top: 10px;
+            max-width: 500px;
         }
 
         .grid-container {
@@ -154,6 +169,10 @@
             color: white;
         }
 
+        div.container {
+  padding: 10px;
+}
+
     </style>
 
 
@@ -193,43 +212,47 @@
 
             <section class="content">
                 <div class="container-fluid">
-
+<div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+    <div class="container">
                     <div class="header">
                         <div>
-                            <img class="img" style="max-height: 200px; max-width: 200px;"
+                            <img class="img" style="max-height: 120px; max-width: 120px;"
                                 src="{{ asset('./logo/logo_4.png') }}" alt="">
                             <div class="h">
-                                <h1>Dr. Mohammad Ashfaq</h1>
-                                <h3>M.B.B.S., M.D., (Chest)</h3>
-                                <h3>Chittagong Medical, REG. No: 9999</h3>
-                                <h3>Consultant Pulmonologist, Chittagong Medical, Any City</h3>
+                                <h1>{{$doctorsInfo->doctor->first()->first_name}} {{$doctorsInfo->doctor->first()->last_name}}</h1>
+                                @foreach ($doctorsInfo->doctors_specialities as $doctors_specialities)
+                                    <h3>{{$doctors_specialities->specialist_of}}</h3>
+                                @endforeach
+                                
+                                <h3>{{$doctorsAddresses->address}}, Zip: {{$doctorsAddresses->zip_code}}</h3>
+                                <h3>{{$doctorsAddresses->area->area}}, {{$doctorsAddresses->thana->thana}}, {{$doctorsAddresses->city->city}}, {{$doctorsAddresses->country->country}}</h3>
                             </div>
                         </div>
                     </div>
                     <div class="another_div">
                         <div>
-                            <h2>Mr. Philip</h2>
-                            <h3>Patient No: 12312122</h3>
+                            <h2>{{ $patientsInfo->patient->first()->first_name }} {{ $patientsInfo->patient->first()->last_name }}</h2>
+                            <h3>Patient No: {{ $patientsInfo->id }}</h3>
                         </div>
                         <div class="time">
-                            <h3>Date: 12/12/2019</h3>
-                            <h3>Prescription ID: 344343435666</h3>
+                            <h3>Date: {{date('D M Y')}}</h3>
+                            <h3>Prescription ID: {{ $prescription->id+1 }}</h3>
                         </div>
                     </div>
                     <hr>
 
                     <div class="grid-container">
-                        <div class="grid-item grid-width-1" style="background-color: gray;">
+                        <div class="grid-item grid-width-1" style="background-color: #2c2f33; color:whitesmoke;">
                             apkpas afd s
                         </div>
-                        <div style="max-width: 1200px;" class="grid-item grid-width-2">
+                        <div style="max-width: 825px;" class="grid-item grid-width-2">
                             ;l;laslk kasdk;kk
                         </div>
                         <br>
-                        <div class="grid-item grid-width-1" style="background-color: gray;">
+                        <div class="grid-item grid-width-1" style="background-color: #2c2f33; color:whitesmoke;">
                             oiuas oiaspi asp
                         </div>
-                        <div style="max-width: 1200px;" class="grid-item grid-width-2">
+                        <div style="max-width: 825px;" class="grid-item grid-width-2">
                             lkkldk; k;dason ddss
                         </div>
                     </div>
@@ -272,7 +295,8 @@
                         <button type="submit" name="submit" class="btn btn-primary form-control">Prescribe</button>
                         </form>
                     </div>
-
+</div>
+                </div>
                 </div>
             </section>
         </div>

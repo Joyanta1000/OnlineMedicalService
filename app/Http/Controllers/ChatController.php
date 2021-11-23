@@ -8,6 +8,7 @@ use App\Models\doctors_profile_pictures;
 use App\Models\patient;
 use App\Models\patients_profile_picture;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Str;
@@ -84,7 +85,7 @@ class ChatController extends Controller
                 })
 
 
-                ->select('chats.id', 'chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture')
+                ->select('chats.id', 'chats.created_at', 'chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture')
                 ->where('doctors.first_name', 'like', '%' . request()->get('name') . '%')
                 ->orWhere('patients.first_name', 'like', '%' . request()->get('name') . '%')
                 // ->where('chats.recievers_id', session()->get('id'))
@@ -115,7 +116,7 @@ class ChatController extends Controller
                 })
                 ->where('chats.recievers_id', session()->get('id'))
                 ->orWhere('chats.senders_id', session()->get('id'))
-                ->select('chats.id', 'chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture')
+                ->select('chats.id', 'chats.created_at', 'chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture')
 
                 // ->where('chats.senders_id', 'chats.senders_id')
                 //->groupBy('message_id')
@@ -152,11 +153,16 @@ class ChatController extends Controller
     public function chatData(Request $request)
     {
         $updateChat = "";
-        if ($request->senders_id != session()->get('id')) {
+        $ids = chats::find($request->id);
+        if ($ids->senders_id != session()->get('id')) {
             $updateChat = DB::table('chats')
-                ->where('id', $request->id)
+                ->where('id', $ids->id)
                 ->update(['is_seen' => 1]);
         }
+
+        
+
+
 
 
         $messageData = DB::table('chats')
@@ -175,8 +181,8 @@ class ChatController extends Controller
             ->join('doctors_profile_pictures', function ($join) {
                 $join->on('chats.recievers_id', '=', 'doctors_profile_pictures.doctors_id')->orOn('chats.senders_id', '=', 'doctors_profile_pictures.doctors_id');
             })
-            ->where('chats.senders_id', $request->senders_id)
-            ->orWhere('chats.recievers_id', $request->senders_id)
+            ->where('chats.senders_id', $ids->senders_id)
+            ->orWhere('chats.recievers_id', $ids->senders_id)
             ->where('chats.senders_id', session()->get('id'))
             ->orWhere('chats.recievers_id', session()->get('id'))
             ->select('chats.*', 'users.email', 'patients_profile_pictures.patients_profile_picture', 'doctors_profile_pictures.profile_picture', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name')
@@ -185,18 +191,18 @@ class ChatController extends Controller
             ->get();
         //     $sendersId = $request->senders_id;
         //     $recieversId = session()->get('id');
-
+// dd($messageData);
 
         $SendersProfilePicture = (new Search())
             ->registerModel(doctors_profile_pictures::class, 'doctors_id')
             ->registerModel(patients_profile_picture::class, 'patients_id')
-            ->perform($request->senders_id)
+            ->perform($ids->senders_id)
             ->first();
 
         $RecieversProfilePicture = (new Search())
             ->registerModel(doctors_profile_pictures::class, 'doctors_id')
             ->registerModel(patients_profile_picture::class, 'patients_id')
-            ->perform($request->recievers_id)
+            ->perform($ids->recievers_id)
             ->first();
 
         //  $DESC = $SendersProfilePicture->sortByDesc('id');
@@ -219,7 +225,8 @@ class ChatController extends Controller
     {
         $code = Str::random(30);
         $extra_1 = Str::random(32);
-
+        $mytime = Carbon::now();
+$dateTime = $mytime->toDateTimeString();
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $file_name = time() . '.' . $code . '.' . $extra_1 . '.' . $file->getClientOriginalExtension();
@@ -232,6 +239,7 @@ class ChatController extends Controller
                 'recievers_id' => $request->recievers_id,
                 'senders_id' => $request->senders_id,
                 'message_id' => $request->message_id,
+                'time' => $dateTime,
             ]);
 
             return json_encode(array('data' => $insertChat));
@@ -241,6 +249,7 @@ class ChatController extends Controller
                 'recievers_id' => $request->recievers_id,
                 'senders_id' => session()->get('id'),
                 'message_id' => $request->message_id,
+                'time' => $dateTime,
             ]);
 
             return json_encode(array('data' => $insertChat));

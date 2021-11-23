@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Contracts\Session\Session as SessionSession;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
@@ -608,14 +609,16 @@ class UserController extends Controller
                             break;
                         default:
                             $this->redirectTo = '/User_Login';
-                            return $this->redirectTo->with('failed', 'Invalid login info');
+                            
+                            return $this->redirectTo->with('failed' , 'Invalid login info');
                             break;
                     }
                 } else {
-                    return redirect()->back()->with('failed', "Invalid login info");
+                    // dd('error');
+                    return back()->with('failed', "Invalid login info");
                 }
             } catch (Exception $e) {
-                return redirect()->back()->with('failed', "operation failed");
+                return back()->with(['failed' => "operation failed"]);
             }
         }
     }

@@ -837,6 +837,15 @@
             outline: none;
         }
 
+        small{
+            
+            color: rgb(54, 26, 26);
+            border-radius: 5px;
+            font-size: 10px;
+            right: 10px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
     </style>
 </head>
 
@@ -1088,7 +1097,7 @@ Website: http://emilcarlsson.se/
 
         $(window).on('keydown', function(e) {
             if (e.which == 13) {
-                newMessage();
+                submitMessage(recievers_id, senders_id, message_id);
                 return false;
             }
         });
@@ -1134,7 +1143,7 @@ function searchContact(){
                         var fetchSingleChat = url + '/' + row.id;
                         if(row.senders_id == session_id || row.recievers_id == session_id){
                             if(row.is_seen == 0){
-                        bodyData +="<div style=' color: white; font-weight: bold; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+","+row.recievers_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
+                        bodyData +="<div style=' color: white; font-weight: bold; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
                         
                         if(role==2){
                             bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p>";
@@ -1156,7 +1165,7 @@ function searchContact(){
                         bodyData += "</div></li></a></div>";
                       }
                       else{
-                        bodyData +="<div style=' color: gray; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+","+row.recievers_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
+                        bodyData +="<div style=' color: gray; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
                         if(role==2){
                             bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p>";
                         }
@@ -1196,14 +1205,14 @@ let url = new URL(url_str);
 let search_params = url.searchParams; 
 
 let id = search_params.get('id');
-let senders_id = search_params.get('senders_id');
-let recievers_id = search_params.get('recievers_id');
+// let senders_id = search_params.get('senders_id');
+// let recievers_id = search_params.get('recievers_id');
 // alert(id);
 // alert(senders_id);
-if(id != null&&senders_id != null&&recievers_id != null){
+if(id != null){
     // setInterval(alert(role) ,3000);
 // function intervalSet(){
-myFunction(id, senders_id, recievers_id);
+myFunction(id);
 // }
      
 //     setInterval(intervalSet,1000);
@@ -1218,11 +1227,14 @@ function m(){
 window.value=100;
 } 
 
-      function myFunction(id, senders_id, recievers_id) {
-          let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + id +'&'+ 'senders_id=' + senders_id +'&'+ 'recievers_id=' + recievers_id;
+      function myFunction(id) {
+          console.log(id);
+          let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + id;
           window.history.pushState({
             path: newUrl
           }, '', newUrl);
+
+          $("#messageData").html('');
 
         $.ajax({
                 url: "{{ route('message.chatData') }}",
@@ -1230,15 +1242,15 @@ window.value=100;
                 data: {
                     _token: '{{ csrf_token() }}',
                     id: id,
-                    senders_id: senders_id,
-                    recievers_id: recievers_id
+                    // senders_id: senders_id,
+                    // recievers_id: recievers_id
                 },
                 cache: false,
                 dataType: 'json',
                 success: function(dataResult) {
-                    $("#bodyData").html('');
                     
-                    $("#messageData").html('');
+                    
+                    
                     
                      console.log(dataResult, 'messages');
                     console.log(dataResult.data[0].recievers_id);
@@ -1249,6 +1261,15 @@ window.value=100;
                     var senders_id = dataResult.data[0].senders_id;
                     var message_id = dataResult.data[0].message_id;
                     var resultData = dataResult.data;
+
+
+function uniqByKeepLast(resultData, key){
+    return [...new Set(resultData.map(item => item.id)).values()].map(id => {
+        return resultData.find(item => item.id === id);
+    });
+}
+resultData = uniqByKeepLast(resultData, it=>it.id);
+                    // let resultData = [...new Set(resultD)];
                     var messageData = '';
                     var i = 1;
                     var session_id = '{{ Session::get('id');}}';
@@ -1264,10 +1285,36 @@ window.value=100;
                     // });
 
                     messageData+= "<div class='messages'><ul>";
+
+                        
                     
                     $.each(resultData, function(index, row) {
                        
                         
+
+
+
+console.log(new Date());
+
+var date1 = new Date();
+var date2 = new Date(row.created_at);
+//  console.log(date1.getTime());
+//  console.log(date2.getTime());
+// var timeDiff = Math.abs(date1.getTime() - date2.getTime());
+// var diffHours = Math.ceil(timeDiff / (1000 * 3600)); 
+// console.log(diffHours);
+
+const diffTime = Math.abs(date1 - date2);
+console.log(diffTime);
+// const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+var hours = Math.floor((diffTime / (1000 * 60 * 60)) % 24);
+var minutes = Math.floor(diffTime / 60000);
+  var seconds = ((diffTime % 60000) / 1000).toFixed(0);
+  console.log(  (minutes < 60 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago") );
+// console.log(diffTime + " milliseconds");
+// console.log(diffDays + " days");
+
+
                         if(row.senders_id != session_id){
                             // if(role==2){
                                 if(dataResult.SendersProfilePicture.title == row.senders_id){
@@ -1292,15 +1339,15 @@ messageData +="<li class='replies'><img style='height: 32px;' src='"+dataResult.
                             //     messageData +="<li class='replies'><img style='height: 32px;' src='"+row.patients_profile_picture+"' alt='' />";
                             // }
                     if(row.message != null){
-                        messageData +="<p>"+row.message+"</p>";
+                        messageData +="<p>"+row.message+"<br><small>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
                     }
                             if(row.file != null){
-                        messageData += "<br><p style='margin-right: 20px;'><img style='height: 100px; width: 100px; border-radius: 2px;' src='"+row.file+"' alt='' /></p>";
+                        messageData += "<br><p style='margin-right: 20px;'><img style='height: 100px; width: 100px; border-radius: 2px;' src='"+row.file+"' alt='' /><br><small>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
                     }
                     messageData += "</li>";
                       
 
-window.value=row.senders_id;
+// window.value=row.senders_id;
    
                     }
                         else{
@@ -1330,11 +1377,11 @@ messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.Rec
                                 }
                     
                     if(row.message != null){
-                        messageData +="<p>"+row.message+"</p>";
+                        messageData +="<p>"+row.message+"<br><small>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
                     }
 
                     if(row.file != null){
-                        messageData += "<br><p style='margin-left: 20px;'><img style='height: 100px; width: 100px; border-radius: 2px;' src='"+row.file+"' alt='' /></p>";
+                        messageData += "<br><p style='margin-left: 20px;'><img style='height: 100px; width: 100px; border-radius: 2px;' src='"+row.file+"' alt='' /><br><small>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
                     }
                     messageData += "</li>";    
                     }
@@ -1344,6 +1391,7 @@ messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.Rec
 
                     messageData+= "</ul></div>";
                     messageData += "<div class='message-input'><div class='wrap'><input type='text' name='message' id='message' placeholder='Write your message...' /><label for='fileInput'><i class='fa fa-paperclip attachment' aria-hidden='true'></i></label><input type='file' name='file' class='fileInput hide' id='fileInput'><button class='submit' onclick='submitMessage("+recievers_id+","+senders_id+","+message_id+")'><i class='fa fa-paper-plane' aria-hidden='true'></i></button></div></div>";
+                    
                     $("#messageData").append(messageData);
                     $("#bodyData").html('');
                     contactList();
@@ -1380,9 +1428,27 @@ messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.Rec
                     var bodyData = '';
                     var i = 1;
                     $.each(resultData, function(index, row) {
+
+                        var date1 = new Date();
+var date2 = new Date(row.created_at);
+//  console.log(date1.getTime());
+//  console.log(date2.getTime());
+// var timeDiff = Math.abs(date1.getTime() - date2.getTime());
+// var diffHours = Math.ceil(timeDiff / (1000 * 3600)); 
+// console.log(diffHours);
+
+const diffTime = Math.abs(date1 - date2);
+console.log(diffTime);
+// const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+var hours = Math.floor((diffTime / (1000 * 60 * 60)) % 24);
+var minutes = Math.floor(diffTime / 60000);
+  var seconds = ((diffTime % 60000) / 1000).toFixed(0);
+  console.log(  (minutes < 60 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago") );
+
+
                         var fetchSingleChat = url + '/' + row.id;
                       if(row.is_seen == 0){
-                        bodyData +="<div style=' color: white; font-weight: bold; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+","+row.recievers_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
+                        bodyData +="<div style=' color: white; font-weight: bold; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
                         
                         if(role==2){
                             bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p>";
@@ -1395,16 +1461,16 @@ messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.Rec
                             if(row.senders_id == session_id){
                                 bodyData += "<caption>you: &nbsp;</caption>";
                             }
-                            bodyData += row.message + "</p>";
+                            bodyData += row.message + "&nbsp;<small style='color:white; right: 20px; margin-left:20px;'>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
                         }
                         else{
-                            bodyData += "<p class='preview'>Sent a file</p>";
+                            bodyData += "<p class='preview'>Sent a file&nbsp;<small style='color:white; right: 20px; margin-left:20px;'>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
                         }
                         bodyData += "</div>";
                         bodyData += "</div></li></a></div>";
                       }
                       else{
-                        bodyData +="<div style=' color: gray; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+","+row.senders_id+","+row.recievers_id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
+                        bodyData +="<div style=' color: gray; tex-decoration:none;' data-visualcompletion='ignore-dynamic'><a onclick='myFunction("+row.id+")'><li class='contact'><div class='wrap'><span class='contact-status online'></span>";
                         if(role==2){
                             bodyData +="<img style='height: 45px;' src='"+row.patients_profile_picture+"' alt='' /><div class='meta'><p class='name'>" +row.patients_first_name + "</p>";
                         }
@@ -1417,10 +1483,10 @@ messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.Rec
                             if(row.senders_id == session_id){
                                 bodyData += "<caption>you: &nbsp;</caption>";
                             }
-                            bodyData += row.message + "</p>";
+                            bodyData += row.message + "&nbsp;<small style='color:white; right: 20px; margin-left:20px;'>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
                         }
                         else{
-                            bodyData += "<p class='preview'>Sent a file</p>";
+                            bodyData += "<p class='preview'>Sent a file &nbsp;<small style='color:white; right: 20px; margin-left:20px;'>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
                         }
                         bodyData += "</div>";
                         
@@ -1482,8 +1548,10 @@ $.ajaxSetup({
                     console.log(dataResult);
                     $("#bodyData").html('');
                     // contactList();
+
+                    $("#messageData").html('');
                     
-                    myFunction(dataResult.data.id, dataResult.data.senders_id, dataResult.data.recievers_id);
+                    myFunction(dataResult.data.id);
                 }
             });
   }

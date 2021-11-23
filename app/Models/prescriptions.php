@@ -9,6 +9,7 @@ class prescriptions extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'id',
         'patients_id',
         'doctors_id',
     ];

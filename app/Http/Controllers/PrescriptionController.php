@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\address;
 use App\Models\Duration;
 use App\Models\FoodTime;
 use App\Models\Frequency;
@@ -9,6 +10,8 @@ use App\Models\medicines;
 use App\Models\medicines_for_patients;
 use App\Models\prescriptions;
 use App\Models\Quantity;
+use App\Models\User;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 
 class PrescriptionController extends Controller
@@ -21,8 +24,22 @@ class PrescriptionController extends Controller
     public function index()
     {
         $medicines = medicines::all();
-        // dd($medicines);
-        return view('prescription.index', compact('medicines'));
+
+        $doctorsInfo = User::with('doctor', 'doctors_specialities')->when(session()->get('id'), function ($q) {
+            return $q->where('id', session()->get('id'))->orderBy('created_at', 'DESC');
+        })->first();
+        // dd($doctorsInfo);
+        $doctorsAddresses = address::with('city', 'country', 'thana', 'area')->when(session()->get('id'), function ($q) {
+            return $q->where('doctors_id', session()->get('id'))->orderBy('created_at', 'DESC')->latest();
+        })->first();
+
+        $patientsInfo = User::with('patient')->when(request()->id, function ($q) {
+            return $q->where('id', request()->id)->orderBy('created_at', 'DESC');
+        })->first();
+
+        $prescription = prescriptions::orderBy('created_at', 'DESC')->first();
+        //dd($prescription);
+        return view('prescription.index', compact('medicines', 'doctorsInfo', 'doctorsAddresses', 'patientsInfo', 'prescription'));
     }
 
     /**
@@ -44,20 +61,22 @@ class PrescriptionController extends Controller
     public function store(Request $request)
     {
 
+        $id = IdGenerator::generate(['table' => 'prescriptions', 'length' => 10, 'prefix' => date('ym')]);
 
         $createPrescription = prescriptions::create([
+            'id' => $id,
             'doctors_id' => 2111000001,
             'patients_id' => 2111000002,
         ]);
 
         foreach ($request->medicines_id as $key => $value) {
-            
+
             $medicines_for_patients = medicines_for_patients::create([
                 'prescriptions_id' => $createPrescription->id,
                 'medicines_id' => $value,
             ]);
         }
-        
+
         $frequency = Frequency::create([
             'prescriptions_id' => $createPrescription->id,
             'mn' => json_encode($request->mn),

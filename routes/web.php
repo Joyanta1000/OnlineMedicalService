@@ -34,7 +34,7 @@ use App\Http\Controllers\PrescriptionController;
 */
 
 Route::get('/', function () {
-    return view('layouts.app');
+    return view('welcome');
 });
 
 Route::middleware(['isAdmin'])->group(function () {
