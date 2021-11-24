@@ -43,6 +43,7 @@
 
                 <span id="matchOrMissmatch"></span>
                 <form action="{{ route('loginUser') }}" method="post">
+                    @method('POST')
                     
                         @csrf
                         <span style="color: red;" id="emmailInvalid"></span>
