@@ -77,7 +77,6 @@
 
         <main class="py-4">
             @yield('content')
-            <make-schedule></make-schedule>
         </main>
     </div>
 </body>

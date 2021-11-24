@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
-use Session;
+// use Session;
+use Illuminate\Support\Facades\Session;
 use DB;
 use App\Models\User;
 use App\Models\city;
@@ -35,7 +37,11 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Contracts\Session\Session as SessionSession;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+
+// return redirect()->back()->withErrors($validator)->withInput();
 
 class UserController extends Controller
 {
@@ -46,6 +52,10 @@ class UserController extends Controller
      */
     public function index()
     {
+
+        // $failed = "Invalid Email or Password";
+         
+        return view('authentication.User_Login');
         // $areas = DB::table('areas')
         //     ->join('countries', 'areas.countries_id', '=', 'countries.id')
         //     ->join('cities', 'areas.cities_id', '=', 'cities.id')
@@ -54,6 +64,19 @@ class UserController extends Controller
         //     ->get();
 
         // return view('authentication.doctors_registration',compact('areas'));
+    }
+
+    public function loginVerification(Request $request)
+    {
+        $email = $request->email;
+
+        $user = User::where(['email' => $email,'is_active' => 1])->first();
+        if ($user) {
+                return json_encode(array('dataSuccess' => '<b style="color:green;">Email Verified</b>'));
+            
+        } else {
+            return json_encode(array('dataFailure' => '<b style="color:red;">Email Not Verified or Email Not Exists</b>'));
+        }
     }
 
     public function countries_for_area()
@@ -555,20 +578,25 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function redirectTo(Request $request)
+    public function redirectTo(LoginRequest $request)
     {
 
-        $rules = [
+        // $rules = [
+        //     'email' => 'required|email',
+        //     'password' => 'required'
+        // ];
+        // $validator = Validator::make($request->all(), $rules);
+        // if ($validator->fails()) {
+        //     return redirect()
+        //         ->back()
+        //         ->withInput()
+        //         ->withErrors($validator);
+        // } else {
+
+        $request->validate([
             'email' => 'required|email',
             'password' => 'required'
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors($validator);
-        } else {
+        ]);
             $data = $request->input();
             try {
 
@@ -609,18 +637,28 @@ class UserController extends Controller
                             break;
                         default:
                             $this->redirectTo = '/User_Login';
+
+                            $failed = "Invalid Email or Password";
                             
-                            return $this->redirectTo->with('failed' , 'Invalid login info');
+                            return $this->redirectTo->with(['failed' => $failed]);
                             break;
                     }
                 } else {
+                    
+                    //  $request->session()->flush();
                     // dd('error');
-                    return back()->with('failed', "Invalid login info");
+                    $failed = "Invalid Email";
+                    //Session::flash('failed', 'Invalid Email or Password !');
+                    // Session::save();
+                    // Session::flash('alert-class', 'alert-danger');
+                     $request->session()->put('failed',$failed);
+                    return redirect()->route('User_Login');
                 }
             } catch (Exception $e) {
+               
                 return back()->with(['failed' => "operation failed"]);
             }
-        }
+        // }
     }
 
     public function IndexForAdmin()

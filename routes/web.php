@@ -1,9 +1,5 @@
 <?php
 
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\CountryController;
@@ -21,6 +17,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PrescriptionController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +29,8 @@ use App\Http\Controllers\PrescriptionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::group(['middleware' => ['web']], function () {
 
 Route::get('/', function () {
     return view('welcome');
@@ -210,11 +209,13 @@ Route::get('/verification/{token}', [UserController::class, 'verified']);
 
 Route::get('/authentication/verification_message', [UserController::class, 'verified']);
 
-Route::get('/User_Login', function () {
-    return view('authentication.User_Login');
-});
 
-Route::post('/login', [UserController::class, 'redirectTo']);
+    Route::get('/User_Login', [UserController::class, 'index'])->name('User_Login');
+    Route::post('/loginUser', [UserController::class, 'redirectTo'])->name('loginUser');
+
+
+Route::post('/loginVerification', [UserController::class, 'loginVerification'])->name('loginVerification');
+
 
 Route::get('/loggedinSession', [UserController::class, 'loggedinSession']);
 
@@ -298,3 +299,8 @@ Route::post('/message/submitMsg', [ChatController::class, 'submitMsg'])->name('m
 // Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});

@@ -26,7 +26,7 @@
             <div class="card-header text-center">
                 <a href="../../index2.html" class="h1"><b>Admin</b>LTE</a>
             </div>
-
+           
             @include('authentication.flush-message')
 
             @if (count($errors) > 0)
@@ -41,21 +41,35 @@
             <div class="card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
 
-                <form action="/login" method="post">
-                    <div id="app">
-                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                <span id="matchOrMissmatch"></span>
+                <form action="{{ route('loginUser') }}" method="post">
+                    
+                        @csrf
+                        <span style="color: red;" id="emmailInvalid"></span>
+                        <span style="color: green;" id="emmailValid"></span>
+                        <br>
                         <div class="input-group mb-3">
-                            <input type="email" class="form-control" v-model="email" name="email" placeholder="Email"
-                                value="{{ old('email') }}">
+
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                                value="{{ old('email') }}" onkeyup="loginVerify()">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>
                                 </div>
+                                <br>
+
                             </div>
+
+
                         </div>
+                        <span style="color: red;" id="passwordRequired"></span>
+                        <br>
+
+
+
                         <div class="input-group mb-3">
-                            <input type="password" class="form-control" v-model="password" name="password"
-                                placeholder="Password">
+                            <input type="password" class="form-control" id="password" name="password"
+                                placeholder="Password" onkeyup="loginVerify()">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-lock"></span>
@@ -73,12 +87,12 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-4">
-                                <button type="submit" @click="signin();" class="btn btn-primary btn-block">Sign
+                                <button type="submit" class="btn btn-primary btn-block button">Sign
                                     In</button>
                             </div>
                             <!-- /.col -->
                         </div>
-                    </div>
+                    
                 </form>
 
                 <div class="social-auth-links text-center mt-2 mb-3">
@@ -104,7 +118,7 @@
 
     <!-- jQuery -->
 
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         var app = new Vue({
             el: '#app',
             data: {
@@ -253,7 +267,72 @@
                 }
             }
         })
-    </script>
+    </script> --}}
+
+    {{-- <script>
+        let button = document.querySelector(".button");
+
+        button.disabled = true;
+
+        function loginVerify() {
+            console.log($("#email").val());
+            console.log($("#password").val());
+            var validRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            if ($("#email").val() != null) {
+                if ($("#email").val().match(validRegex)) {
+                    $("#emmailValid").html('');
+                    $("#emmailInvalid").html('');
+                    $("#emmailValid").append('Valid Email Format');
+
+                    if ($("#password").val() != '') {
+                        $("#passwordRequired").html('');
+                        button.disabled = false;
+
+                        $.ajax({
+                            url: "{{ route('loginVerification') }}",
+                            type: "POST",
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                email: $("#email").val(),
+                                password: $("#password").val(),
+                            },
+                            cache: false,
+                            dataType: 'json',
+                            success: function(dataResult) {
+                                $("#matchOrMissmatch").html('');
+                                console.log(dataResult);
+                                if (dataResult.dataSuccess) {
+                                    $("#matchOrMissmatch").html(dataResult.dataSuccess)
+                                    button.disabled = false;
+                                } else {
+                                    button.disabled = true;
+
+                                    $("#matchOrMissmatch").html(dataResult.dataFailure);
+                                }
+
+                            }
+                        });
+
+                    } else {
+                        $("#passwordRequired").html('');
+                        $("#passwordRequired").append('Password is required');
+                        button.disabled = true;
+                    }
+                    // alert('invalid');
+                } else {
+                    $("#emmailValid").html('');
+                    $("#emmailInvalid").html('');
+                    $("#emmailInvalid").html('Invalid Email Format');
+                    button.disabled = true;
+                }
+            } else {
+                $("#emmailValid").html('');
+                $("#emmailInvalid").html('');
+                $("#emmailInvalid").html('Email is required');
+            }
+
+        }
+    </script> --}}
 
     <script src="{{ asset('../../plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
