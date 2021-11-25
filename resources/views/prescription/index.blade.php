@@ -58,6 +58,7 @@
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/selectize-bootstrap4-theme@2.0.2/dist/css/selectize.bootstrap4.css"> --}}
 
 
+    
 
     <style>
         .header {
@@ -242,26 +243,52 @@
                     <hr>
 
                     <div class="grid-container">
-                        <div class="grid-item grid-width-1" style="background-color: #2c2f33; color:whitesmoke;">
-                            apkpas afd s
-                        </div>
-                        <div style="max-width: 825px;" class="grid-item grid-width-2">
-                            ;l;laslk kasdk;kk
-                        </div>
-                        <br>
-                        <div class="grid-item grid-width-1" style="background-color: #2c2f33; color:whitesmoke;">
-                            oiuas oiaspi asp
-                        </div>
-                        <div style="max-width: 825px;" class="grid-item grid-width-2">
-                            lkkldk; k;dason ddss
+                        <textarea name="" class="form-control" id="" cols="140" placeholder="Give the test details..." rows="10"></textarea>
+                    </div>
+                    <hr>
+
+                    
+                    <div>
+                        <div>
+                            <div class="field">
+                                <select id="select-problem" name="problem[]" placeholder="Select patients problem...">
+                                    <option value="">Select patients problem...</option>
+                                    @foreach ($problems as $problem)
+                                    <option value="{{$problem->id}}">{{$problem->problems_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <hr>
+                            <div class="problemShow">
+
+                            </div>
+
                         </div>
                     </div>
                     <hr>
+
                     <div>
                         <div>
-                            <!-- <button class="add_form_field">Add New Field &nbsp;
-                <span style="font-size:16px; font-weight:bold;">+ </span>
-            </button> -->
+                            <div class="field">
+                                <select id="" name="refer" placeholder="Select reference...">
+                                    <option value="">Refer to...</option>
+                                    @foreach ($doctors as $doctor)
+                                    <option value="{{$doctor->doctors_id}}">{{$doctor->first_name}} {{$doctor->last_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <hr>
+                            <div class="problemShow">
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <hr>
+
+
+                    <div>
+                        <div>
                             <div class="field">
                                 <select id="select-state" placeholder="Pick a medicine...">
                                     <option value="">Select a state...</option>
@@ -273,6 +300,7 @@
 
                         </div>
                     </div>
+                    
                     <hr>
                     <div>
                         <form action="{{route('prescriptions.store')}}" method="POST" enctype="multipart/form-data">
@@ -334,6 +362,34 @@
                 // function myFunc() {
 
                 // }
+                var wrapperProblem = $(".problemShow");
+                $('#select-problem').change(function() {
+                    
+                    var x = 1;
+                    var y = 0;
+                    var max_fields = 10;
+                    console.log($(this).val());
+                    console.log($('#select-problem').find("option:selected").text());
+                    if($(this).val()!=''){
+                    if (x < max_fields) {
+                        x++;
+                        $(wrapperProblem).append('<span><input type="hidden" name="problem[]" value="'+$(this).val()+'"/><input class="form-control" value="' + $(this).find("option:selected").text() +'" readonly/><a href="#"" class="deleteProblem btn btn-danger">Delete</a></span>'
+                        );
+                        y++;
+                    } else {
+                        alert('You Reached the limits')
+                    }
+                }
+                   });
+
+                   $(wrapperProblem).on("click", ".deleteProblem", function(e) {
+                    // alert('deleted');
+                    e.preventDefault();
+                    // $(this).parent('tr').remove();
+                    $(this).closest("span").remove();
+                    x--;
+                });
+
                 var wrapper = $(".rows");
                 var x = 1;
                 var y = 0;
@@ -345,7 +401,7 @@
                     if (x < max_fields) {
                         x++;
                         $(wrapper).append('<tr><td><input type="hidden" name="medicines_id[]" value="'+$(this).val()+'"/>' + $(this).find("option:selected").text() +
-                            '</td><td><input type="hidden" checked value="0" name="mn['+y+']" /><input type="checkbox" id="mn" name="mn['+y+']" value="1">MN<input type="hidden" checked value="0" name="af['+y+']" /><input type="checkbox" id="af" name="af['+y+']" value="1">AF<input type="hidden" checked value="0" name="en['+y+']" /><input type="checkbox" id="en" name="en['+y+']" value="1">EN<input type="hidden" checked value="0" name="nt['+y+']" /><input type="checkbox" id="nt" name="nt['+y+']" value="1">NT</td><td><input type="hidden" checked value="0" name="before_food['+y+']" /><input type="checkbox" id="flexRadioDefault1" name="before_food['+y+']" value="1"> Before Food<input type="hidden" checked value="0" name="after_food['+y+']" /><input type="checkbox" id="" name="after_food['+y+']" value="1"> After Food</td><td><input type="date" name="duration[]"></td><td><input type="number" name="qty[]"></td><td><a href="#"" class="delete">Delete</a></td></tr>'
+                            '</td><td><input type="hidden" checked value="0" name="mn['+y+']" /><input type="checkbox" id="mn" name="mn['+y+']" value="1">MN<input type="hidden" checked value="0" name="af['+y+']" /><input type="checkbox" id="af" name="af['+y+']" value="1">AF<input type="hidden" checked value="0" name="en['+y+']" /><input type="checkbox" id="en" name="en['+y+']" value="1">EN<input type="hidden" checked value="0" name="nt['+y+']" /><input type="checkbox" id="nt" name="nt['+y+']" value="1">NT</td><td><input type="hidden" checked value="0" name="before_food['+y+']" /><input type="checkbox" id="flexRadioDefault1" name="before_food['+y+']" value="1"> Before Food<input type="hidden" checked value="0" name="after_food['+y+']" /><input type="checkbox" id="" name="after_food['+y+']" value="1"> After Food</td><td><input type="date" name="duration[]"></td><td><input type="number" name="qty[]"></td><td><a href="#"" class="delete btn btn-danger">Delete</a></td></tr>'
                         );
                         y++;
                     } else {

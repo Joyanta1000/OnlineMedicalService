@@ -38,6 +38,7 @@ use Illuminate\Support\Str;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Contracts\Session\Session as SessionSession;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB as FacadesDB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 
@@ -578,25 +579,22 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function redirectTo(LoginRequest $request)
+    public function redirectTo(Request $request)
     {
 
-        // $rules = [
-        //     'email' => 'required|email',
-        //     'password' => 'required'
-        // ];
-        // $validator = Validator::make($request->all(), $rules);
-        // if ($validator->fails()) {
-        //     return redirect()
-        //         ->back()
-        //         ->withInput()
-        //         ->withErrors($validator);
-        // } else {
-
-        $request->validate([
+        $rules = [
             'email' => 'required|email',
             'password' => 'required'
-        ]);
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return back()->withErrors($validator->errors());
+        }
+
+        // $request->validate([
+        //     'email' => 'required|email',
+        //     'password' => 'required'
+        // ]);
             $data = $request->input();
             try {
 
@@ -647,18 +645,18 @@ class UserController extends Controller
                     
                     //  $request->session()->flush();
                     // dd('error');
-                    $failed = "Invalid Email";
+                    $failed = "Invalid Email or Password ";
                     //Session::flash('failed', 'Invalid Email or Password !');
                     // Session::save();
                     // Session::flash('alert-class', 'alert-danger');
-                     $request->session()->put('failed',$failed);
+                     $request->session()->flash('failed',$failed);
                     return redirect()->route('User_Login');
                 }
             } catch (Exception $e) {
                
                 return back()->with(['failed' => "operation failed"]);
             }
-        // }
+        
     }
 
     public function IndexForAdmin()

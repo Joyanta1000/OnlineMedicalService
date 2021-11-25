@@ -1,7 +1,4 @@
 
- @if ($errors->any())
-{{ $errors ? dd($errors) : null }}
-@endif
 
 @if (session()->has('status'))
 

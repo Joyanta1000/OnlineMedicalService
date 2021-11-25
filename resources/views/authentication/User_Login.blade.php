@@ -15,21 +15,21 @@
     <link rel="stylesheet" href="{{ asset('../../plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('../../dist/css/adminlte.min.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script> --}}
 </head>
 
 <body class="hold-transition login-page">
+   
     <div class="login-box">
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
                 <a href="../../index2.html" class="h1"><b>Admin</b>LTE</a>
             </div>
-           
-            @include('authentication.flush-message')
 
-            @if (count($errors) > 0)
+            @include('authentication.flush-message')
+             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
                         @foreach ($errors->all() as $error)
@@ -44,56 +44,56 @@
                 <span id="matchOrMissmatch"></span>
                 <form action="{{ route('loginUser') }}" method="post">
                     @method('POST')
-                    
-                        @csrf
-                        <span style="color: red;" id="emmailInvalid"></span>
-                        <span style="color: green;" id="emmailValid"></span>
-                        <br>
-                        <div class="input-group mb-3">
 
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                                value="{{ old('email') }}" onkeyup="loginVerify()">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-envelope"></span>
-                                </div>
-                                <br>
+                    @csrf
+                    <span style="color: red;" id="emmailInvalid"></span>
+                    <span style="color: green;" id="emmailValid"></span>
+                    <br>
+                    <div class="input-group mb-3">
 
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                            value="{{ old('email') }}" onkeyup="loginVerify()">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
                             </div>
-
+                            <br>
 
                         </div>
-                        <span style="color: red;" id="passwordRequired"></span>
-                        <br>
+
+
+                    </div>
+                    <span style="color: red;" id="passwordRequired"></span>
+                    <br>
 
 
 
-                        <div class="input-group mb-3">
-                            <input type="password" class="form-control" id="password" name="password"
-                                placeholder="Password" onkeyup="loginVerify()">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-lock"></span>
-                                </div>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" id="password" name="password"
+                            placeholder="Password" onkeyup="loginVerify()">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-8">
-                                <div class="icheck-primary">
-                                    <input type="checkbox" id="remember">
-                                    <label for="remember">
-                                        Remember Me
-                                    </label>
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" id="remember">
+                                <label for="remember">
+                                    Remember Me
+                                </label>
                             </div>
-                            <!-- /.col -->
-                            <div class="col-4">
-                                <button type="submit" class="btn btn-primary btn-block button">Sign
-                                    In</button>
-                            </div>
-                            <!-- /.col -->
                         </div>
-                    
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block button">Sign
+                                In</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+
                 </form>
 
                 <div class="social-auth-links text-center mt-2 mb-3">
@@ -305,6 +305,11 @@
                                 if (dataResult.dataSuccess) {
                                     $("#matchOrMissmatch").html(dataResult.dataSuccess)
                                     button.disabled = false;
+                                    if ($("#password").val() == '') {
+                                        $("#passwordRequired").html('');
+                                        $("#passwordRequired").append('Password is required');
+                                        button.disabled = true;
+                                    }
                                 } else {
                                     button.disabled = true;
 

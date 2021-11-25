@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\address;
+use App\Models\doctor;
 use App\Models\Duration;
 use App\Models\FoodTime;
 use App\Models\Frequency;
 use App\Models\medicines;
 use App\Models\medicines_for_patients;
 use App\Models\prescriptions;
+use App\Models\problems;
 use App\Models\Quantity;
 use App\Models\User;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
@@ -23,8 +25,12 @@ class PrescriptionController extends Controller
      */
     public function index()
     {
-        $medicines = medicines::all();
+        $medicines = medicines::where('is_active', 1)->get();
 
+        $problems = problems::where('is_active', 1)->get();
+
+        $doctors = doctor::all();
+        // dd($doctors);
         $doctorsInfo = User::with('doctor', 'doctors_specialities')->when(session()->get('id'), function ($q) {
             return $q->where('id', session()->get('id'))->orderBy('created_at', 'DESC');
         })->first();
@@ -39,7 +45,7 @@ class PrescriptionController extends Controller
 
         $prescription = prescriptions::orderBy('created_at', 'DESC')->first();
         //dd($prescription);
-        return view('prescription.index', compact('medicines', 'doctorsInfo', 'doctorsAddresses', 'patientsInfo', 'prescription'));
+        return view('prescription.index', compact('medicines', 'doctorsInfo', 'doctors', 'doctorsAddresses', 'patientsInfo', 'prescription', 'problems'));
     }
 
     /**
