@@ -30,4 +30,9 @@ class doctor extends Model implements Searchable
         );
     }
 
+    public function prescriptions()
+    {
+        return $this->hasMany(prescriptions::class, 'doctors_id');
+    }
+
 }

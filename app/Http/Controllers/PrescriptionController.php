@@ -114,9 +114,9 @@ class PrescriptionController extends Controller
      * @param  \App\Models\prescriptions  $prescriptions
      * @return \Illuminate\Http\Response
      */
-    public function show(prescriptions $prescriptions)
+    public function show()
     {
-        //
+        return view('prescription.prescriptions');
     }
 
     /**

@@ -28,6 +28,11 @@ class patient extends Model implements Searchable
         return $this->belongsTo(User::class, 'patients_id');
     }
 
+    public function prescriptions()
+    {
+        return $this->hasMany(prescriptions::class, 'patients_id');
+    }
+
     public function getSearchResult(): SearchResult
     {
         // $url = route('categories.show', $this->id);

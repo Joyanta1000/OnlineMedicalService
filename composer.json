@@ -17,6 +17,7 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.3",
+        "livewire/livewire": "^2.8",
         "munafio/chatify": "^1.2",
         "spatie/laravel-searchable": "^1.10",
         "stripe/stripe-php": "^7.100"
