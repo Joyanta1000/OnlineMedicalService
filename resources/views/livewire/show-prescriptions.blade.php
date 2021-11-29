@@ -180,7 +180,7 @@
                                 <th>Action</th>
                             </thead>
                             <tbody class="rows">
-                                
+
                                 @php $mn = json_decode(App\Models\Frequency::where('prescriptions_id', $details->id)->first()->mn)  @endphp
                                 @php $af = json_decode(App\Models\Frequency::where('prescriptions_id', $details->id)->first()->af)  @endphp
                                 @php $en = json_decode(App\Models\Frequency::where('prescriptions_id', $details->id)->first()->en)  @endphp
@@ -189,22 +189,34 @@
                                 @php $duration = json_decode(App\Models\Duration::where('prescriptions_id', $details->id)->first()->duration)  @endphp
                                 @php $before_food = json_decode(App\Models\FoodTime::where('prescriptions_id', $details->id)->first()->before_food)  @endphp
                                 @php $after_food = json_decode(App\Models\FoodTime::where('prescriptions_id', $details->id)->first()->after_food)  @endphp
-                                @php $i = 0; $j = 0; $k = 0; $l = 0; $m = 0; $o = 0; $p = 0; $q = 0 @endphp
-                                
+                                @php
+                                    $i = 0;
+                                    $j = 0;
+                                    $k = 0;
+                                    $l = 0;
+                                    $m = 0;
+                                    $o = 0;
+                                    $p = 0;
+                                    $q = 0;
+                                @endphp
+
                                 @foreach (App\Models\medicines_for_patients::where('prescriptions_id', $details->id)->get() as $medicines)
 
                                     <tr>
                                         <td>{{ App\Models\medicines::where('id', $medicines->medicines_id)->first()->medicines_name }}
                                         </td>
                                         <td>
-                                        {{ $mn[$i++] }} - 
-                                        {{ $af[$j++] }} - 
-                                        {{ $en[$k++] }} - 
-                                        {{ $nt[$l++] }}
+                                            {{ $mn[$i++] }} -
+                                            {{ $af[$j++] }} -
+                                            {{ $en[$k++] }} -
+                                            {{ $nt[$l++] }}
                                         </td>
-                                        <td> <input type="checkbox" name="" id="" {{$before_food[$p++] == 1 ? 'checked' : '' }}> Before Food <input type="checkbox" name="" id="" {{$after_food[$q++] == 1 ? 'checked' : '' }}> After Food</td>
-                                        <td>{{$duration[$o++]}}</td>
-                                        <td>{{$qty[$m++]}}</td>
+                                        <td> <input type="checkbox" name="" id=""
+                                                {{ $before_food[$p++] == 1 ? 'checked' : '' }}> Before Food <input
+                                                type="checkbox" name="" id=""
+                                                {{ $after_food[$q++] == 1 ? 'checked' : '' }}> After Food</td>
+                                        <td>{{ $duration[$o++] }}</td>
+                                        <td>{{ $qty[$m++] }}</td>
                                         <td></td>
                                     </tr>
                                 @endforeach
