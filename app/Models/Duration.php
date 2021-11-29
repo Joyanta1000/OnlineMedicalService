@@ -13,4 +13,10 @@ class Duration extends Model
         'prescriptions_id',
         'duration',
     ];
+
+    public function prescription()
+    {
+        return $this->belongsTo(prescriptions::class, 'prescriptions_id');
+    }
+    
 }

@@ -18,7 +18,122 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('../../dist/css/adminlte.min.css') }}">
     @livewireStyles
+<style>
+        .header {
+            background-color: #2c2f33;
+            color: white;
+            /* text-align: center; */
+            max-width: 100%;
+            max-height: 500px;
+            display: flex;
+        }
 
+        .h {
+            float: right;
+            color: rgb(248, 244, 244);
+            margin-left: 0px;
+            margin-top: 10px;
+            font-size: 10px;
+        }
+
+        h1 {
+            font-size: 20px;
+        }
+
+        h2 {
+            font-size: 20px;
+        }
+
+        h3 {
+            font-size: 20px;
+        }
+
+        .img {
+            margin: 30px;
+        }
+
+        .time {
+            float: right;
+            position: absolute;
+            right: 10px;
+            color: rgb(0, 0, 0);
+        }
+
+        .another_div {
+            display: flex;
+            max-height: 400px;
+            margin-top: 10px;
+            max-width: 500px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            padding: 10px;
+        }
+
+        .grid-item {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            font-size: 20px;
+            text-align: center;
+            max-width: 800px;
+            min-width: 20px;
+            font-size: 20px;
+        }
+
+        .grid-width-1 {
+            width: 200px;
+            min-width: 20px;
+        }
+
+        .grid-width-2 {
+            width: 1020px;
+            min-width: 20px;
+        }
+
+        @mediaonlyscreenand(max-width: 768px) {
+
+            /* For mobile phones: */
+            [class*="grid-width-"] {
+                width: 20%;
+            }
+        }
+
+        #prescription {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #prescription td,
+        #prescription th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #prescription tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #prescription tr:hover {
+            background-color: #ddd;
+        }
+
+        #prescription th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #0b0c0c;
+            color: white;
+        }
+
+        div.container {
+            padding: 10px;
+        }
+
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -1314,27 +1429,13 @@
                                 <div class="card-body">
                                      @livewire('show-prescriptions')
 
-                                    <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Delete Confirm</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                 <span aria-hidden="true close-btn">×</span>
-                            </button>
-                        </div>
-                       <div class="modal-body">
-                            <p>Are you sure want to delete?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
-                            <button type="button" wire:click.prevent="delete()" class="btn btn-danger close-modal" data-dismiss="modal">Yes, Delete</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                   
             
                                 </div>
+                                {{-- <div>
+                                  @livewire('show-single-prescription')
+                                  
+                                </div> --}}
                                 <!-- /.card-body -->
                             </div>
                             <!-- /.card -->

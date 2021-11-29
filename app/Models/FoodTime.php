@@ -14,4 +14,9 @@ class FoodTime extends Model
         'before_food',
         'after_food',
     ];
+
+    public function prescription()
+    {
+        return $this->belongsTo(prescriptions::class, 'prescriptions_id');
+    }
 }

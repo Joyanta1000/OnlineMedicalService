@@ -186,17 +186,17 @@
 
 <body class="hold-transition sidebar-mini">
 
-    <div class="wrapper">
+    {{-- <div class="wrapper"> --}}
 
-        @include('prescription.includes.navbar')
+        {{-- @include('prescription.includes.navbar')
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        @include('prescription.includes.sidebar')
+        @include('prescription.includes.sidebar') --}}
 
-        <div class="content-wrapper">
+        {{-- <div class="content-wrapper"> --}}
 
-            <section class="content-header">
+            {{-- <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
@@ -210,7 +210,7 @@
                         </div>
                     </div>
                 </div><!-- /.container-fluid -->
-            </section>
+            </section> --}}
 
             <section class="content">
 
@@ -237,7 +237,7 @@
                 @endif
 
                 <div class="container-fluid">
-                    <form action="{{ route('prescriptions.store') }}" method="POST" enctype="multipart/form-data">
+                    {{-- <form action="{{ route('prescriptions.store') }}" method="POST" enctype="multipart/form-data"> --}}
                         @csrf
                         <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                             <div class="container">
@@ -246,38 +246,37 @@
                                         <img class="img" style="max-height: 120px; max-width: 120px;"
                                             src="{{ asset('./logo/logo_4.png') }}" alt="">
                                         <div class="h">
-                                            <h1>{{ $doctorsInfo->doctor->first()->first_name }}
-                                                {{ $doctorsInfo->doctor->first()->last_name }}</h1>
-                                            @foreach ($doctorsInfo->doctors_specialities as $doctors_specialities)
-                                                <h3>{{ $doctors_specialities->specialist_of }}</h3>
-                                            @endforeach
+                                            <h1>Doctors Name @if (isset($details))
+                                               {{dd($details)}}
+                                            @endif</h1>
+                                            {{-- @foreach ($doctorsInfo->doctors_specialities as $doctors_specialities) --}}
+                                                <h3>Doctors Speciality</h3>
+                                            {{-- @endforeach --}}
 
-                                            <h3>{{ $doctorsAddresses->address }}, Zip:
-                                                {{ $doctorsAddresses->zip_code }}</h3>
-                                            <h3>{{ $doctorsAddresses->area->area }},
-                                                {{ $doctorsAddresses->thana->thana }},
-                                                {{ $doctorsAddresses->city->city }},
-                                                {{ $doctorsAddresses->country->country }}</h3>
+                                            <h3>Doctors Address, Zip:
+                                                Doctors Address Zip Code</h3>
+                                            <h3>Area,
+                                                Thana,
+                                                City,
+                                                Country</h3>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="another_div">
                                     <div>
-                                        <h2>{{ $patientsInfo->patient->first()->first_name }}
-                                            {{ $patientsInfo->patient->first()->last_name }}</h2>
-                                        <h3>Patient No: <input type="hidden" name="patients_id"
-                                                value="{{ $patientsInfo->id }}" /> {{ $patientsInfo->id }}</h3>
+                                        <h2>Patients Name</h2>
+                                        <h3>Patient No: </h3>
                                     </div>
                                     <div class="time">
-                                        <h3>Date: {{ date('D M Y') }}</h3>
-                                        <h3>Prescription ID: {{ $prescription->id + 1 }}</h3>
+                                        <h3>Date: </h3>
+                                        <h3>Prescription ID: </h3>
                                     </div>
                                 </div>
                                 <hr>
 
                                 <div class="grid-container">
                                     <textarea name="test" class="form-control" id="" cols="140"
-                                        placeholder="Give the test details..." rows="10"></textarea>
+                                        placeholder="Give the test details..." rows="10" readonly></textarea>
                                 </div>
                                 <hr>
 
@@ -285,13 +284,7 @@
                                 <div>
                                     <div>
                                         <div class="field">
-                                            <select id="select-problem" placeholder="Select patients problem...">
-                                                <option value="">Select patients problem...</option>
-                                                @foreach ($problems as $problem)
-                                                    <option value="{{ $problem->id }}">{{ $problem->problems_name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+                                            Patients problem...
                                         </div>
                                         <hr>
                                         <div class="problemShow">
@@ -305,13 +298,7 @@
                                 <div>
                                     <div>
                                         <div class="field">
-                                            <select id="" name="refer" placeholder="Select reference...">
-                                                <option value="">Refer to...</option>
-                                                @foreach ($doctors as $doctor)
-                                                    <option value="{{ $doctor->doctors_id }}">
-                                                        {{ $doctor->first_name }} {{ $doctor->last_name }}</option>
-                                                @endforeach
-                                            </select>
+                                            Refer to...
                                         </div>
                                         <hr>
                                         {{-- <div class="problemShow">
@@ -326,13 +313,7 @@
                                 <div>
                                     <div>
                                         <div class="field">
-                                            <select id="select-state" placeholder="Pick a medicine...">
-                                                <option value="">Select a state...</option>
-                                                @foreach ($medicines as $medicine)
-                                                    <option value="{{ $medicine->id }}">
-                                                        {{ $medicine->medicines_name }}</option>
-                                                @endforeach
-                                            </select>
+                                            Medicines
                                         </div>
 
                                     </div>
@@ -356,25 +337,25 @@
                                         </tbody>
 
                                     </table>
-                                    <button type="submit" name="submit"
-                                        class="btn btn-primary form-control">Prescribe</button>
+                                    {{-- <button type="submit" name="submit"
+                                        class="btn btn-primary form-control">Prescribe</button> --}}
 
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    {{-- </form> --}}
                 </div>
             </section>
-        </div>
+        {{-- </div> --}}
 
 
-        @include('prescription.includes.footer')
+        {{-- @include('prescription.includes.footer') --}}
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
             <!-- Control sidebar content goes here -->
         </aside>
         <!-- /.control-sidebar -->
-    </div>
+    {{-- </div> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microplugin/0.0.3/microplugin.min.js"
         integrity="sha512-7amIsiQ/hxbdPNawBZwmWBWPiwQRNEJlxTj6eVO+xmWd71fs79Iydr4rYARHwDf0rKHpysFxWbj64fjPRHbqfA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -389,7 +370,7 @@
 
 
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/selectize.min.js" integrity="sha512-JiDSvppkBtWM1f9nPRajthdgTCZV3wtyngKUqVHlAs0d5q72n5zpM3QMOLmuNws2vkYmmLn4r1KfnPzgC/73Mw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
-    <script>
+    {{-- <script>
         var jq14 = jQuery.noConflict(true);
         (function($) {
             $(document).ready(function() {
@@ -479,7 +460,7 @@
                 });
             });
         }(jq14));
-    </script>
+    </script> --}}
     {{-- <script src="{{ mix('/js/app.js') }}"></script> --}}
     <!-- jQuery -->
     <script src="{{ asset('../../plugins/jquery/jquery.min.js') }}"></script>

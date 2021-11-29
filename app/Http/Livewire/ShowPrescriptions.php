@@ -8,6 +8,9 @@ use Livewire\Component;
 
 class ShowPrescriptions extends Component
 {
+    public $confirming;
+    public $details;
+
     public function render()
     {
         return view('livewire.show-prescriptions', [
@@ -17,8 +20,25 @@ class ShowPrescriptions extends Component
         ]);
     }
 
-    public function deleteId($id)
+    public function confirmDelete($id)
     {
-        prescriptions::find($id)->delete();
+        $this->confirming = $id;
+    }
+
+    public function kill($id)
+    {
+        prescriptions::destroy($id);
+    }
+
+    public function view($id)
+    {
+        $details = prescriptions::with('medicines_for_patients', 'test', 'patients_problems', 'referred_to', 'frequency', 'foodTime', 'duration')->find($id);
+
+        // dd($details);
+        $this->details = $details;
+        return view('livewire.show-prescriptions', [
+            'details' => $details,
+        ]);
+
     }
 }

@@ -9,9 +9,13 @@ use App\Models\FoodTime;
 use App\Models\Frequency;
 use App\Models\medicines;
 use App\Models\medicines_for_patients;
+use App\Models\patients_having_problems;
+use App\Models\patients_problems;
 use App\Models\prescriptions;
 use App\Models\problems;
 use App\Models\Quantity;
+use App\Models\referred_to;
+use App\Models\Test;
 use App\Models\User;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
@@ -67,12 +71,13 @@ class PrescriptionController extends Controller
     public function store(Request $request)
     {
 
+        // dd($request->all());
         $id = IdGenerator::generate(['table' => 'prescriptions', 'length' => 10, 'prefix' => date('ym')]);
 
         $createPrescription = prescriptions::create([
             'id' => $id,
-            'doctors_id' => 2111000001,
-            'patients_id' => 2111000002,
+            'doctors_id' => session()->get('id'),
+            'patients_id' => $request->patients_id,
         ]);
 
         foreach ($request->medicines_id as $key => $value) {
@@ -82,6 +87,21 @@ class PrescriptionController extends Controller
                 'medicines_id' => $value,
             ]);
         }
+
+        $test = Test::create([
+            'prescriptions_id' => $createPrescription->id,
+            'test' => $request->test,
+        ]);
+
+        $having_problems = patients_problems::create([
+            'prescriptions_id' => $createPrescription->id,
+            'problem' => json_encode($request->problem),
+        ]);
+
+        $refer = referred_to::create([
+            'prescriptions_id' => $createPrescription->id,
+            'referred_to' => $request->refer,
+        ]);
 
         $frequency = Frequency::create([
             'prescriptions_id' => $createPrescription->id,
@@ -106,6 +126,16 @@ class PrescriptionController extends Controller
             'prescriptions_id' => $createPrescription->id,
             'qty' => json_encode($request->qty),
         ]);
+
+        if($createPrescription)
+        {
+            return redirect()->back()->with('status', "Prescribed successfully");
+        }
+        else
+        {
+            return redirect()->back()->with('failed', "Prescription not created");
+        }
+        
     }
 
     /**

@@ -15,5 +15,10 @@ class Frequency extends Model
         'en',
         'nt',
     ];
+
+    public function prescription()
+    {
+        return $this->belongsTo(prescriptions::class, 'prescriptions_id');
+    }
     
 }

@@ -14,4 +14,8 @@ class medicines_for_patients extends Model
         'medicines_id',
     ];
 
+    public function prescription()
+    {
+        return $this->belongsTo(prescriptions::class, 'prescriptions_id');
+    }
 }

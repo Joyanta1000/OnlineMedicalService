@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class referred_to extends Model
+class Test extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'prescriptions_id',
-        'referred_to',
+        'test',
     ];
 
     public function prescription()
