@@ -107,7 +107,7 @@
 
                   <div class="form-group">
                     <label for="country">Country</label>
-                    <select name="countries_id" class="form-control" id="country">
+                    <select name="countries_id" class="form-control" id="country" disabled>
                       <option value="{{ $cities_info[0]->countries_id}}">
                         {{ $cities_info[0]->country }}
                       </option>

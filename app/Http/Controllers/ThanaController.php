@@ -163,9 +163,10 @@ class ThanaController extends Controller
 
     public function update_thanas_info(Request $request, $id)
     {
+        // dd($request->all());
         $rules = [
-            'countries_id' => 'required',
-            'cities_id' => 'required',
+            // 'countries_id' => 'required',
+            // 'cities_id' => 'required',
             'thana' => 'required|string|min:1|max:255',
             // 'city_name' => 'required|string|min:3|max:255',
             // 'email' => 'required|string|email|max:255'
@@ -180,8 +181,8 @@ class ThanaController extends Controller
             $data = $request->input();
             try{
                 $thanas = thana::find($id);
-                $thanas->countries_id = $data['countries_id'];
-                $thanas->cities_id = $data['cities_id'];
+                // $thanas->countries_id = $data['countries_id'];
+                // $thanas->cities_id = $data['cities_id'];
                 $thanas->thana = $data['thana'];
                 $thanas->save();
                 return redirect()->back()->with('status',"Thana or police stations information updated successfully");

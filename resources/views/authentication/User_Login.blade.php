@@ -42,7 +42,7 @@
                 <p class="login-box-msg">Sign in to start your session</p>
 
                 <span id="matchOrMissmatch"></span>
-                <form action="{{ route('loginUser') }}" method="post">
+                <form action="{{ route('login.loginUser') }}" method="post">
                     @method('POST')
 
                     @csrf

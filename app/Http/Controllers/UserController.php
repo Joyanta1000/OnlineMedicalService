@@ -634,7 +634,7 @@ class UserController extends Controller
                             return $this->IndexForPharmacist();
                             break;
                         default:
-                            $this->redirectTo = '/User_Login';
+                            $this->redirectTo = '/login/User_Login';
 
                             $failed = "Invalid Email or Password";
                             
@@ -650,7 +650,7 @@ class UserController extends Controller
                     // Session::save();
                     // Session::flash('alert-class', 'alert-danger');
                      $request->session()->flash('failed',$failed);
-                    return redirect()->route('User_Login');
+                    return redirect()->route('login.User_Login');
                 }
             } catch (Exception $e) {
                
@@ -769,7 +769,7 @@ class UserController extends Controller
 
                 $user = DB::table('users')->where('email', $email)->update(['password' => md5($data['password']), 'token' =>  $code]);
 
-                return redirect('User_Login')->with('status', "Your password updated successfully");
+                return redirect('login.User_Login')->with('status', "Your password updated successfully");
             } catch (Exception $e) {
                 return redirect()->back()->with('failed', "operation failed");
             }

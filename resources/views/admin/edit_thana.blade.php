@@ -113,7 +113,7 @@
 
                   <div class="form-group">
                     <label for="country">Country</label>
-                    <select name="countries_id" class="form-control" v-model="countries_id" id="country" @change="fetchData()">
+                    <select name="countries_id" class="form-control" v-model="countries_id" id="country" @change="fetchData()" disabled>
                       <option value="{{ $thanas_info[0]->countries_id }}" v-bind:value="countries_id":selected="countries_id == '{{ $thanas_info[0]->countries_id }}'">
                         {{ $thanas_info[0]->country }}
                       </option>
@@ -129,7 +129,7 @@
 
                   <div class="form-group">
                     <label for="city">City</label>
-                    <select name="cities_id" class="form-control" v-model="cities_id" id="cities_id">
+                    <select name="cities_id" class="form-control" v-model="cities_id" id="cities_id" disabled>
                       <option value="{{ $thanas_info[0]->cities_id}}" v-bind:value="cities_id":selected="cities_id == '{{ $thanas_info[0]->cities_id }}'">
                         {{ $thanas_info[0]->city }}
                       </option>

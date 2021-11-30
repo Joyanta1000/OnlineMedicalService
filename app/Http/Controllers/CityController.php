@@ -113,8 +113,9 @@ class CityController extends Controller
      */
     public function update_cities_info(Request $request, $id)
     {
+        // dd($request->all());
         $rules = [
-            'countries_id' => 'required',
+            // 'countries_id' => 'required',
             'city' => 'required|string|min:1|max:255|unique:cities,city',
             // 'city_name' => 'required|string|min:3|max:255',
             // 'email' => 'required|string|email|max:255'
@@ -129,7 +130,7 @@ class CityController extends Controller
             $data = $request->input();
             try{
                 $cities = city::find($id);
-                $cities->countries_id = $data['countries_id'];
+                // $cities->countries_id = $data['countries_id'];
                 $cities->city = $data['city'];
                 $cities->save();
                 return redirect()->back()->with('status',"Cities information updated successfully");

@@ -47,7 +47,7 @@
 
 <body class="hold-transition sidebar-mini">
 
-  <form action="/register_patient" method="post" enctype="multipart/form-data">
+  <form action="{{route('registration.register_patient')}}" method="post" enctype="multipart/form-data">
 
     @csrf
 

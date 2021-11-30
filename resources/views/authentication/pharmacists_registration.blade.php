@@ -47,7 +47,7 @@
 
 <body class="hold-transition sidebar-mini">
 
-  <form action="/register_pharmacy" method="post" enctype="multipart/form-data">
+  <form action="{{route('registration.register_pharmacy')}}" method="post" enctype="multipart/form-data">
 
     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 

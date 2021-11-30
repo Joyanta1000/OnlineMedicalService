@@ -79,7 +79,7 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form action="/update_area/{{ $areas_info[0]->id }}" method="post">
+              <form action="{{route('update_area', $areas_info[0]->id)}} " method="post">
                 <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
                 <div class="card-body">
 
@@ -113,23 +113,24 @@
 
                   <div class="form-group">
                     <label for="country">Country</label>
-                    <select name="countries_id" class="form-control" v-model="countries_id" id="country" @change="fetchData()">
-                      <option value="{{ $areas_info[0]->countries_id }}" v-bind:value="countries_id":selected="countries_id == '{{ $areas_info[0]->countries_id }}'">
+                    <select name="countries_id" class="form-control" v-model="countries_id" id="countries_id" @change="fetchData()" disabled>
+                      
+                      <option value="{{ $areas_info[0]->countries_id }}" v-bind:value="countries_id":selected="countries_id == '{{ $areas_info[0]->countries_id }}'" >
                         {{ $areas_info[0]->country }}
                       </option>
-                      @if(isset($countries_info))
+                      {{-- @if(isset($countries_info)) --}}
                       @foreach ($countries_info as $country)
                       <option value="{{ $country->id}}">
                         {{ $country->country }}
                       </option>
                       @endforeach
-                      @endif
+                      {{-- @endif --}}
                     </select>
                   </div>
 
                   <div class="form-group">
                     <label for="city">City</label>
-                    <select name="cities_id" class="form-control" v-model="cities_id" id="cities_id" @change="fetchDataForCity()">
+                    <select name="cities_id" class="form-control" v-model="cities_id" id="cities_id" @change="fetchDataForCity()" disabled>
                       <option value="{{ $areas_info[0]->cities_id}}" v-bind:value="cities_id":selected="cities_id == '{{ $areas_info[0]->cities_id }}'">
                         {{ $areas_info[0]->city }}
                       </option>
@@ -141,7 +142,7 @@
 
                   <div class="form-group">
                     <label for="thana">Thana</label>
-                    <select name="thanas_id" class="form-control" v-model="thanas_id" id="thanas_id">
+                    <select name="thanas_id" class="form-control" v-model="thanas_id" id="thanas_id" disabled>
                       <option value="{{ $areas_info[0]->thanas_id}}" v-bind:value="thanas_id":selected="thanas_id == '{{ $areas_info[0]->thanas_id }}'">
                         {{ $areas_info[0]->thana }}
                       </option>

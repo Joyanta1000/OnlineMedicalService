@@ -190,10 +190,11 @@ class AreaController extends Controller
 
     public function update_areas_info(Request $request, $id)
     {
+        // dd($request->all());
         $rules = [
-            'countries_id' => 'required',
-            'cities_id' => 'required',
-            'thanas_id' => 'required',
+            // 'countries_id' => 'required',
+            // 'cities_id' => 'required',
+            // 'thanas_id' => 'required',
             'area' => 'required|string|min:1|max:255',
             // 'city_name' => 'required|string|min:3|max:255',
             // 'email' => 'required|string|email|max:255'
@@ -207,9 +208,9 @@ class AreaController extends Controller
             $data = $request->input();
             try {
                 $areas = area::find($id);
-                $areas->countries_id = $data['countries_id'];
-                $areas->cities_id = $data['cities_id'];
-                $areas->thanas_id = $data['thanas_id'];
+                // $areas->countries_id = $data['countries_id'];
+                // $areas->cities_id = $data['cities_id'];
+                // $areas->thanas_id = $data['thanas_id'];
                 $areas->area = $data['area'];
                 $areas->save();
                 return redirect()->back()->with('status', "Areas information updated successfully");

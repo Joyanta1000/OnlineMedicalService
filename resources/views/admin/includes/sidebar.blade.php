@@ -1,3 +1,9 @@
+<style>
+  .disabled {
+      display: none;
+}
+</style>
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="../../index3.html" class="brand-link">
@@ -34,7 +40,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item">
+          {{-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
@@ -62,8 +68,8 @@
                 </a>
               </li>
             </ul>
-          </li>
-          <li class="nav-item">
+          </li> --}}
+          {{-- <li class="nav-item">
             <a href="../widgets.html" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
@@ -71,8 +77,8 @@
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
-          </li>
-          <li class="nav-item">
+          </li> --}}
+          {{-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
@@ -131,8 +137,8 @@
                 </a>
               </li>
             </ul>
-          </li>
-          <li class="nav-item">
+          </li> --}}
+          {{-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
@@ -166,8 +172,8 @@
                 </a>
               </li>
             </ul>
-          </li>
-          <li class="nav-item">
+          </li> --}}
+          {{-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tree"></i>
               <p>
@@ -225,29 +231,31 @@
                 </a>
               </li>
             </ul>
-          </li>
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+          </li> --}}
+          <li class="nav-item {{ request()->is('add_gender') || request()->is('genders')  ? 'menu-open' : null }} ">
+            <a href="#" class="nav-link {{ request()->is('add_gender') || request()->is('genders') ? 'active' : null }}">
               <i class="nav-icon fas fa-edit"></i>
               <p>
-                Forms
+                Gender
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../forms/general.html" class="nav-link">
+                <a href="{{route('genders')}}" class="nav-link {{ request()->is('genders') ? 'active' : null }}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>General Elements</p>
+                  <p>Genders</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../forms/advanced.html" class="nav-link active">
+                <a href="{{route('add_gender')}}" class="nav-link {{ request()->is('add_gender') ? 'active' : null }}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Advanced Elements</p>
+                  <p>Add Gender</p>
                 </a>
               </li>
-              <li class="nav-item">
+
+              
+              {{-- <li class="nav-item">
                 <a href="../forms/editors.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Editors</p>
@@ -258,10 +266,98 @@
                   <i class="far fa-circle nav-icon"></i>
                   <p>Validation</p>
                 </a>
-              </li>
+              </li> --}}
             </ul>
           </li>
-          <li class="nav-item">
+
+          <li class="nav-item {{ request()->is('countries') || request()->is('add_country') || request()->is('cities') || request()->is('add_city') ? 'menu-open' : null }}">
+            <a href="#" class="nav-link {{ request()->is('countries') || request()->is('add_country') || request()->is('cities') || request()->is('add_city') ? 'active' : null }}">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Address
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul id="test" class="nav nav-treeview">
+              {{-- <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Level 2</p>
+                </a>
+              </li> --}}
+              <li class="nav-item {{ request()->is('countries') || request()->is('add_country') ? 'menu-open' : null }}">
+                <a href="#" class="nav-link {{ request()->is('countries') || request()->is('add_country') ? 'active' : null }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>
+                    Country
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('countries')}}" class="nav-link {{ request()->is('countries') ? 'active' : null }}">
+                      <i class="far fa-dot-circle nav-icon"></i>
+                      <p>Countries</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{route('add_country')}}" class="nav-link {{ request()->is('add_country') ? 'active' : null }}">
+                      <i class="far fa-dot-circle nav-icon"></i>
+                      <p>Add Country</p>
+                    </a>
+                  </li>
+                  {{-- <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-dot-circle nav-icon"></i>
+                      <p>Level 3</p>
+                    </a>
+                  </li> --}}
+                </ul>
+              </li>
+
+              <li class="nav-item {{ request()->is('cities') || request()->is('add_city') ? 'menu-open' : null }}">
+                <a href="#" class="nav-link {{ request()->is('cities') || request()->is('add_city') ? 'active' : null }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>
+                    City
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                {{-- {{ request()->is('cities') || request()->is('add_city') ? 'menu-open' : null }} --}}
+                {{-- <div > --}}
+                <ul id="open" class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{route('cities')}}" class="nav-link {{ request()->is('cities') ? 'active' : null }}">
+                      <i class="far fa-dot-circle nav-icon"></i>
+                      <p>Cities</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{route('add_city')}}" class="nav-link {{ request()->is('add_city') ? 'active' : null }}">
+                      <i class="far fa-dot-circle nav-icon"></i>
+                      <p>Add City</p>
+                    </a>
+                  </li>
+                  {{-- <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-dot-circle nav-icon"></i>
+                      <p>Level 3</p>
+                    </a>
+                  </li> --}}
+                </ul>
+                {{-- </div> --}}
+              </li>
+
+              
+              {{-- <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Level 2</p>
+                </a>
+              </li> --}}
+            </ul>
+          </li>
+          {{-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>
@@ -289,7 +385,7 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> --}}
           <li class="nav-header">EXAMPLES</li>
           <li class="nav-item">
             <a href="../calendar.html" class="nav-link">
@@ -671,3 +767,11 @@
     </div>
     <!-- /.sidebar -->
   </aside>
+  <script>
+    // function openThis(){
+    //   // alert(document.getElementById('open'));
+    //   document.getElementById('open').classList.remove('disabled');
+    //   document.getElementById('open').classList.add('nav nav-treeview');
+
+    // }
+  </script>

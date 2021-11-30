@@ -73,7 +73,7 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form action="/insert_marital_status" method="post">
+              <form action="{{route('insert_marital_status')}}" method="post">
                 <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
                 <div class="card-body">
 

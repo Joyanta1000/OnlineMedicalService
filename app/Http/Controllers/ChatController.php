@@ -14,6 +14,10 @@ use DB;
 use Illuminate\Support\Str;
 use Spatie\Searchable\Search;
 
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
+
 class ChatController extends Controller
 {
     /**
@@ -21,6 +25,20 @@ class ChatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    // var $pusher;
+    // var $user;
+    // var $chatChannel;
+
+    // const DEFAULT_CHAT_CHANNEL = 'chat';
+
+    // public function __construct()
+    // {
+    //     $this->pusher = App::make('pusher');
+    //     $this->user = Session::get('id');
+    //     $this->chatChannel = self::DEFAULT_CHAT_CHANNEL;
+    // }
+
     public function index()
     {
         $session_id = session()->get('id');
@@ -242,6 +260,7 @@ $dateTime = $mytime->toDateTimeString();
                 'time' => $dateTime,
             ]);
 
+            // $this->pusher->trigger($this->chatChannel, 'new-message', $insertChat);
             return json_encode(array('data' => $insertChat));
         } else {
             $insertChat = chats::create([
@@ -252,6 +271,7 @@ $dateTime = $mytime->toDateTimeString();
                 'time' => $dateTime,
             ]);
 
+            // $this->pusher->trigger($this->chatChannel, 'new-message', $insertChat);
             return json_encode(array('data' => $insertChat));
         }
 

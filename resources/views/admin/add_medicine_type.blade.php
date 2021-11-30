@@ -73,7 +73,7 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form action="/insert_medicine_type" method="post">
+              <form action="{{route('insert_medicine_type')}}" method="post">
                 <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
                 <div class="card-body">
 

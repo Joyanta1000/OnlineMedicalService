@@ -81,7 +81,7 @@
                                     </div>
                                     <!-- /.card-header -->
                                     <!-- form start -->
-                                    <form action="/insert_area" method="post">
+                                    <form action="{{route('insert_area')}}" method="post">
                                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                         <div class="card-body">
 

@@ -85,7 +85,7 @@
       <!-- /.social-auth-links -->
 
       <p class="mb-1">
-        <a href="/User_Login">Back to login</a>
+        <a href="{{route('login.User_Login')}}">Back to login</a>
       </p>
       
     </div>
