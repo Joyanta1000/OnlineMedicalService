@@ -18,6 +18,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Livewire\ShowPrescriptions;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -33,10 +34,33 @@ use Illuminate\Support\Facades\Auth;
 
 // Route::group(['middleware' => ['web']], function () {
 
+Route::get('reboot', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+    dd('Done');
+});
+
+Route::get('storageLink', function () {
+    Artisan::call('storage:link');
+    dd('Done');
+});
+
+Route::get('migrate', function () {
+    Artisan::call('migrate');
+    dd('Done');
+});
+
+Route::get('seed', function () {
+    Artisan::call('db:seed');
+    dd('Done');
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
-
 
 Route::prefix('registration')->group(
 
@@ -279,40 +303,40 @@ Route::middleware(['isPharmacist'])->group(function () {
 
     Route::get('/pharmacist_dashboard', function () {
         return view('pharmacist.pages.index');
-    });
+    })->name('pharmacist_dashboard');
 
     Route::get('/add_medicine_type', function () {
         return view('admin.add_medicine_type');
-    });
+    })->name('add_medicine_type');
 
-    Route::post('/insert_medicine_type', [MedicineTypeController::class, 'insert_medicine_type']);
+    Route::post('/insert_medicine_type', [MedicineTypeController::class, 'insert_medicine_type'])->name('insert_medicine_type');
 
-    Route::get('/medicine_types', [MedicineTypeController::class, 'index']);
+    Route::get('/medicine_types', [MedicineTypeController::class, 'index'])->name('medicine_types');
 
-    Route::get('/edit_medicine_type/{id}', [MedicineTypeController::class, 'get_info_of_medicine_type']);
+    Route::get('/edit_medicine_type/{id}', [MedicineTypeController::class, 'get_info_of_medicine_type'])->name('edit_medicine_type');
 
-    Route::post('/update_medicine_type/{id}', [MedicineTypeController::class, 'update_medicine_type']);
+    Route::post('/update_medicine_type/{id}', [MedicineTypeController::class, 'update_medicine_type'])->name('update_medicine_type');
 
-    Route::get('/delete_medicine_type/{id}', [MedicineTypeController::class, 'delete_medicine_types_information']);
+    Route::get('/delete_medicine_type/{id}', [MedicineTypeController::class, 'delete_medicine_types_information'])->name('delete_medicine_type');
 
 
-    Route::get('/add_medicine', [MedicineController::class, 'medicine_type_for_medicine']);
+    Route::get('/add_medicine', [MedicineController::class, 'medicine_type_for_medicine'])->name('add_medicine');
 
-    Route::post('/insert_medicine', [MedicineController::class, 'insert_medicine']);
+    Route::post('/insert_medicine', [MedicineController::class, 'insert_medicine'])->name('insert_medicine');
 
-    Route::get('/medicines', [MedicineController::class, 'index']);
+    Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines');
 
-    Route::post('/changeStatus', [MedicineController::class, 'changeStatus']);
+    Route::post('/changeStatus', [MedicineController::class, 'changeStatus'])->name('changeStatus');
 
     // Route::get('/admin/medicines', function () {
     //     return view('admin.medicines');
     // });
 
-    Route::get('/edit_medicines_info/{id}', [MedicineController::class, 'get_info_of_medicine']);
+    Route::get('/edit_medicines_info/{id}', [MedicineController::class, 'get_info_of_medicine'])->name('edit_medicines_info');
 
-    Route::post('/update_medicines_info/{id}', [MedicineController::class, 'update_medicines_info']);
+    Route::post('/update_medicines_info/{id}', [MedicineController::class, 'update_medicines_info'])->name('update_medicines_info');
 
-    Route::get('/delete_medicines_info/{id}', [MedicineController::class, 'delete_medicines_info']);
+    Route::get('/delete_medicines_info/{id}', [MedicineController::class, 'delete_medicines_info'])->name('delete_medicines_info');
 });
 
 

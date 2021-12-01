@@ -1305,6 +1305,7 @@
 </div>
 @endif
               <div class="card-body">
+                {{-- @can('genders') --}}
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -1314,6 +1315,7 @@
                   </tr>
                   </thead>
                   <tbody>
+                    
                   @foreach ($genders as $gender)
                   <tr>
                     <td>{{ $gender->id}}</td>
@@ -1326,6 +1328,7 @@
                     </td>
                   </tr>
                   @endforeach
+                  
                   </tbody>
                   <tfoot>
                   <tr>
@@ -1335,6 +1338,7 @@
                   </tr>
                   </tfoot>
                 </table>
+                {{-- @endcan --}}
               </div>
               <!-- /.card-body -->
             </div>

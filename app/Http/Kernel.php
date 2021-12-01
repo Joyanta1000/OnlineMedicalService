@@ -66,5 +66,8 @@ class Kernel extends HttpKernel
         'isDoctor' => \App\Http\Middleware\DoctorMiddleware::class,
         'isPatient' => \App\Http\Middleware\PatientMiddleware::class,
         'isPharmacist' => \App\Http\Middleware\PharmacistMiddleware::class,
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
     ];
 }

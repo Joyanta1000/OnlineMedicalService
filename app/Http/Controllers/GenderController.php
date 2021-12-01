@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Session;
 use Illuminate\Http\Request;
 use App\Models\gender;
+use App\Models\User;
+use App\Policies\genderPolicy;
 use \Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -18,6 +20,10 @@ class GenderController extends Controller
      */
     public function index()
     {
+        // dd(User::find(session()->get('id'))->getRoleNames());
+        // dd(session()->user()->getRoleNames());
+        // $this->authorize('genders');
+        // $this->authorize('genders');
         $genders = gender::all();
 
         return view('admin.genders',compact('genders'));
