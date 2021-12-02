@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MedicineTypeSeeder::class);
         $this->call(ProblemSeeder::class);
         $this->call(SpecialitySeeder::class);
+        $this->call(CountrySeeder::class);
         \App\Models\NationalIdCard::factory(100)->create();
         \App\Models\BirthCertificate::factory(100)->create();
     }
