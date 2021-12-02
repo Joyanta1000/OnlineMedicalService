@@ -16,7 +16,7 @@ class CreateProblemsTable extends Migration
         Schema::create('problems', function (Blueprint $table) {
             $table->id();
             $table->string('problems_name')->nullable();
-            $table->string('is_active')->nullable();
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
     }

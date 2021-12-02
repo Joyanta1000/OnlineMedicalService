@@ -16,6 +16,7 @@ class CreateSpecialitiesOfDoctorsTable extends Migration
         Schema::create('specialities_of_doctors', function (Blueprint $table) {
             $table->id();
             $table->string('speciality')->nullable();
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
     }

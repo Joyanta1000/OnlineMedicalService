@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMaritalStatusesTable extends Migration
+class CreateBirthCertificatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateMaritalStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('marital_statuses', function (Blueprint $table) {
+        Schema::create('birth_certificates', function (Blueprint $table) {
             $table->id();
-            $table->string('marital_status')->nullable();
-            $table->boolean('is_active')->default(1);
+            $table->bigInteger('birth_certificate_registration_number')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateMaritalStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('marital_statuses');
+        Schema::dropIfExists('birth_certificates');
     }
 }

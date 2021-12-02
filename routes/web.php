@@ -58,6 +58,11 @@ Route::get('seed', function () {
     dd('Done');
 });
 
+Route::get('migrate_fresh_seed', function () {
+    Artisan::call('migrate:fresh --seed');
+    dd('Done');
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -234,6 +239,7 @@ Route::middleware(['isAdmin'])->group(function () {
     Route::post('/update_problems_info/{id}', [ProblemController::class, 'update_problems_info'])->name('update_problems_info');
 
     Route::get('/delete_problems_info/{id}', [ProblemController::class, 'delete_problems_info'])->name('delete_problems_info');
+
 });
 
 

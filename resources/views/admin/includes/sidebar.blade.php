@@ -259,25 +259,95 @@
                                 <p>Add Gender</p>
                             </a>
                         </li>
-
-
-                        {{-- <li class="nav-item">
-                <a href="../forms/editors.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Editors</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../forms/validation.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Validation</p>
-                </a>
-              </li> --}}
                     </ul>
                 </li>
 
                 <li
-                    class="nav-item {{ request()->is('countries') || request()->is('add_country') || request()->is('cities') || request()->is('add_city') ? 'menu-open' : null }}">
+                    class="nav-item {{ request()->is('marital_statuses') || request()->is('add_marital_status') ? 'menu-open' : null }} ">
+                    <a href="#"
+                        class="nav-link {{ request()->is('marital_statuses') || request()->is('add_marital_status') ? 'active' : null }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Marital Status
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('marital_statuses') }}"
+                                class="nav-link {{ request()->is('marital_statuses') ? 'active' : null }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Marital status</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('add_marital_status') }}"
+                                class="nav-link {{ request()->is('add_marital_status') ? 'active' : null }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add Marital Status</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li
+                    class="nav-item {{ request()->is('problems') || request()->is('add_problem') ? 'menu-open' : null }} ">
+                    <a href="#"
+                        class="nav-link {{ request()->is('problems') || request()->is('add_problem') ? 'active' : null }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Problem
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('problems') }}"
+                                class="nav-link {{ request()->is('problems') ? 'active' : null }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Problems</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('add_problem') }}"
+                                class="nav-link {{ request()->is('add_problem') ? 'active' : null }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add Problem</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li
+                    class="nav-item {{ request()->is('specialities') || request()->is('add_specialities_of_doctor') ? 'menu-open' : null }} ">
+                    <a href="#"
+                        class="nav-link {{ request()->is('specialities') || request()->is('add_specialities_of_doctor') ? 'active' : null }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Speciality
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('specialities') }}"
+                                class="nav-link {{ request()->is('specialities') ? 'active' : null }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Specialities</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('add_specialities_of_doctor') }}"
+                                class="nav-link {{ request()->is('add_specialities_of_doctor') ? 'active' : null }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add Speciality</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li
+                    class="nav-item {{ request()->is('countries') || request()->is('add_country') || request()->is('cities') || request()->is('add_city') || request()->is('thanas') || request()->is('add_thana') || request()->is('areas') || request()->is('add_area') ? 'menu-open' : null }}">
                     <a href="#"
                         class="nav-link {{ request()->is('countries') || request()->is('add_country') || request()->is('cities') || request()->is('add_city') ? 'active' : null }}">
                         <i class="nav-icon fas fa-edit"></i>
@@ -339,8 +409,7 @@
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
-                            {{-- {{ request()->is('cities') || request()->is('add_city') ? 'menu-open' : null }} --}}
-                            {{-- <div > --}}
+
                             <ul id="city" class="disabled">
                                 <li class="nav-item">
                                     <a href="{{ route('cities') }}"
@@ -356,25 +425,157 @@
                                         <p>Add City</p>
                                     </a>
                                 </li>
-                                {{-- <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Level 3</p>
-                    </a>
-                  </li> --}}
+
                             </ul>
-                            {{-- </div> --}}
+
+                        </li>
+
+                        <li
+                            class="nav-item {{ request()->is('thanas') || request()->is('add_thana') ? 'menu-open' : null }}">
+                            <a href="#"
+                                class="nav-link {{ request()->is('thanas') || request()->is('add_thana') ? 'active' : null }}"
+                                onClick="thana()">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Thana
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+
+                            <ul id="thana" class="disabled">
+                                <li class="nav-item">
+                                    <a href="{{ route('thanas') }}"
+                                        class="nav-link {{ request()->is('thanas') ? 'active' : null }}">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Thanas</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('add_thana') }}"
+                                        class="nav-link {{ request()->is('add_thana') ? 'active' : null }}">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Add Thana</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                        <li
+                            class="nav-item {{ request()->is('areas') || request()->is('add_area') ? 'menu-open' : null }}">
+                            <a href="#"
+                                class="nav-link {{ request()->is('areas') || request()->is('add_area') ? 'active' : null }}"
+                                onClick="area()">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Area
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+
+                            <ul id="area" class="disabled">
+                                <li class="nav-item">
+                                    <a href="{{ route('areas') }}"
+                                        class="nav-link {{ request()->is('areas') ? 'active' : null }}">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Areas</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('add_area') }}"
+                                        class="nav-link {{ request()->is('add_area') ? 'active' : null }}">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Add Area</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+
                         </li>
 
 
-                        {{-- <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Level 2</p>
-                </a>
-              </li> --}}
                     </ul>
                 </li>
+
+
+                {{-- <li
+                    class="nav-item {{ request()->is('medicine_types') || request()->is('add_medicine_type') || request()->is('medicines') || request()->is('add_medicine') ? 'menu-open' : null }}">
+                    <a href="#"
+                        class="nav-link {{ request()->is('medicine_types') || request()->is('add_medicine_type') || request()->is('medicines') || request()->is('add_medicine') ? 'active' : null }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Medicine
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul id="test" class="nav nav-treeview">
+                        
+                        <li
+                            class="nav-item {{ request()->is('medicine_types') || request()->is('add_medicine_type') ? 'menu-open' : null }}">
+                            <a href="#"
+                                class="nav-link {{ request()->is('medicine_types') || request()->is('add_medicine_type') ? 'active' : null }}"
+                                onclick="medicineType()">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Medicine Type
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul id="medicineType" class="disabled">
+                                <li class="nav-item">
+                                    <a href="{{ route('medicine_types') }}"
+                                        class="nav-link {{ request()->is('medicine_types') ? 'active' : null }}">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Medicine Types</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('add_medicine_type') }}"
+                                        class="nav-link {{ request()->is('add_medicine_type') ? 'active' : null }}">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Add Medicine Type</p>
+                                    </a>
+                                </li>
+                               
+                            </ul>
+                        </li>
+
+                        <li
+                            class="nav-item {{ request()->is('medicines') || request()->is('add_medicine') ? 'menu-open' : null }}">
+                            <a href="#"
+                                class="nav-link {{ request()->is('medicines') || request()->is('add_medicine') ? 'active' : null }}"
+                                onclick="medicine()">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Medicine
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+
+                            <ul id="medicine" class="disabled">
+                                <li class="nav-item">
+                                    <a href="{{ route('medicines') }}"
+                                        class="nav-link {{ request()->is('medicines') ? 'active' : null }}">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Medicines</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('add_medicine') }}"
+                                        class="nav-link {{ request()->is('add_medicine') ? 'active' : null }}">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Add Medicine</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                    </ul>
+                </li> --}}
+
                 {{-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
@@ -785,4 +986,83 @@
     </div>
     <!-- /.sidebar -->
 </aside>
-<script src="{{asset('./js/multipleDropDown.js')}}"></script>
+
+{{-- @stack('scripts')
+@push('scripts')
+    <script src="{{asset('./js/multipleDropDown.js')}}"></script>
+@endpush --}}
+<script>
+    dom();
+
+    function dom() {
+        var APP_URL = window.location.pathname;
+
+        if (APP_URL == "/countries") {
+            document.getElementById("country").classList.add("nav-treeview");
+        }
+        if (APP_URL == "/add_country") {
+            document.getElementById("country").classList.add("nav-treeview");
+        }
+        if (APP_URL == "/cities") {
+            document.getElementById("city").classList.add("nav-treeview");
+        }
+        if (APP_URL == "/add_city") {
+            document.getElementById("city").classList.add("nav-treeview");
+        }
+        if (APP_URL == "/thanas") {
+            document.getElementById("thana").classList.add("nav-treeview");
+        }
+        if (APP_URL == "/add_thana") {
+            document.getElementById("thana").classList.add("nav-treeview");
+        }
+        if (APP_URL == "/areas") {
+            document.getElementById("area").classList.add("nav-treeview");
+        }
+        if (APP_URL == "/add_area") {
+            document.getElementById("area").classList.add("nav-treeview");
+        }
+        // if (APP_URL == "/medicine_types") {
+        //     document.getElementById("medicineType").classList.add("nav-treeview");
+        // }
+        // if (APP_URL == "/add_medicine_type") {
+        //     document.getElementById("medicineType").classList.add("nav-treeview");
+        // }
+        // if (APP_URL == "/medicines") {
+        //     document.getElementById("medicine").classList.add("nav-treeview");
+        // }
+        // if (APP_URL == "/add_medicine") {
+        //     document.getElementById("medicine").classList.add("nav-treeview");
+        // }
+    }
+
+    function country() {
+        $("#country").removeClass("disabled");
+        $("#country").addClass("nav nav-treeview");
+    }
+
+    function city() {
+        $("#city").removeClass("disabled");
+        $("#city").addClass("nav nav-treeview");
+    }
+
+    function thana() {
+        $("#thana").removeClass("disabled");
+        $("#thana").addClass("nav nav-treeview");
+    }
+
+    function area() {
+        $("#area").removeClass("disabled");
+        $("#area").addClass("nav nav-treeview");
+    }
+
+    // function medicineType() {
+    //     $("#medicineType").removeClass("disabled");
+    //     $("#medicineType").addClass("nav nav-treeview");
+    // }
+
+    // function medicine() {
+    //     $("#medicine").removeClass("disabled");
+    //     $("#medicine").addClass("nav nav-treeview");
+    // }
+
+</script>

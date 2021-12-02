@@ -16,6 +16,7 @@ class CreateMedicineTypesTable extends Migration
         Schema::create('medicine_types', function (Blueprint $table) {
             $table->id();
             $table->string('medicine_type')->nullable();
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
     }

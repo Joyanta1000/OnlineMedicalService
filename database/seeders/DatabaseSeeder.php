@@ -16,6 +16,13 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(1)->create();
         $this->call(CoreDataSeeder::class);
+        $this->call(GenderSeeder::class);
+        $this->call(MaritalStatusSeeder::class);
+        $this->call(MedicineTypeSeeder::class);
+        $this->call(ProblemSeeder::class);
+        $this->call(SpecialitySeeder::class);
+        \App\Models\NationalIdCard::factory(100)->create();
+        \App\Models\BirthCertificate::factory(100)->create();
     }
 
 }
