@@ -15,7 +15,19 @@ class NationalIdCardController extends Controller
      */
     public function index()
     {
-        //
+
+        $nationalIdCard = NationalIdCard::when(request('nid'), function ($query) {
+            $query->where('nid',request('nid'));
+        })->first();
+        if ($nationalIdCard) {
+            return response()->json([
+                'success' => $nationalIdCard,
+            ]);
+        }
+        return response()->json([
+            'failed' => 'Failed to find National Id Card',
+        ]);
+        
     }
 
     /**

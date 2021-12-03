@@ -15,9 +15,12 @@ use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\BirthCertificateController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\NationalIdCardController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Livewire\ShowPrescriptions;
+use App\Models\BirthCertificate;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 
@@ -66,6 +69,9 @@ Route::get('migrate_fresh_seed', function () {
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('nid', NationalIdCardController::class);
+Route::resource('birth_certificate_number', BirthCertificateController::class);
 
 Route::prefix('registration')->group(
 

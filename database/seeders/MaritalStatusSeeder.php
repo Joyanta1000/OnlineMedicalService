@@ -21,7 +21,7 @@ class MaritalStatusSeeder extends Seeder
     {
         $maritalStatuses = [
             ['name' => 'Married'],
-            ['name' => 'Unamarried'],
+            ['name' => 'Unmarried'],
             ['name' => 'Divorced'],
             ['name' => 'Widowed'],
             ['name' => 'Others'],

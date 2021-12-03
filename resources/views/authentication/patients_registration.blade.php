@@ -289,7 +289,7 @@
                     <label for="city">City</label>
                     <select class="form-control" name="city_id" id="cities_id" v-model="cities_id" value="{{old('city_id')}}">
                       <option value="">--Select--</option>
-                      <option @click="fetchDataForCity(city.id)" v-for="city in cities_values" v-bind:value="city.id">
+                      <option @click="fetchDataForCity(city.id)" v-for="city in cities_values" v-bind:value="city.id" >
                         @{{city.city}}
                       </option>
                     </select>
@@ -1618,6 +1618,86 @@ Thanks for being with us.
 
 <script>
   $(document).ready(function () {
+
+    $("#nid_card_number").keyup(function() {
+
+                if ($("#nid_card_number").val().length == 9) {
+
+                    var nid = $("#nid_card_number").val();
+                    $("#invalid").html("");
+                    $.ajax({
+                        url: "{{ route('nid.index') }}",
+                        type: "GET",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            nid: $("#nid_card_number").val()
+                        },
+                        cache: false,
+                        dataType: 'json',
+                        success: function(dataResult) {
+                            if (dataResult.success) {
+                                $("#invalid").html("");
+                                $("#nid_card_number").css("border-color", "green");
+                            } else {
+                                $("#invalid").html("");
+                                $("#nid_card_number").css("border-color", "coral");
+                                $("#invalid").append(
+                                    "<span class='glyphicon glyphicon-remove form-control-feedback' style= 'margin-left: 5px; color: red;'>Invalid Nid Card Number</span>"
+                                );
+                            }
+                        }
+                    });
+
+                } else {
+                    $("#invalid").html("");
+                    $("#nid_card_number").css("border-color", "coral");
+                    $("#invalid").append(
+                        "<span class='glyphicon glyphicon-remove form-control-feedback' style= 'margin-left: 5px; color: red;'>NID Card Number Must Be 9 Digit</span>"
+                    );
+                }
+
+            });
+
+            $("#birth_certificate_number").keyup(function() {
+
+                if ($("#birth_certificate_number").val().length == 9) {
+
+                    var birth_certificate_number = $("#birth_certificate_number").val();
+                    $("#invalid_2").html("");
+                    $.ajax({
+                        url: "{{ route('birth_certificate_number.index') }}",
+                        type: "GET",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            birth_certificate_number: birth_certificate_number
+                        },
+                        cache: false,
+                        dataType: 'json',
+                        success: function(dataResult) {
+                          console.log(dataResult);
+                            if (dataResult.success) {
+                                $("#invalid_2").html("");
+                                $("#birth_certificate_number").css("border-color", "green");
+                            } else {
+                                $("#invalid_2").html("");
+                                $("#birth_certificate_number").css("border-color", "coral");
+                                $("#invalid_2").append(
+                                    "<span class='glyphicon glyphicon-remove form-control-feedback' style= 'margin-left: 5px; color: red;'>Invalid Birth Certificate Number</span>"
+                                );
+                            }
+                        }
+                    });
+
+                } else {
+                    $("#invalid_2").html("");
+                    $("#birth_certificate_number").css("border-color", "coral");
+                    $("#invalid_2").append(
+                        "<span class='glyphicon glyphicon-remove form-control-feedback' style= 'margin-left: 5px; color: red;'>Birth Certificate Must Be 9 Digit</span>"
+                    );
+                }
+
+            });
+
     var count = 1;
     $('#add').click(function(){
       count = count+1;
@@ -1852,7 +1932,7 @@ if (!this.countries_id) {
 
   fetchData: function (id) {
     console.log(id);
-   axios.get('/get_city_for_thana/' + id).then(response=>{
+   axios.get('./get_city_for_thana/' + id).then(response=>{
     console.log(response.data.data);
 
     this.cities_values = response.data.data,
@@ -1871,7 +1951,7 @@ if (!this.countries_id) {
 
   fetchDataForCity: function (id) {
     console.log(id);
-   axios.get('/get_thana_for_area/' + id).then(response=>{
+   axios.get('./get_thana_for_area/' + id).then(response=>{
     console.log(response.data.data);
 
     this.thanas_values = response.data.data,
@@ -1890,7 +1970,7 @@ if (!this.countries_id) {
 
   fetchDataForThana: function (id) {
     console.log(id);
-   axios.get('/get_area_for_address/' + id).then(response=>{
+   axios.get('./get_area_for_address/' + id).then(response=>{
     console.log(response.data.data);
 
     this.areas_values = response.data.data,
@@ -2001,7 +2081,7 @@ if (!this.countries_id) {
 
   fetchData: function (id) {
     console.log(id);
-   axios.get('/get_city_for_thana/' + id).then(response=>{
+   axios.get('./get_city_for_thana/' + id).then(response=>{
     console.log(response.data.data);
 
     this.cities_values = response.data.data,
@@ -2020,7 +2100,7 @@ if (!this.countries_id) {
 
   fetchDataForCity: function (id) {
     console.log(id);
-   axios.get('/get_thana_for_area/' + id).then(response=>{
+   axios.get('./get_thana_for_area/' + id).then(response=>{
     console.log(response.data.data);
 
     this.thanas_values = response.data.data,
@@ -2039,7 +2119,7 @@ if (!this.countries_id) {
 
   fetchDataForThana: function (id) {
     console.log(id);
-   axios.get('/get_area_for_address/' + id).then(response=>{
+   axios.get('./get_area_for_address/' + id).then(response=>{
     console.log(response.data.data);
 
     this.areas_values = response.data.data,

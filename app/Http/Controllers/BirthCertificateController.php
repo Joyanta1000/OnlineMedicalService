@@ -15,7 +15,17 @@ class BirthCertificateController extends Controller
      */
     public function index()
     {
-        //
+        $birthCertificateNumber = BirthCertificate::when(request('birth_certificate_number'), function ($query) {
+            $query->where('birth_certificate_registration_number', 'like', request('birth_certificate_number') . '%');
+        })->first();
+        if ($birthCertificateNumber) {
+            return response()->json([
+                'success' => $birthCertificateNumber,
+            ]);
+        }
+        return response()->json([
+            'failed' => 'Failed to find National Id Card',
+        ]);
     }
 
     /**

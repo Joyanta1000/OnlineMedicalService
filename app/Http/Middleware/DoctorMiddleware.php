@@ -21,11 +21,11 @@ class DoctorMiddleware
                 return $next($request);
             }
             else{
-                return redirect('/User_Login');
+                return redirect('login/User_Login');
             }
         }
         else{
-            return redirect('/User_Login');
+            return redirect('login/User_Login');
         }
     }
 }
