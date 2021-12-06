@@ -20,7 +20,9 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\NationalIdCardController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Livewire\ShowPrescriptions;
+use App\Models\Appointment;
 use App\Models\BirthCertificate;
+use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 
@@ -135,12 +137,14 @@ Route::get('/reset_password/{token}', [UserController::class, 'reset_password'])
 
 Route::post('/reset_user_password/{email}', [UserController::class, 'reset_user_password']);
 
-
+Route::get('/logout', [UserController::class, 'logout']);
 
 Route::middleware(['isAdmin'])->group(function () {
 
     Route::get('/admin', function () {
-        return view('admin.index');
+        $countUser = User::whereNotIn('id', [session()->get('id')])->count();
+        $countAppointments = Appointment::count();
+        return view('admin.index', compact('countUser', 'countAppointments'));
     })->name('admin');
 
     Route::get('/add_gender', function () {
@@ -313,7 +317,7 @@ Route::middleware(['isPharmacist'])->group(function () {
     })->name('pharmacist_dashboard');
 
     Route::get('/add_medicine_type', function () {
-        return view('admin.add_medicine_type');
+        return view('pharmacist.add_medicine_type');
     })->name('add_medicine_type');
 
     Route::post('/insert_medicine_type', [MedicineTypeController::class, 'insert_medicine_type'])->name('insert_medicine_type');

@@ -1718,7 +1718,7 @@ if (!this.countries_id) {
 
   fetchData: function (id) {
     console.log(id);
-   axios.get('/get_city_for_thana/' + id).then(response=>{
+   axios.get('./get_city_for_thana/' + id).then(response=>{
     console.log(response.data.data);
     
     this.cities_values = response.data.data,
@@ -1737,7 +1737,7 @@ if (!this.countries_id) {
 
   fetchDataForCity: function (id) {
     console.log(id);
-   axios.get('/get_thana_for_area/' + id).then(response=>{
+   axios.get('./get_thana_for_area/' + id).then(response=>{
     console.log(response.data.data);
     
     this.thanas_values = response.data.data,
@@ -1756,7 +1756,7 @@ if (!this.countries_id) {
 
   fetchDataForThana: function (id) {
     console.log(id);
-   axios.get('/get_area_for_address/' + id).then(response=>{
+   axios.get('./get_area_for_address/' + id).then(response=>{
     console.log(response.data.data);
     
     this.areas_values = response.data.data,
@@ -1867,7 +1867,7 @@ if (!this.countries_id) {
 
   fetchData: function (id) {
     console.log(id);
-   axios.get('/get_city_for_thana/' + id).then(response=>{
+   axios.get('./get_city_for_thana/' + id).then(response=>{
     console.log(response.data.data);
     
     this.cities_values = response.data.data,
@@ -1886,7 +1886,7 @@ if (!this.countries_id) {
 
   fetchDataForCity: function (id) {
     console.log(id);
-   axios.get('/get_thana_for_area/' + id).then(response=>{
+   axios.get('./get_thana_for_area/' + id).then(response=>{
     console.log(response.data.data);
     
     this.thanas_values = response.data.data,
@@ -1905,7 +1905,7 @@ if (!this.countries_id) {
 
   fetchDataForThana: function (id) {
     console.log(id);
-   axios.get('/get_area_for_address/' + id).then(response=>{
+   axios.get('./get_area_for_address/' + id).then(response=>{
     console.log(response.data.data);
     
     this.areas_values = response.data.data,

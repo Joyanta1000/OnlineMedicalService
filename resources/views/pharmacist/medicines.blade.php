@@ -187,7 +187,7 @@
       </li>
     </ul>
   </nav> -->
-  @include('admin.includes.navbar')
+  @include('pharmacist.includes.navbar')
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
@@ -863,7 +863,7 @@
     
   </aside> -->
 
-  @include('admin.includes.sidebar')
+  @include('pharmacist.includes.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -957,7 +957,7 @@
     <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
   </footer> -->
 
-  @include('admin.includes.footer')
+  @include('pharmacist.includes.footer')
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">

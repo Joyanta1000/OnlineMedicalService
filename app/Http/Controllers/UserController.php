@@ -46,25 +46,10 @@ use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-
-        // $failed = "Invalid Email or Password";
-
         return view('authentication.User_Login');
-        // $areas = DB::table('areas')
-        //     ->join('countries', 'areas.countries_id', '=', 'countries.id')
-        //     ->join('cities', 'areas.cities_id', '=', 'cities.id')
-        //     ->join('thanas', 'areas.thanas_id', '=', 'thanas.id')
-        //     ->select('areas.*', 'countries.country', 'cities.city', 'thanas.thana')
-        //     ->get();
-
-        // return view('authentication.doctors_registration',compact('areas'));
     }
 
     public function loginVerification(Request $request)
@@ -107,41 +92,17 @@ class UserController extends Controller
     {
 
         $thanas_info = DB::table('thanas')
-            //->join('countries', 'cities.countries_id', '=', 'countries.id')
             ->select('thanas.*')
             ->where('thanas.cities_id', '=', $id)
             ->get();
-        //dd($cities_info);
-        //$countries_info = country::all();
 
-        //dd($countries_info);
-
-        //dd($cities_info);
         $response = array(
             'data' => $thanas_info,
         );
         echo json_encode($response);
-        //dd($c);
 
-        //return view('admin.add_state_or_district',compact('response'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function register_doctor(Request $request)
     {
         $rules = [
@@ -319,7 +280,6 @@ class UserController extends Controller
 
     public function register_patient(Request $request)
     {
-        //dd($request);
         $rules = [
             // 'first_name' => 'required',
             // 'last_name' => 'required',
@@ -464,7 +424,6 @@ class UserController extends Controller
             'confirm_password' => 'min:6',
             'pharmacies_profile_picture' => 'required',
             'evidence' => 'required',
-            // 'email' => 'required|string|email|max:255'
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -571,12 +530,6 @@ class UserController extends Controller
         return view('authentication.verification_message')->with('status', 'Your email id verified successfully');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function redirectTo(Request $request)
     {
 
@@ -588,11 +541,6 @@ class UserController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator->errors());
         }
-
-        // $request->validate([
-        //     'email' => 'required|email',
-        //     'password' => 'required'
-        // ]);
         $data = $request->input();
         try {
 
@@ -604,20 +552,11 @@ class UserController extends Controller
                 ->first();
 
             if ($obj) {
-
-                // $response = array(
-                //     'data' => $obj,
-                // );
-                // return json_encode($response);
-
                 $request->session()->put('id', $obj->id);
                 $request->session()->put('email', $obj->email);
                 $request->session()->put('password', $obj->password);
                 $request->session()->put('role', $obj->role);
                 $request->session()->put('is_active', $obj->is_active);
-
-                //Session::put('email', $value);
-                //dd($obj->role);
                 switch ($obj->role) {
                     case 1:
                         return $this->IndexForAdmin();
@@ -640,13 +579,7 @@ class UserController extends Controller
                         break;
                 }
             } else {
-
-                //  $request->session()->flush();
-                // dd('error');
                 $failed = "Invalid Email or Password ";
-                //Session::flash('failed', 'Invalid Email or Password !');
-                // Session::save();
-                // Session::flash('alert-class', 'alert-danger');
                 $request->session()->flash('failed', $failed);
                 return redirect()->route('login.User_Login');
             }
@@ -696,6 +629,12 @@ class UserController extends Controller
 
     public function IndexForPharmacist()
     {
+        $pharmacyInfo = pharmacies::where('phermacies_id', session()->get('id'))
+            ->first();
+        $pharmacyProPic = pharmacies_profile_pictures::where('phermacies_id', session()->get('id'))
+            ->first();
+        session()->put('phermacies_name', $pharmacyInfo->phermacies_name);
+        session()->put('pharmacies_profile_picture', $pharmacyProPic->pharmacies_profile_picture);
         return redirect('pharmacist_dashboard');
     }
 
@@ -703,8 +642,6 @@ class UserController extends Controller
     {
         $rules = [
             'email' => 'required|string|min:1|max:255|exists:users,email',
-            // 'city_name' => 'required|string|min:3|max:255',
-            // 'email' => 'required|string|email|max:255'
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -717,18 +654,12 @@ class UserController extends Controller
 
                 set_time_limit(1000);
 
-
-
                 $to_email = $data['email'];
-
 
                 $user = User::where('email', '=', $to_email)
                     ->first();
 
                 $token = $user->token;
-
-
-
 
                 $token = array('token' => $token);
 
@@ -762,8 +693,6 @@ class UserController extends Controller
         $rules = [
             'password' => 'min:6|required_with:password_confirmation|same:confirm_password',
             'confirm_password' => 'min:6'
-            // 'city_name' => 'required|string|min:3|max:255',
-            // 'email' => 'required|string|email|max:255'
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -824,37 +753,9 @@ class UserController extends Controller
         return view('patient.pages.doctors', compact('doctors', 'doctors_social_networks', 'doctors_specialities', 'doctors_addresses'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function logout()
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        Session::flush();
+        return redirect('login/User_Login')->with('status', "Logged out successfully");
     }
 }

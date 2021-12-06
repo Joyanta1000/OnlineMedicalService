@@ -35,11 +35,11 @@
 
 <div class="wrapper">
   <!-- Navbar -->
-  @include('admin.includes.navbar')
+  @include('pharmacist.includes.navbar')
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  @include('admin.includes.sidebar')
+  @include('pharmacist.includes.sidebar')
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -69,11 +69,11 @@
             <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Edit Medicine Type</h3>
+                <h3 class="card-title">Add Medicine Type</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form action="/update_medicine_type/{{ $medicine_type->id }}" method="post">
+              <form action="{{route('insert_medicine_type')}}" method="post">
                 <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
                 <div class="card-body">
 
@@ -81,11 +81,6 @@
 <div class="alert alert-success" role="alert">
   <button type="button" class="close" data-dismiss="alert">×</button>
   {{ session('status') }}
-</div>
-@elseif(isset($validator))
-<div class="alert alert-danger" role="alert">
-  <button type="button" class="close" data-dismiss="alert">×</button>
-  {{ $validator->medicine_type }}
 </div>
 @elseif(session('failed'))
 <div class="alert alert-danger" role="alert">
@@ -106,7 +101,7 @@
 
                   <div class="form-group">
                     <label for="medicine_type">Medicine Type</label>
-                    <input type="text" name="medicine_type" class="form-control" id="medicine_type" placeholder="Edit Medicine Type" value="{{ $medicine_type->medicine_type }}">
+                    <input type="text" name="medicine_type" class="form-control" id="medicine_type" placeholder="Add Medicine Type" value="{{old('medicine_type')}}">
                   </div>
                   <!-- <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
@@ -132,7 +127,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Update</button>
+                  <button type="submit" class="btn btn-primary">Add</button>
                 </div>
               </form>
             </div>
@@ -906,7 +901,7 @@
   </div>
   <!-- /.content-wrapper -->
   
-  @include('admin.includes.footer')
+  @include('pharmacist.includes.footer')
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->

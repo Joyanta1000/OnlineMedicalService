@@ -35,11 +35,11 @@
 
 <div class="wrapper">
   <!-- Navbar -->
-  @include('admin.includes.navbar')
+  @include('pharmacist.includes.navbar')
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  @include('admin.includes.sidebar')
+  @include('pharmacist.includes.sidebar')
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -926,7 +926,7 @@
   </div>
   <!-- /.content-wrapper -->
   
-  @include('admin.includes.footer')
+  @include('pharmacist.includes.footer')
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->

@@ -20,7 +20,7 @@ class MedicineTypeController extends Controller
     {
         $medicine_types = medicine_types::all();
 
-        return view('admin.medicine_types',compact('medicine_types'));
+        return view('pharmacist.medicine_types',compact('medicine_types'));
     }
 
     /**
@@ -97,7 +97,7 @@ class MedicineTypeController extends Controller
     {
         $medicine_type = medicine_types::find($id);
 
-        return view('admin.edit_medicine_type',compact('medicine_type'));
+        return view('pharmacist.edit_medicine_type',compact('medicine_type'));
     }
 
     /**
