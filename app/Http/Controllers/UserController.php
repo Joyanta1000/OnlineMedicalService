@@ -55,7 +55,7 @@ class UserController extends Controller
     {
 
         // $failed = "Invalid Email or Password";
-         
+
         return view('authentication.User_Login');
         // $areas = DB::table('areas')
         //     ->join('countries', 'areas.countries_id', '=', 'countries.id')
@@ -71,10 +71,9 @@ class UserController extends Controller
     {
         $email = $request->email;
 
-        $user = User::where(['email' => $email,'is_active' => 1])->first();
+        $user = User::where(['email' => $email, 'is_active' => 1])->first();
         if ($user) {
-                return json_encode(array('dataSuccess' => '<b style="color:green;">Email Verified</b>'));
-            
+            return json_encode(array('dataSuccess' => '<b style="color:green;">Email Verified</b>'));
         } else {
             return json_encode(array('dataFailure' => '<b style="color:red;">Email Not Verified or Email Not Exists</b>'));
         }
@@ -192,7 +191,6 @@ class UserController extends Controller
         } else {
             $data = $request->input();
             try {
-
 
                 set_time_limit(1000);
 
@@ -595,68 +593,67 @@ class UserController extends Controller
         //     'email' => 'required|email',
         //     'password' => 'required'
         // ]);
-            $data = $request->input();
-            try {
+        $data = $request->input();
+        try {
 
-                $email = $request->email;
-                $password = md5($request->password);
+            $email = $request->email;
+            $password = md5($request->password);
 
-                $obj = User::where('email', '=', $email)
-                    ->where('password', '=', $password)
-                    ->first();
+            $obj = User::where('email', '=', $email)
+                ->where('password', '=', $password)
+                ->first();
 
-                if ($obj) {
+            if ($obj) {
 
-                    // $response = array(
-                    //     'data' => $obj,
-                    // );
-                    // return json_encode($response);
+                // $response = array(
+                //     'data' => $obj,
+                // );
+                // return json_encode($response);
 
-                    $request->session()->put('id', $obj->id);
-                    $request->session()->put('email', $obj->email);
-                    $request->session()->put('password', $obj->password);
-                    $request->session()->put('role', $obj->role);
-                    $request->session()->put('is_active', $obj->is_active);
+                $request->session()->put('id', $obj->id);
+                $request->session()->put('email', $obj->email);
+                $request->session()->put('password', $obj->password);
+                $request->session()->put('role', $obj->role);
+                $request->session()->put('is_active', $obj->is_active);
 
-                    //Session::put('email', $value);
-                        //dd($obj->role);
-                    switch ($obj->role) {
-                        case 1:
-                            return $this->IndexForAdmin();
-                            break;
-                        case 2:
-                            return $this->IndexForDoctor();
-                            break;
-                        case 3:
-                            return $this->IndexForPatient();
-                            break;
-                        case 4:
-                            return $this->IndexForPharmacist();
-                            break;
-                        default:
-                            $this->redirectTo = '/login/User_Login';
+                //Session::put('email', $value);
+                //dd($obj->role);
+                switch ($obj->role) {
+                    case 1:
+                        return $this->IndexForAdmin();
+                        break;
+                    case 2:
+                        return $this->IndexForDoctor();
+                        break;
+                    case 3:
+                        return $this->IndexForPatient();
+                        break;
+                    case 4:
+                        return $this->IndexForPharmacist();
+                        break;
+                    default:
+                        $this->redirectTo = '/login/User_Login';
 
-                            $failed = "Invalid Email or Password";
-                            
-                            return $this->redirectTo->with(['failed' => $failed]);
-                            break;
-                    }
-                } else {
-                    
-                    //  $request->session()->flush();
-                    // dd('error');
-                    $failed = "Invalid Email or Password ";
-                    //Session::flash('failed', 'Invalid Email or Password !');
-                    // Session::save();
-                    // Session::flash('alert-class', 'alert-danger');
-                     $request->session()->flash('failed',$failed);
-                    return redirect()->route('login.User_Login');
+                        $failed = "Invalid Email or Password";
+
+                        return $this->redirectTo->with(['failed' => $failed]);
+                        break;
                 }
-            } catch (Exception $e) {
-               
-                return back()->with(['failed' => "operation failed"]);
+            } else {
+
+                //  $request->session()->flush();
+                // dd('error');
+                $failed = "Invalid Email or Password ";
+                //Session::flash('failed', 'Invalid Email or Password !');
+                // Session::save();
+                // Session::flash('alert-class', 'alert-danger');
+                $request->session()->flash('failed', $failed);
+                return redirect()->route('login.User_Login');
             }
-        
+        } catch (Exception $e) {
+
+            return back()->with(['failed' => "operation failed"]);
+        }
     }
 
     public function IndexForAdmin()
@@ -675,11 +672,25 @@ class UserController extends Controller
 
     public function IndexForDoctor()
     {
+        $doctorInfo = doctor::where('doctors_id', session()->get('id'))
+            ->first();
+        $doctorProPic = doctors_profile_pictures::where('doctors_id', session()->get('id'))
+            ->first();
+        session()->put('first_name', $doctorInfo->first_name);
+        session()->put('last_name', $doctorInfo->last_name);
+        session()->put('profile_picture', $doctorProPic->profile_picture);
         return redirect('doctor_dashboard');
     }
 
     public function IndexForPatient()
     {
+        $patientInfo = patient::where('patients_id', session()->get('id'))
+            ->first();
+        $patientProPic = patients_profile_picture::where('patients_id', session()->get('id'))
+            ->first();
+        session()->put('first_name', $patientInfo->first_name);
+        session()->put('last_name', $patientInfo->last_name);
+        session()->put('profile_picture', $patientProPic->patients_profile_picture);
         return redirect('patient_dashboard');
     }
 

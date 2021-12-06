@@ -270,7 +270,7 @@
                                     </div>
                                     <div class="time">
                                         <h3>Date: {{ date('D M Y') }}</h3>
-                                        <h3>Prescription ID: {{ $prescription->id + 1 }}</h3>
+                                        <h3>Prescription ID: {{ $prescription ? $prescription->id + 1 : 2112000001 }}</h3>
                                     </div>
                                 </div>
                                 <hr>

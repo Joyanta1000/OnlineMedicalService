@@ -33,8 +33,8 @@ class PrescriptionController extends Controller
 
         $problems = problems::where('is_active', 1)->get();
 
-        $doctors = doctor::all();
-        // dd($doctors);
+        $doctors = doctor::whereNotIn('doctors_id', [session()->get('id')])->get();
+        
         $doctorsInfo = User::with('doctor', 'doctors_specialities')->when(session()->get('id'), function ($q) {
             return $q->where('id', session()->get('id'))->orderBy('created_at', 'DESC');
         })->first();

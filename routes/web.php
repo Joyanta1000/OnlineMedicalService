@@ -24,6 +24,7 @@ use App\Models\BirthCertificate;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -71,7 +72,17 @@ Route::get('/', function () {
 });
 
 Route::resource('nid', NationalIdCardController::class);
+
 Route::resource('birth_certificate_number', BirthCertificateController::class);
+
+Route::resource('chat', ChatController::class);
+
+Route::get('/message/contactList', [ChatController::class, 'contactList'])->name('message.contactList');
+
+Route::get('/message/chatData', [ChatController::class, 'chatData'])->name('message.chatData');
+
+Route::post('/message/submitMsg', [ChatController::class, 'submitMsg'])->name('message.submitMsg');
+
 
 Route::prefix('registration')->group(
 
@@ -245,7 +256,6 @@ Route::middleware(['isAdmin'])->group(function () {
     Route::post('/update_problems_info/{id}', [ProblemController::class, 'update_problems_info'])->name('update_problems_info');
 
     Route::get('/delete_problems_info/{id}', [ProblemController::class, 'delete_problems_info'])->name('delete_problems_info');
-
 });
 
 
@@ -262,9 +272,6 @@ Route::middleware(['isDoctor'])->group(function () {
     Route::post('/add_doctors_schedule', [ScheduleController::class, 'add_doctors_schedule'])->name('add_doctors_schedule');
 
     Route::prefix('appointment')->group(function () {
-        //Route::resource('checkout',AppointmentController::class);
-        Route::get('/checkout/index/{id}', [AppointmentController::class, 'index'])->name('appointment.checkout.index');
-        Route::post('/checkout/store/{id}', [AppointmentController::class, 'store'])->name('appointment.checkout.store');
         Route::get('/list', [AppointmentController::class, 'list'])->name('appointment.list');
         Route::get('/status_change/{id}', [AppointmentController::class, 'changeStatus'])->name('appointment.status_change');
     });
@@ -274,14 +281,6 @@ Route::middleware(['isDoctor'])->group(function () {
             Route::resource('prescriptions', PrescriptionController::class);
         }
     );
-
-    Route::resource('chat', ChatController::class);
-
-    Route::get('/message/contactList', [ChatController::class, 'contactList'])->name('message.contactList');
-
-    Route::get('/message/chatData', [ChatController::class, 'chatData'])->name('message.chatData');
-
-    Route::post('/message/submitMsg', [ChatController::class, 'submitMsg'])->name('message.submitMsg');
 });
 
 //Route::get('/add_doctors_schedule',[ScheduleController::class, 'add_doctors_schedules']);
@@ -292,16 +291,12 @@ Route::middleware(['isPatient'])->group(function () {
     Route::get('/patient_dashboard', function () {
         return view('patient.pages.index');
     })->name('patient_dashboard');
-
+    Route::prefix('appointment')->group(function () {
+        // Route::resource('checkout', AppointmentController::class);
+        Route::get('/checkout/index/{id}', [AppointmentController::class, 'index'])->name('appointment.checkout.index');
+        Route::post('/checkout/store/{id}', [AppointmentController::class, 'store'])->name('appointment.checkout.store');
+    });
     Route::get('/doctors', [UserController::class, 'doctors'])->name('doctors');
-
-    Route::resource('chat', ChatController::class);
-
-    Route::get('/message/contactList', [ChatController::class, 'contactList'])->name('message.contactList');
-
-    Route::get('/message/chatData', [ChatController::class, 'chatData'])->name('message.chatData');
-
-    Route::post('/message/submitMsg', [ChatController::class, 'submitMsg'])->name('message.submitMsg');
 });
 
 //Route::prefix('doctors')->group(function () {
