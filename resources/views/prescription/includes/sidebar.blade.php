@@ -62,9 +62,9 @@
                     </ul>
                 </li>
                 <li
-                    class="nav-item {{ request()->is('prescriptions.index') ? 'menu-open' : null }} ">
+                    class="nav-item {{ request()->is('prescription/prescriptions/show') ? 'menu-open' : null }} ">
                     <a href="#"
-                        class="nav-link {{ request()->is('prescriptions.index') ? 'active' : null }}">
+                        class="nav-link {{ request()->is('prescription/prescriptions/show') ? 'active' : null }}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             Prescription
@@ -73,8 +73,8 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('prescriptions.index') }}"
-                                class="nav-link {{ request()->is('prescriptions.index') ? 'active' : null }}">
+                            <a href="{{ URL::to('prescription/prescriptions/show') }}"
+                                class="nav-link {{ request()->is('prescription/prescriptions/show') ? 'active' : null }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Prescriptions</p>
                             </a>

@@ -264,7 +264,7 @@
       </li>
     </ul>
   </nav> -->
-        @include('prescription.includes.navbar')
+        @include('doctor.includes.navbar')
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
@@ -940,7 +940,7 @@
 
   </aside> -->
 
-        @include('prescription.includes.sidebar')
+        @include('doctor.includes.sidebar')
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -1456,7 +1456,7 @@
     <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
   </footer> -->
 
-        @include('prescription.includes.footer')
+        @include('doctor.includes.footer')
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

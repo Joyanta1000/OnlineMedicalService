@@ -26,7 +26,7 @@
         @endif
 
         <div class="container-fluid">
-            {{-- <form action="{{ route('prescriptions.store') }}" method="POST" enctype="multipart/form-data"> --}}
+
             @csrf
             <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 <div class="container">
@@ -36,15 +36,12 @@
                                 src="{{ asset('./logo/logo_4.png') }}" alt="">
                             <div class="h">
                                 <h1>
-                                    {{-- {{dd($details)}} --}}
                                     {{ App\Models\doctor::where('doctors_id', $details->doctors_id)->first()->first_name }}
                                     {{ App\Models\doctor::where('doctors_id', $details->doctors_id)->first()->last_name }}
-
                                 </h1>
                                 <h3>
                                     @foreach (App\Models\doctors_specialities::where('doctors_id', $details->doctors_id)->get() as $doctors_specialities)
                                         {{ $doctors_specialities->specialist_of }}
-                                        {{-- {{dd(  )}} --}}
                                         @if (!$loop->last)
                                             ,
                                         @endif
@@ -52,11 +49,8 @@
                                 </h3>
 
                                 <h3>
-                                    {{-- {{dd(App\Models\address::where('doctors_id', $details->doctors_id)->get())}} --}}
-
                                     @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
                                         {{ $doctors_address->address }}
-                                        {{-- {{dd(  )}} --}}
                                         @if (!$loop->last)
                                             ,
                                         @endif
@@ -64,7 +58,6 @@
                                     , Zip:
                                     @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
                                         {{ $doctors_address->zip_code }}
-                                        {{-- {{dd(  )}} --}}
                                         @if (!$loop->last)
                                             ,
                                         @endif
@@ -73,22 +66,18 @@
                                 <h3>
                                     @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
                                         {{ App\Models\area::where('id', $doctors_address->area_id)->first()->area }}
-                                        {{-- {{dd(  )}} --}}
                                     @endforeach
                                     ,
                                     @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
                                         {{ App\Models\thana::where('id', $doctors_address->thana_id)->first()->thana }}
-                                        {{-- {{dd(  )}} --}}
                                     @endforeach
                                     ,
                                     @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
                                         {{ App\Models\city::where('id', $doctors_address->city_id)->first()->city }}
-                                        {{-- {{dd(  )}} --}}
                                     @endforeach
                                     ,
                                     @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
                                         {{ App\Models\country::where('id', $doctors_address->country_id)->first()->country }}
-                                        {{-- {{dd(  )}} --}}
                                     @endforeach
                                 </h3>
                             </div>
@@ -107,35 +96,27 @@
                         </div>
                     </div>
                     <hr>
-
                     <div class="grid-container">
                         <textarea name="test" class="form-control" id="" cols="140" placeholder="" rows="10"
                             readonly>{{ App\Models\Test::where('prescriptions_id', $details->id)->first()->test }}</textarea>
                     </div>
                     <hr>
-
-
                     <div>
                         <div>
                             <div class="field">
                                 Patients Problems:
                                 @php $jsn = json_decode(App\Models\patients_problems::where('prescriptions_id', $details->id)->first()->problem)  @endphp
-
                                 @foreach ($jsn as $key => $value)
                                     <span
                                         style="color: red">{{ App\Models\problems::where('id', $value)->first()->problems_name }}</span>
                                     @if (!$loop->last)
                                         ,
                                     @endif
-                                    {{-- {{ $value }} --}}
                                 @endforeach
-                                {{-- {{ json_encode(App\Models\patients_problems::where('prescriptions_id', $details->id)->first()->problem) }} --}}
                             </div>
                             <hr>
                             <div class="problemShow">
-
                             </div>
-
                         </div>
                     </div>
                     <hr>
@@ -144,31 +125,14 @@
                         <div>
                             <div class="field">
                                 Referred to:
-                                {{ App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first()->first_name }}
-                                {{ App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first()->last_name }}
+                                {{ App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first() ? App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first()->first_name : '' }}
+                                {{ App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first() ? App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first()->last_name : '' }}
                             </div>
                             <hr>
-                            {{-- <div class="problemShow">
-
-                            </div> --}}
-
                         </div>
                     </div>
                     <hr>
-
-
-                    {{-- <div>
-                        <div>
-                            <div class="field">
-                                Medicines
-                            </div>
-
-                        </div>
-                    </div> --}}
-
-                    {{-- <hr> --}}
                     <div>
-
                         <table style="width: 100%; font-size: 15px; text-align: center; padding: 20px;"
                             id="prescription">
                             <thead>
@@ -199,9 +163,7 @@
                                     $p = 0;
                                     $q = 0;
                                 @endphp
-
                                 @foreach (App\Models\medicines_for_patients::where('prescriptions_id', $details->id)->get() as $medicines)
-
                                     <tr>
                                         <td>{{ App\Models\medicines::where('id', $medicines->medicines_id)->first()->medicines_name }}
                                         </td>
@@ -221,28 +183,14 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-
                         </table>
-                        {{-- <button type="submit" name="submit"
-                                        class="btn btn-primary form-control">Prescribe</button> --}}
-
                     </div>
                 </div>
             </div>
-            {{-- </form> --}}
         </div>
     </section>
-    {{-- </div> --}}
-
-
-    {{-- @include('prescription.includes.footer') --}}
-    <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
     </aside>
-    <!-- /.control-sidebar -->
-    {{-- </div> --}}
-
 @else
     <div>
         <table id="example1" class="table table-bordered table-striped">
@@ -257,8 +205,6 @@
             </thead>
             <tbody>
                 @foreach ($prescriptions as $prescription)
-
-
                     <tr>
                         <td>{{ $prescription->id }}</td>
                         <td>{{ App\Models\doctor::where('doctors_id', $prescription->doctors_id)->first()->first_name }}
@@ -282,8 +228,6 @@
                             @endif
                         </td>
                     </tr>
-
-
                 @endforeach
             </tbody>
             <tfoot>
