@@ -19,6 +19,7 @@ use App\Http\Controllers\BirthCertificateController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\NationalIdCardController;
 use App\Http\Controllers\PrescriptionController;
+use App\Http\Livewire\History;
 use App\Http\Livewire\ShowPrescriptions;
 use App\Models\Appointment;
 use App\Models\BirthCertificate;
@@ -71,6 +72,10 @@ Route::get('migrate_fresh_seed', function () {
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/history', function () {
+    return view('doctor/pages/history/history');
 });
 
 Route::resource('nid', NationalIdCardController::class);
@@ -285,6 +290,8 @@ Route::middleware(['isDoctor'])->group(function () {
             Route::resource('prescriptions', PrescriptionController::class);
         }
     );
+
+    // Route::get('/historyCheck', History::class);
 });
 
 //Route::get('/add_doctors_schedule',[ScheduleController::class, 'add_doctors_schedules']);

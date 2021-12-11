@@ -20,19 +20,18 @@ class SpecialitySeeder extends Seeder
     private function createDefaultSpeciality()
     {
         $specialities = [
-            ['name' => 'Liquid'],
-            ['name' => 'Tablet'],
-            ['name' => 'Capsules'],
-            ['name' => 'Topical'],
-            ['name' => 'Suppositories'],
-            ['name' => 'Drops'],
-            ['name' => 'Inhalers'],
-            ['name' => 'Drops'],
-            ['name' => 'Inhalers'],
-            ['name' => 'Injections'],
-            ['name' => 'Implants or patches'],
-            ['name' => 'Suspension'],
-            ['name' => 'Ointment'],
+            ['name' => 'Radilogist'],
+            ['name' => 'Cardiologist'],
+            ['name' => 'Neurologist'],
+            ['name' => 'Otolaryngologists'],
+            ['name' => 'Dernatologist'],
+            ['name' => 'Gynaecologist'],
+            ['name' => 'Geriatricist'],
+            ['name' => 'Urologist'],
+            ['name' => 'Oncologist'],
+            ['name' => 'Pathologist'],
+            ['name' => 'Psychitrist'],
+            ['name' => 'Pediatrician'],
             ['name' => 'Others'],
         ];
 

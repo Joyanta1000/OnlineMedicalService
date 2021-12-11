@@ -545,6 +545,111 @@
 
 </div>
 
+<div class="card card-default">
+                        <div class="card-header">
+                            <h3 class="card-title"></h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>NID</label>
+                                        <!-- <select class="form-control select2" style="width: 100%;">
+                    <option selected="selected">Alabama</option>
+                    <option>Alaska</option>
+                    <option>California</option>
+                    <option>Delaware</option>
+                    <option>Tennessee</option>
+                    <option>Texas</option>
+                    <option>Washington</option>
+                  </select> -->
+                                        <input type="text" name="nid_card_number" class="form-control"
+                                            style="width: 100%;" value="{{ old('nid_card_number') }}"
+                                            id="nid_card_number">
+                                        <div id="invalid">
+
+                                        </div>
+                                    </div>
+                                    <!-- /.form-group -->
+                                    <!-- <div class="form-group">
+                  <label>Birth Certificate</label>
+                  <select class="form-control select2" style="width: 100%;">
+                    <option selected="selected">Alabama</option>
+                    <option>Alaska</option>
+                    <option>California</option>
+                    <option>Delaware</option>
+                    <option>Tennessee</option>
+                    <option>Texas</option>
+                    <option>Washington</option>
+                  </select>
+
+                  <input type="text" name="birth_certificate_number" class="form-control" style="width: 100%;">
+                </div> -->
+                                    <!-- /.form-group -->
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Birth Certificate ID</label>
+                                        <!-- <select class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
+                    <option>Alabama</option>
+                    <option>Alaska</option>
+                    <option>California</option>
+                    <option>Delaware</option>
+                    <option>Tennessee</option>
+                    <option>Texas</option>
+                    <option>Washington</option>
+                  </select> -->
+                                        <input type="text" name="birth_certificate_number" class="form-control"
+                                            style="width: 100%;" value="{{ old('birth_certificate_number') }}"
+                                            id="birth_certificate_number">
+
+                                            <div id="invalid_2">
+
+                                        </div>
+                                    </div>
+                                    <!-- /.form-group -->
+                                    <!-- <div class="form-group">
+                  <label>Fax</label>
+                  <select class="form-control select2" style="width: 100%;">
+                    <option selected="selected">Alabama</option>
+                    <option>Alaska</option>
+                    <option disabled="disabled">California (disabled)</option>
+                    <option>Delaware</option>
+                    <option>Tennessee</option>
+                    <option>Texas</option>
+                    <option>Washington</option>
+                  </select>
+                  <input type="text" name="fax" class="form-control" style="width: 100%;">
+                </div> -->
+                                    <!-- /.form-group -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+
+                            <h5></h5>
+
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and
+                            information about
+                            the plugin.
+                        </div>
+                    </div>
+
 <!-- Marital Statuses -->
 <!-- Permanent Address -->
 
@@ -1615,6 +1720,164 @@ Thanks for being with us.
 <script src="{{asset('../../dist/js/demo.js')}}"></script>
 <!-- Page specific script -->
 
+
+<script>
+        $(document).ready(function() {
+
+            $("#nid_card_number").keyup(function() {
+
+                if ($("#nid_card_number").val().length == 9) {
+
+                    var nid = $("#nid_card_number").val();
+                    $("#invalid").html("");
+                    $.ajax({
+                        url: "{{ route('nid.index') }}",
+                        type: "GET",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            nid: $("#nid_card_number").val()
+                        },
+                        cache: false,
+                        dataType: 'json',
+                        success: function(dataResult) {
+                            if (dataResult.success) {
+                                $("#invalid").html("");
+                                $("#nid_card_number").css("border-color", "green");
+                            } else {
+                                $("#invalid").html("");
+                                $("#nid_card_number").css("border-color", "coral");
+                                $("#invalid").append(
+                                    "<span class='glyphicon glyphicon-remove form-control-feedback' style= 'margin-left: 5px; color: red;'>Invalid Nid Card Number</span>"
+                                );
+                            }
+                        }
+                    });
+
+                } else {
+                    $("#invalid").html("");
+                    $("#nid_card_number").css("border-color", "coral");
+                    $("#invalid").append(
+                        "<span class='glyphicon glyphicon-remove form-control-feedback' style= 'margin-left: 5px; color: red;'>NID Card Number Must Be 9 Digit</span>"
+                    );
+                }
+
+            });
+
+            $("#birth_certificate_number").keyup(function() {
+
+                if ($("#birth_certificate_number").val().length == 9) {
+
+                    var birth_certificate_number = $("#birth_certificate_number").val();
+                    $("#invalid_2").html("");
+                    $.ajax({
+                        url: "{{ route('birth_certificate_number.index') }}",
+                        type: "GET",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            birth_certificate_number: birth_certificate_number
+                        },
+                        cache: false,
+                        dataType: 'json',
+                        success: function(dataResult) {
+                          console.log(dataResult);
+                            if (dataResult.success) {
+                                $("#invalid_2").html("");
+                                $("#birth_certificate_number").css("border-color", "green");
+                            } else {
+                                $("#invalid_2").html("");
+                                $("#birth_certificate_number").css("border-color", "coral");
+                                $("#invalid_2").append(
+                                    "<span class='glyphicon glyphicon-remove form-control-feedback' style= 'margin-left: 5px; color: red;'>Invalid Birth Certificate Number</span>"
+                                );
+                            }
+                        }
+                    });
+
+                } else {
+                    $("#invalid_2").html("");
+                    $("#birth_certificate_number").css("border-color", "coral");
+                    $("#invalid_2").append(
+                        "<span class='glyphicon glyphicon-remove form-control-feedback' style= 'margin-left: 5px; color: red;'>Birth Certificate Must Be 9 Digit</span>"
+                    );
+                }
+
+            });
+
+
+            var count = 1;
+            $('#add').click(function() {
+                count = count + 1;
+                var html_code = "<tr id='row" + count + "'>";
+                html_code +=
+                    "<td ><input class='item_name' type='text' name='social_network_link[]' style='width: 100%;'></td>";
+
+                html_code += "<td><button type='button' name='remove' data-row='row" + count +
+                    "' class='bt btn-danger btn-xs remove'><i class='icon-remove'>Remove</i></button></td>";
+                html_code += "</tr>";
+                $('#crud_table').append(html_code);
+            });
+            $(document).on('click', '.remove', function() {
+                var delete_row = $(this).data("row");
+                $('#' + delete_row).remove();
+            });
+            //     $('#save').click(function(){
+            //       var item_name = [];
+            //       var item_code = [];
+            //       var item_desc = [];
+            //       var item_price = [];
+
+            //       $('.item_name').each(function(){
+            //         item_name.push($(this).text());
+            //       });
+            //         $('.item_code').each(function(){
+            //         item_code.push($(this).text());
+            //       });
+            //         $('.item_desc').each(function(){
+            //         item_desc.push($(this).text());
+            //       });
+            //         $('.item_price').each(function(){
+            //         item_price.push($(this).text());
+            //       });
+
+            // // if (item_name!=''&&item_code!=''&&item_desc!=''&&item_price!='') {
+
+            // //         $.ajax({
+            // //           url : "insert",
+            // //           method : "POST",
+            // //           data : {item_name:item_name, item_code:item_code,item_desc:item_desc,item_price:item_price},
+            // //           success:function(data)
+            // //           {
+            // //             $("td[contenteditable='true']").text("");
+            // //             for (var i = 2; i <= count; i++) {
+            // //               $('tr#'+i+'').remove();
+            // //             }
+            // //             window.alert("Data Saved Successfully");
+            // //             fetch_item_data();
+            // //           }
+            // //         });
+            // //       }
+            // //       else
+            // //       {
+            // //         window.alert("All fields are required");
+            // //       }
+            //     });
+
+            // function fetch_item_data()
+            // {
+            //   $.ajax({
+            //     url: "fetch.php",
+            //     method: "POST",
+            //     success: function(data)
+            //     {
+            //       $('#inserted_item_data').html(data);
+            //     }
+            //   })
+            // }
+
+            // fetch_item_data();
+
+        });
+    </script>
 
 <script>
   $(document).ready(function () {

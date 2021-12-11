@@ -388,6 +388,12 @@ class UserController extends Controller
                 $permanent_address->permanent_address_zip_code = $data['permanent_address_zip_code'];
                 $permanent_address->save();
 
+                $important_information = new important_information;
+                $important_information->patients_id = $id;
+                $important_information->nid_card_number = $data['nid_card_number'] ? $data['nid_card_number'] : '';
+                $important_information->birth_certificate_number = $data['birth_certificate_number'] ? $data['birth_certificate_number'] : '';
+                $important_information->save();
+
 
                 $confirmation_code = array('confirmation_code' => $code);
 

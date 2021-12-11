@@ -17,6 +17,8 @@ class CreateImportantInformationsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('doctors_id')->nullable();
             $table->foreign('doctors_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('patients_id')->nullable();
+            $table->foreign('patients_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('nid_card_number')->nullable();
             $table->string('birth_certificate_number')->nullable();
             $table->timestamps();

@@ -188,11 +188,11 @@
 
     <div class="wrapper">
 
-        @include('prescription.includes.navbar')
+        @include('doctor.includes.navbar')
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        @include('prescription.includes.sidebar')
+        @include('doctor.includes.sidebar')
 
         <div class="content-wrapper">
 
@@ -368,7 +368,7 @@
         </div>
 
 
-        @include('prescription.includes.footer')
+        @include('doctor.includes.footer')
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
             <!-- Control sidebar content goes here -->
