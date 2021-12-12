@@ -33,9 +33,8 @@ class ShowPrescriptions extends Component
     public function view($id)
     {
         $details = prescriptions::with('medicines_for_patients', 'test', 'patients_problems', 'referred_to', 'frequency', 'foodTime', 'duration')->find($id);
-
-        //dd($details);
         $this->details = $details;
+        // dd($details->test);
         return view('livewire.show-prescriptions', [
             'details' => $details,
         ]);

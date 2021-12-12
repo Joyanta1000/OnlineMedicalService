@@ -304,6 +304,7 @@
                                         <tbody class="rows">
                                         </tbody>
                                     </table>
+                                    <input type="hidden" name="appointment_id" value="{{$appointment_id}}"/>
                                     <button type="submit" name="submit"
                                         class="btn btn-primary form-control">Prescribe</button>
                                 </div>

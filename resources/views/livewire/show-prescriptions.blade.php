@@ -34,7 +34,7 @@
                         <div>
                             <img class="img" style="max-height: 120px; max-width: 120px;"
                                 src="{{ asset('./logo/logo_4.png') }}" alt="">
-                            <div class="h">
+                            <div class="h" style="margin: 15px;">
                                 <h1>
                                     {{ App\Models\doctor::where('doctors_id', $details->doctors_id)->first()->first_name }}
                                     {{ App\Models\doctor::where('doctors_id', $details->doctors_id)->first()->last_name }}
@@ -96,15 +96,21 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="grid-container">
-                        <textarea name="test" class="form-control" id="" cols="140" placeholder="" rows="10"
-                            readonly>{{ App\Models\Test::where('prescriptions_id', $details->id)->first()->test }}</textarea>
+                    <div class="field" style="margin-left: 15px;">
+                        <b>Test:</b> <br>
+                        @foreach ($details->test as $item)
+                            {{-- {{$item->tests_id}} --}}
+                            <span style="color: red">
+                                Name: {{ $item->tests_id ? App\Models\TestModel::find($item->tests_id)->test : 'N/A' }}
+                                <p style="color: blue">Details: {{ $item->details ?: 'N/A' }}</p>
+                            </span>
+                        @endforeach
                     </div>
                     <hr>
                     <div>
                         <div>
-                            <div class="field">
-                                Patients Problems:
+                            <div class="field" style="margin-left: 15px;">
+                                <b>Patients Problems:</b>
                                 @php $jsn = json_decode(App\Models\patients_problems::where('prescriptions_id', $details->id)->first()->problem)  @endphp
                                 @foreach ($jsn as $key => $value)
                                     <span
@@ -123,8 +129,8 @@
 
                     <div>
                         <div>
-                            <div class="field">
-                                Referred to:
+                            <div class="field" style="margin-left: 15px;">
+                                <b>Referred to:</b>
                                 {{ App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first() ? App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first()->first_name : '' }}
                                 {{ App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first() ? App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first()->last_name : '' }}
                             </div>
@@ -132,7 +138,7 @@
                         </div>
                     </div>
                     <hr>
-                    <div>
+                    <div style="margin: 15px;">
                         <table style="width: 100%; font-size: 15px; text-align: center; padding: 20px;"
                             id="prescription">
                             <thead>
@@ -141,7 +147,6 @@
                                 <th>Time </th>
                                 <th>Duration</th>
                                 <th>Qty</th>
-                                <th>Action</th>
                             </thead>
                             <tbody class="rows">
 
@@ -179,7 +184,6 @@
                                                 {{ $after_food[$q++] == 1 ? 'checked' : '' }}> After Food</td>
                                         <td>{{ $duration[$o++] }}</td>
                                         <td>{{ $qty[$m++] }}</td>
-                                        <td></td>
                                     </tr>
                                 @endforeach
                             </tbody>

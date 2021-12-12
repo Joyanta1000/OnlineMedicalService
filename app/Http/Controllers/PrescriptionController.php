@@ -23,13 +23,11 @@ use Illuminate\Http\Request;
 
 class PrescriptionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
+        $appointment_id = request()->appointment_id;
+
         $medicines = medicines::where('is_active', 1)->get();
 
         $problems = problems::where('is_active', 1)->get();
@@ -39,7 +37,7 @@ class PrescriptionController extends Controller
         $doctorsInfo = User::with('doctor', 'doctors_specialities')->when(session()->get('id'), function ($q) {
             return $q->where('id', session()->get('id'))->orderBy('created_at', 'DESC');
         })->first();
-        // dd($doctorsInfo);
+
         $doctorsAddresses = address::with('city', 'country', 'thana', 'area')->when(session()->get('id'), function ($q) {
             return $q->where('doctors_id', session()->get('id'))->orderBy('created_at', 'DESC')->latest();
         })->first();
@@ -49,35 +47,25 @@ class PrescriptionController extends Controller
         })->first();
 
         $prescription = prescriptions::orderBy('created_at', 'DESC')->first();
-        //dd($prescription);
+
         $tests = TestModel::all();
-        return view('prescription.index', compact('medicines', 'doctorsInfo', 'doctors', 'doctorsAddresses', 'patientsInfo', 'prescription', 'problems', 'tests'));
+        return view('prescription.index', compact('appointment_id','medicines', 'doctorsInfo', 'doctors', 'doctorsAddresses', 'patientsInfo', 'prescription', 'problems', 'tests'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
 
-        // dd($request->all());
+        // dd($request->tests_id);
         $id = IdGenerator::generate(['table' => 'prescriptions', 'length' => 10, 'prefix' => date('ym')]);
 
         $createPrescription = prescriptions::create([
             'id' => $id,
+            'appointment_id' => $request->appointment_id,
             'doctors_id' => session()->get('id'),
             'patients_id' => $request->patients_id,
         ]);
@@ -97,19 +85,6 @@ class PrescriptionController extends Controller
                 'details' => $request->details[$i],
             ]);
         }
-
-        // foreach ($request->details as $key => $value) {
-
-        //     $test_details_for_patients = Test::create([
-        //         'prescriptions_id' => $createPrescription->id,
-        //         'details' => $value,
-        //     ]);
-        // }
-
-        $test = Test::create([
-            'prescriptions_id' => $createPrescription->id,
-            'test' => $request->test,
-        ]);
 
         $having_problems = patients_problems::create([
             'prescriptions_id' => $createPrescription->id,
@@ -152,46 +127,21 @@ class PrescriptionController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\prescriptions  $prescriptions
-     * @return \Illuminate\Http\Response
-     */
     public function show()
     {
         return view('prescription.prescriptions');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\prescriptions  $prescriptions
-     * @return \Illuminate\Http\Response
-     */
     public function edit(prescriptions $prescriptions)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\prescriptions  $prescriptions
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, prescriptions $prescriptions)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\prescriptions  $prescriptions
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(prescriptions $prescriptions)
     {
         //
