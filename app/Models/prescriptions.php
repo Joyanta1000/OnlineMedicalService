@@ -12,6 +12,7 @@ class prescriptions extends Model
         'id',
         'patients_id',
         'doctors_id',
+        'appointment_id'
     ];
 
     public function user()

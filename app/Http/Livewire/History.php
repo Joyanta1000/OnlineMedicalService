@@ -26,16 +26,13 @@ class History extends Component
     {
         // $this->validate();
         $userInfo = important_information::where('nid_card_number', $this->searchBy)
-        ->orWhere('birth_certificate_number', $this->searchBy)
-        ->orWhere('patients_id', $this->searchBy)
-        ->orWhere('doctors_id', $this->searchBy)->first();
-        // dd($userInfo);
+            ->orWhere('birth_certificate_number', $this->searchBy)
+            ->orWhere('patients_id', $this->searchBy)
+            ->orWhere('doctors_id', $this->searchBy)->first();
         $appointment = Appointment::where('patient_id', $this->searchBy)->get();
         $prescription = prescriptions::where('patients_id', $this->searchBy)->get();
-
         $this->appointment = $appointment;
         $this->prescription = $prescription;
-        //dd($appointment, $prescription);
         return view('livewire.history', [
             'appointment' => $appointment,
             'prescription' => $prescription,
@@ -44,6 +41,5 @@ class History extends Component
 
     public function historyCheck()
     {
-        
     }
 }

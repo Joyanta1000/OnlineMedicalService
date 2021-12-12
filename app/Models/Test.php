@@ -11,7 +11,8 @@ class Test extends Model
 
     protected $fillable = [
         'prescriptions_id',
-        'test',
+        'tests_id',
+        'details'
     ];
 
     public function prescription()

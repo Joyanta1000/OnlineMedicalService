@@ -16,6 +16,7 @@ use App\Models\problems;
 use App\Models\Quantity;
 use App\Models\referred_to;
 use App\Models\Test;
+use App\Models\TestModel;
 use App\Models\User;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
@@ -34,7 +35,7 @@ class PrescriptionController extends Controller
         $problems = problems::where('is_active', 1)->get();
 
         $doctors = doctor::whereNotIn('doctors_id', [session()->get('id')])->get();
-        
+
         $doctorsInfo = User::with('doctor', 'doctors_specialities')->when(session()->get('id'), function ($q) {
             return $q->where('id', session()->get('id'))->orderBy('created_at', 'DESC');
         })->first();
@@ -49,7 +50,8 @@ class PrescriptionController extends Controller
 
         $prescription = prescriptions::orderBy('created_at', 'DESC')->first();
         //dd($prescription);
-        return view('prescription.index', compact('medicines', 'doctorsInfo', 'doctors', 'doctorsAddresses', 'patientsInfo', 'prescription', 'problems'));
+        $tests = TestModel::all();
+        return view('prescription.index', compact('medicines', 'doctorsInfo', 'doctors', 'doctorsAddresses', 'patientsInfo', 'prescription', 'problems', 'tests'));
     }
 
     /**
@@ -87,6 +89,22 @@ class PrescriptionController extends Controller
                 'medicines_id' => $value,
             ]);
         }
+
+        for ($i = 0; $i < count($request->tests_id); $i++) {
+            $test_for_patients = Test::create([
+                'prescriptions_id' => $createPrescription->id,
+                'tests_id' => $request->tests_id[$i],
+                'details' => $request->details[$i],
+            ]);
+        }
+
+        // foreach ($request->details as $key => $value) {
+
+        //     $test_details_for_patients = Test::create([
+        //         'prescriptions_id' => $createPrescription->id,
+        //         'details' => $value,
+        //     ]);
+        // }
 
         $test = Test::create([
             'prescriptions_id' => $createPrescription->id,
@@ -127,15 +145,11 @@ class PrescriptionController extends Controller
             'qty' => json_encode($request->qty),
         ]);
 
-        if($createPrescription)
-        {
+        if ($createPrescription) {
             return redirect()->back()->with('status', "Prescribed successfully");
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('failed', "Prescription not created");
         }
-        
     }
 
     /**
