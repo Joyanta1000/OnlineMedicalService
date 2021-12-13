@@ -6,7 +6,7 @@
         @if (session('status'))
             <div class="alert alert-success" role="alert">
                 <button type="button" class="close" data-dismiss="alert">×</button>
-                {{ session('status') }}
+                {{ session('status') }} {{ session('prescriptions_id') }}
             </div>
         @elseif(session('failed'))
             <div class="alert alert-danger" role="alert">
@@ -98,13 +98,30 @@
                     <hr>
                     <div class="field" style="margin-left: 15px;">
                         <b>Test:</b> <br>
-                        @foreach ($details->test as $item)
+                        <form action="{{URL::to('prescription/prescriptions/update')}}" method="POST" enctype="multipart/form-data">
+                            @method('PUT')
+                            @csrf
+                            <input type="hidden" name="prescription_id" wire:model="prescription_id" id="prescription_id">
+                        @for ($i=0; $i<count($details->test); $i++)
                             {{-- {{$item->tests_id}} --}}
+
                             <span style="color: red">
-                                Name: {{ $item->tests_id ? App\Models\TestModel::find($item->tests_id)->test : 'N/A' }}
-                                <p style="color: blue">Details: {{ $item->details ?: 'N/A' }}</p>
+                                Name:
+                                {{ $details->test[$i]->tests_id ? App\Models\TestModel::find($details->test[$i]->tests_id)->test : 'N/A' }}
+                                <p style="color: blue">Details: {{ $details->test[$i]->details ?: 'N/A' }}</p>
+                                @if (session()->get('role') == 3)
+                                    <input type="hidden" name="tests_id[]" wire:model="tests_id.{{$i}}">
+                                    
+                                    <input type="file" name="test_file[]" class="form-control" wire:model="test_file.{{$i}}" placeholder="Browse">
+                                    <div wire:loading wire:target="test_file.{{$i}}">Getting File...</div>
+                                 @endif
                             </span>
-                        @endforeach
+                            <br>
+                        @endfor
+                        @if (session()->get('role') == 3)
+                        <input type="submit" wire:click.prevent="store" value="Submit Test Report" class="btn btn-primary">
+                        @endif
+                        </form>
                     </div>
                     <hr>
                     <div>

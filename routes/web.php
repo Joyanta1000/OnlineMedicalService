@@ -308,6 +308,15 @@ Route::middleware(['isPatient'])->group(function () {
         Route::post('/checkout/store/{id}', [AppointmentController::class, 'store'])->name('appointment.checkout.store');
     });
     Route::get('/doctors', [UserController::class, 'doctors'])->name('doctors');
+
+    Route::prefix('prescription')->group(
+        function () {
+            Route::resource('prescriptions', PrescriptionController::class);
+        }
+    );
+
+    // Route::post('/store', [ShowPrescriptions::class, 'store']);
+
 });
 
 //Route::prefix('doctors')->group(function () {

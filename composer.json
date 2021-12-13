@@ -21,6 +21,7 @@
         "livewire/livewire": "^2.8",
         "munafio/chatify": "^1.2",
         "pusher/pusher-php-server": "^7.0",
+        "spatie/laravel-medialibrary": "^9.6.0",
         "spatie/laravel-permission": "^5.4",
         "spatie/laravel-searchable": "^1.10",
         "stripe/stripe-php": "^7.100"

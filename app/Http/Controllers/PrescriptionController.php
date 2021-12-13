@@ -49,12 +49,7 @@ class PrescriptionController extends Controller
         $prescription = prescriptions::orderBy('created_at', 'DESC')->first();
 
         $tests = TestModel::all();
-        return view('prescription.index', compact('appointment_id','medicines', 'doctorsInfo', 'doctors', 'doctorsAddresses', 'patientsInfo', 'prescription', 'problems', 'tests'));
-    }
-
-    public function create()
-    {
-        //
+        return view('prescription.index', compact('appointment_id', 'medicines', 'doctorsInfo', 'doctors', 'doctorsAddresses', 'patientsInfo', 'prescription', 'problems', 'tests'));
     }
 
     public function store(Request $request)
@@ -137,10 +132,23 @@ class PrescriptionController extends Controller
         //
     }
 
-    public function update(Request $request, prescriptions $prescriptions)
+    public function update(Request $request)
     {
-        //
+        for ($i = 0; $i < count($request->tests_id); $i++) {
+            $save = Test::where(['prescriptions_id' => $request->prescription_id, 'tests_id' => $request->tests_id[$i]])->first();
+            $save->addMedia($request->test_file[$i])
+                ->toMediaCollection('test_file');
+            $mediaItems = $save->load('media')->getMedia('test_file');
+            $save->test_file = str_replace($request->test_file[$i], $mediaItems[count($mediaItems) - 1]->getFullUrl(), $save->test_file);
+            $save->update();
+        }
+
+        if ($save) {
+            return redirect()->back()->with(['status' => 'Reports added', 'prescriptions_id' => $save->prescriptions_id]);
+        }
+        return redirect()->back()->with('failed', 'Reports not added');
     }
+
 
     public function destroy(prescriptions $prescriptions)
     {

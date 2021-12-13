@@ -13,6 +13,9 @@
         href="{{ asset('../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('../../dist/css/adminlte.min.css') }}">
+    {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
+    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
+    {{-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> --}}
     @livewireStyles
     <style>
         .header {
@@ -132,7 +135,7 @@
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
-        @include('doctor.includes.sidebar')
+        @include('patient.includes.sidebar')
         <div class="content-wrapper">
             <section class="content-header">
                 <div class="container-fluid">
@@ -179,7 +182,7 @@
                 </div>
             </section>
         </div>
-        @include('doctor.includes.footer')
+        @include('patient.includes.footer')
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
     </div>

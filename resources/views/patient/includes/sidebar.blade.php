@@ -51,6 +51,26 @@
                         </li>
                     </ul>
                 </li>
+                <li
+                    class="nav-item {{ request()->is('prescription/prescriptions/show') ? 'menu-open' : null }} ">
+                    <a href="#"
+                        class="nav-link {{ request()->is('prescription/prescriptions/show') ? 'active' : null }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Prescription
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ URL::to('prescription/prescriptions/show') }}"
+                                class="nav-link {{ request()->is('prescription/prescriptions/show') ? 'active' : null }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Prescriptions</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item {{ request()->is('chat.index') ? 'menu-open' : null }} ">
                     <a href="#" class="nav-link {{ request()->is('chat.index') ? 'active' : null }}">
                         <i class="nav-icon fas fa-edit"></i>
