@@ -9,6 +9,7 @@ use App\Models\Test;
 use League\Flysystem\MountManager;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 
 class History extends Component
 {
@@ -20,7 +21,12 @@ class History extends Component
     public $prescription;
     public $aRR;
     use WithPagination;
-
+    use WithFileUploads;
+    public $confirming;
+    public $details;
+    public $tests_id = [];
+    public $prescription_id;
+    public $test_file = [];
 
     protected $rules = [
         'searchBy' => 'required|min:6',
@@ -33,9 +39,12 @@ class History extends Component
             ->orWhere('birth_certificate_number', $this->searchBy)
             ->orWhere('patients_id', $this->searchBy)
             ->orWhere('doctors_id', $this->searchBy)->first();
-        $appointment = Appointment::where('patient_id', $this->searchBy)->get();
-        $prescription = prescriptions::where('patients_id', $this->searchBy)->get();
-
+        
+        $appointment = Appointment::where('patient_id', $userInfo->patients_id)->orWhere('doctor_id', $userInfo->doctors_id)->get();
+        $prescription = prescriptions::where('patients_id', $userInfo->patients_id)->orWhere('doctors_id', $userInfo->doctors_id)->get();
+        // if ($this->searchBy) {
+        //     dd($appointment, $prescription);
+        // }
         $this->aRR = array();
         
             foreach ($prescription as $prescriptionBy) {
@@ -58,7 +67,19 @@ class History extends Component
         ]);
     }
 
-    public function historyCheck()
+    public function view($id)
     {
+        $details = prescriptions::with('medicines_for_patients', 'test', 'patients_problems', 'referred_to', 'frequency', 'foodTime', 'duration')->find($id);
+        $this->details = $details;
+        $this->prescription_id = $details->id;
+        for ($i = 0; $i < count($details->test); $i++) {
+            $this->tests_id[$i] = $details->test[$i]->tests_id;
+            $this->test_file[$i] = '';
+        }
+        // dd($details->test);
+        $this->updateMode = true;
+        return view('livewire.history', [
+            'details' => $details,
+        ]);
     }
 }

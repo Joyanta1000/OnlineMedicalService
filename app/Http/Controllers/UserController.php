@@ -52,6 +52,24 @@ class UserController extends Controller
         return view('authentication.User_Login');
     }
 
+    public function userStatus()
+    {
+        User::when(request()->get('requestFor'), function($query){
+            $query->where('id', request()->get('id'));
+        })->update([
+            'is_enable' => User::where('id', request()->get('id'))->first()->is_enable == false ? true : false
+        ]);
+        return redirect()->back()->with('status', 'User Status Updated Successfully');
+    }
+
+    public function users()
+    {
+        $users = User::when(session()->get('id'), function ($query) {
+            return $query->where('id','<>',session()->get('id'));
+        })->get();
+        return view('admin.users', compact('users'));
+    }
+
     public function loginVerification(Request $request)
     {
         $email = $request->email;
@@ -100,7 +118,6 @@ class UserController extends Controller
             'data' => $thanas_info,
         );
         echo json_encode($response);
-
     }
 
     public function register_doctor(Request $request)
@@ -563,6 +580,7 @@ class UserController extends Controller
                 $request->session()->put('password', $obj->password);
                 $request->session()->put('role', $obj->role);
                 $request->session()->put('is_active', $obj->is_active);
+                $request->session()->put('is_enable', $obj->is_enable);
                 switch ($obj->role) {
                     case 1:
                         return $this->IndexForAdmin();
@@ -763,5 +781,12 @@ class UserController extends Controller
     {
         Session::flush();
         return redirect('login/User_Login')->with('status', "Logged out successfully");
+    }
+
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->back()->with('status', "User deleted successfully");
     }
 }

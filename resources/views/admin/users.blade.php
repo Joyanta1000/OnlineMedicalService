@@ -5,135 +5,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AdminLTE 3 | DataTables</title>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="{{ asset('../../plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('../../dist/css/adminlte.min.css') }}">
-    @livewireStyles
-    <style>
-        .header {
-            background-color: #2c2f33;
-            color: white;
-            /* text-align: center; */
-            max-width: 100%;
-            max-height: 500px;
-            display: flex;
-        }
-
-        .h {
-            float: right;
-            color: rgb(248, 244, 244);
-            margin-left: 0px;
-            margin-top: 10px;
-            font-size: 10px;
-        }
-
-        h1 {
-            font-size: 20px;
-        }
-
-        h2 {
-            font-size: 20px;
-        }
-
-        h3 {
-            font-size: 20px;
-        }
-
-        .img {
-            margin: 30px;
-        }
-
-        .time {
-            float: right;
-            position: absolute;
-            right: 10px;
-            color: rgb(0, 0, 0);
-        }
-
-        .another_div {
-            display: flex;
-            max-height: 400px;
-            margin-top: 10px;
-            max-width: 500px;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: auto auto auto;
-            padding: 10px;
-        }
-
-        .grid-item {
-            background-color: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            font-size: 20px;
-            text-align: center;
-            max-width: 800px;
-            min-width: 20px;
-            font-size: 20px;
-        }
-
-        .grid-width-1 {
-            width: 200px;
-            min-width: 20px;
-        }
-
-        .grid-width-2 {
-            width: 1020px;
-            min-width: 20px;
-        }
-
-        @mediaonlyscreenand(max-width: 768px) {
-            [class*="grid-width-"] {
-                width: 20%;
-            }
-        }
-
-        #prescription {
-            font-family: Arial, Helvetica, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        #prescription td,
-        #prescription th {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        #prescription tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        #prescription tr:hover {
-            background-color: #ddd;
-        }
-
-        #prescription th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
-            background-color: #0b0c0c;
-            color: white;
-        }
-
-        div.container {
-            padding: 10px;
-        }
-
-    </style>
 </head>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
-        @include('doctor.includes.navbar')
-        @include('doctor.includes.sidebar')
+        @include('admin.includes.navbar')
+        @include('admin.includes.sidebar')
         <div class="content-wrapper">
             <section class="content-header">
                 <div class="container-fluid">
@@ -144,7 +27,7 @@
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">History</li>
+                                <li class="breadcrumb-item active">User</li>
                             </ol>
                         </div>
                     </div>
@@ -156,23 +39,57 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">History Checkup</h3>
+                                    <h3 class="card-title">User</h3>
                                 </div>
                                 @if (session('status'))
-                                    <div class="card-header">
-                                        <div class="alert alert-success" role="alert">
-                                            <button type="button" class="close" data-dismiss="alert">×</button>
-                                            {{ session('status') }}
-                                        </div>
-                                    @elseif(session('failed'))
-                                        <div class="alert alert-danger" role="alert">
-                                            <button type="button" class="close" data-dismiss="alert">×</button>
-                                            {{ session('failed') }}
-                                        </div>
+                                <div class="card-header">
+                                    <div class="alert alert-success" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        {{ session('status') }}
                                     </div>
+                                    @elseif(session('failed'))
+                                    <div class="alert alert-danger" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        {{ session('failed') }}
+                                    </div>
+                                </div>
                                 @endif
                                 <div class="card-body">
-                                    @livewire('history')
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Email</th>
+                                                <th>Verified/Not</th>
+                                                <th>Enabled/Not</th>
+                                                <th>Action(s)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($users as $user)
+                                            <tr>
+                                                <td>{{ $user->id }}</td>
+                                                <td>{{ $user->email }}</td>
+                                                <td> <a href="" class="{{$user->is_active == 1 ? 'btn btn-primary' : 'btn btn-danger' }}">{{$user->is_active ==1 ? 'Verified' : 'Not Verified' }}</a></td>
+                                                <td><a href="{{route('user_status', ['requestFor' => 'permission' , 'id' => $user->id])}}" class="{{$user->is_enable == 1 ? 'btn btn-primary' : 'btn btn-danger' }}">{{$user->is_enable ==1 ? 'Enabled' : 'Disabled' }}</a></td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a type="button" class="btn btn-danger" href="{{ URL::to('delete_user/' . $user->id) }}" onclick="return confirm('Are you sure to delete?')">Delete</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Email</th>
+                                                <th>Verified/Not</th>
+                                                <th>Enabled/Not</th>
+                                                <th>Action(s)</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -180,7 +97,7 @@
                 </div>
             </section>
         </div>
-        @include('doctor.includes.footer')
+        @include('admin.includes.footer')
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
     </div>
@@ -219,7 +136,6 @@
             });
         });
     </script>
-    @livewireScripts
 </body>
 
 </html>

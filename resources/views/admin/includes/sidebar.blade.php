@@ -32,6 +32,26 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li
+                    class="nav-item {{ request()->is('users') ? 'menu-open' : null }} ">
+                    <a href="#"
+                        class="nav-link {{ request()->is('users') ? 'active' : null }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            User
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('users') }}"
+                                class="nav-link {{ request()->is('users') ? 'active' : null }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Users</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li
                     class="nav-item {{ request()->is('add_gender') || request()->is('genders') ? 'menu-open' : null }} ">
                     <a href="#"
                         class="nav-link {{ request()->is('add_gender') || request()->is('genders') ? 'active' : null }}">

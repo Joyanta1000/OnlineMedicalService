@@ -146,6 +146,9 @@ Route::get('/logout', [UserController::class, 'logout']);
 
 Route::middleware(['isAdmin'])->group(function () {
 
+    Route::get('/users/', [UserController::class, 'users'])->name('users');
+    Route::get('/user_status/', [UserController::class, 'userStatus'])->name('user_status');
+    Route::get('/delete_user/{id}', [UserController::class, 'destroy'])->name('delete_user');
     Route::get('/admin', function () {
         $countUser = User::whereNotIn('id', [session()->get('id')])->count();
         $countAppointments = Appointment::count();
@@ -285,7 +288,7 @@ Route::middleware(['isDoctor'])->group(function () {
         Route::get('/status_change/{id}', [AppointmentController::class, 'changeStatus'])->name('appointment.status_change');
     });
 
-    Route::prefix('prescription')->group(
+    Route::prefix('prescription_for_doctor')->group(
         function () {
             Route::resource('prescriptions', PrescriptionController::class);
         }
