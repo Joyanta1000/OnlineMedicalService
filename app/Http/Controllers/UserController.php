@@ -777,6 +777,11 @@ class UserController extends Controller
         return view('patient.pages.doctors', compact('doctors', 'doctors_social_networks', 'doctors_specialities', 'doctors_addresses'));
     }
 
+    public function show($id)
+    {
+        dd(User::with('doctor', 'doctors_specialities', 'patient', 'pharmacy', 'doctors_file', 'pharmacy_file')->where('id',$id)->first());
+    }
+
     public function logout()
     {
         Session::flush();

@@ -74,9 +74,6 @@
                                                 <td><a href="{{route('user_status', ['requestFor' => 'permission' , 'id' => $user->id])}}" class="{{$user->is_enable == 1 ? 'btn btn-primary' : 'btn btn-danger' }}">{{$user->is_enable ==1 ? 'Enabled' : 'Disabled' }}</a></td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a type="button" class="btn btn-primary" href="{{ URL::to('view_user/' . $user->id) }}">View</a>
-                                                    </div>
-                                                    <div class="btn-group">
                                                         <a type="button" class="btn btn-danger" href="{{ URL::to('delete_user/' . $user->id) }}" onclick="return confirm('Are you sure to delete?')">Delete</a>
                                                     </div>
                                                 </td>

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class pharmacies_files extends Model
 {
     use HasFactory;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'phermacies_id');
+    }
 }

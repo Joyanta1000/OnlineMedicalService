@@ -52,9 +52,24 @@ class User extends Authenticatable
         return $this->hasMany(doctors_specialities::class, 'doctors_id');
     }
 
+    public function doctors_file()
+    {
+        return $this->hasMany(doctors_files::class, 'doctors_id');
+    }
+
     public function patient()
     {
         return $this->hasMany(patient::class, 'patients_id');
+    }
+
+    public function pharmacy()
+    {
+        return $this->hasMany(pharmacies::class, 'phermacies_id');
+    }
+
+    public function pharmacy_file()
+    {
+        return $this->hasMany(pharmacies_files::class, 'phermacies_id');
     }
 
     public function appointment()

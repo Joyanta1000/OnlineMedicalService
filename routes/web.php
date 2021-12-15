@@ -149,6 +149,7 @@ Route::middleware(['isAdmin'])->group(function () {
     Route::get('/users/', [UserController::class, 'users'])->name('users');
     Route::get('/user_status/', [UserController::class, 'userStatus'])->name('user_status');
     Route::get('/delete_user/{id}', [UserController::class, 'destroy'])->name('delete_user');
+    Route::get('/view_user/{id}', [UserController::class, 'show'])->name('view_user');
     Route::get('/admin', function () {
         $countUser = User::whereNotIn('id', [session()->get('id')])->count();
         $countAppointments = Appointment::count();
