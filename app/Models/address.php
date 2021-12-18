@@ -9,6 +9,12 @@ class address extends Model
 {
     use HasFactory;
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'doctors_id');
+        return $this->belongsTo(User::class, 'phermacies_id');
+    }
+
     public function country()
     {
         return $this->belongsTo(country::class, 'country_id');

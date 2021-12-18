@@ -779,7 +779,9 @@ class UserController extends Controller
 
     public function show($id)
     {
-        dd(User::with('doctor', 'doctors_specialities', 'patient', 'pharmacy', 'doctors_file', 'pharmacy_file')->where('id',$id)->first());
+        $details = User::with('doctor', 'doctors_specialities', 'patient', 'pharmacy_profile_picture', 'chat', 'pharmacy', 'prescriptions', 'address', 'doctors_profile_picture', 'patients_profile_picture', 'doctors_file', 'pharmacy_file', 'appointment')->where('id',$id)->first();
+        // dd($details);
+        return view('admin.user_details', compact('details'));
     }
 
     public function logout()

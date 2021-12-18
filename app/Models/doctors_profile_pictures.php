@@ -28,4 +28,9 @@ class doctors_profile_pictures extends Model implements Searchable
             // $url
         );
     }
+
+    public function user()
+    {
+        return $this->belongsTo(user::class, 'doctors_id');
+    }
 }

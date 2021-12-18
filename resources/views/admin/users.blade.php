@@ -69,12 +69,12 @@
                                             @foreach ($users as $user)
                                             <tr>
                                                 <td>{{ $user->id }}</td>
-                                                <td>{{ $user->email }}</td>
+                                                <td>{{ $user->email }} ({{$user->role == 1 ? 'Admin' : ($user->role == 2 ? 'Doctor' : ($user->role == 3 ? 'Patient' : 'Pharmacy'))}})</td>
                                                 <td> <a href="" class="{{$user->is_active == 1 ? 'btn btn-primary' : 'btn btn-danger' }}">{{$user->is_active ==1 ? 'Verified' : 'Not Verified' }}</a></td>
                                                 <td><a href="{{route('user_status', ['requestFor' => 'permission' , 'id' => $user->id])}}" class="{{$user->is_enable == 1 ? 'btn btn-primary' : 'btn btn-danger' }}">{{$user->is_enable ==1 ? 'Enabled' : 'Disabled' }}</a></td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a type="button" class="btn btn-primary" href="{{ URL::to('view_user/' . $user->id) }}">View</a>
+                                                        <a type="button" class="btn btn-primary {{$user->role == 3 ? 'disabled' : '' }}" href="{{ URL::to('view_user/' . $user->id) }}" >View</a>
                                                     </div>
                                                     <div class="btn-group">
                                                         <a type="button" class="btn btn-danger" href="{{ URL::to('delete_user/' . $user->id) }}" onclick="return confirm('Are you sure to delete?')">Delete</a>

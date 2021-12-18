@@ -26,4 +26,9 @@ class patients_profile_picture extends Model implements Searchable
             // $url
         );
     }
+
+    public function user()
+    {
+        return $this->belongsTo(user::class, 'patients_id');
+    }
 }

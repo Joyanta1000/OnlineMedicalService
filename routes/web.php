@@ -289,9 +289,9 @@ Route::middleware(['isDoctor'])->group(function () {
         Route::get('/status_change/{id}', [AppointmentController::class, 'changeStatus'])->name('appointment.status_change');
     });
 
-    Route::prefix('prescription_for_doctor')->group(
+    Route::prefix('prescription')->group(
         function () {
-            Route::resource('prescriptions', PrescriptionController::class);
+            Route::resource('prescription_for_doctor', PrescriptionController::class);
         }
     );
 

@@ -86,7 +86,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <a href="{{ route('prescriptions.index', ['id' => $appointment->patient_id, 'appointment_id' => $appointment->id]) }}"
+                                                            <a href="{{ route('prescription_for_doctor.index', ['id' => $appointment->patient_id, 'appointment_id' => $appointment->id]) }}"
                                                                 class="btn btn-success">Prescribe</a>
                                                         </div>
                                                     </td>

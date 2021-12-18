@@ -42,9 +42,30 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function address()
+    {
+        return $this->hasMany(address::class, 'doctors_id');
+        return $this->hasMany(address::class, 'phermacies_id');
+    }
+
     public function doctor()
     {
         return $this->hasMany(doctor::class, 'doctors_id');
+    }
+
+    public function doctors_profile_picture()
+    {
+        return $this->hasMany(doctors_profile_pictures::class, 'doctors_id');
+    }
+
+    public function patients_profile_picture()
+    {
+        return $this->hasMany(patients_profile_picture::class, 'patients_id');
+    }
+
+    public function pharmacy_profile_picture()
+    {
+        return $this->hasMany(pharmacies_profile_pictures::class, 'phermacies_id');
     }
 
     public function doctors_specialities()
@@ -80,7 +101,7 @@ class User extends Authenticatable
 
     public function chat()
     {
-        return $this->hasMany(Chat::class, 'senders_id', 'recievers_id');
+        return $this->hasMany(chats::class, 'senders_id', 'recievers_id');
     }
 
     public function prescriptions()
