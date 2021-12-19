@@ -52,9 +52,9 @@
                     </ul>
                 </li>
                 <li
-                    class="nav-item {{ request()->is('prescription/prescriptions/show') || request()->is('prescription_for_doctor/prescriptions/show') ? 'menu-open' : null }} ">
+                    class="nav-item {{ request()->is('prescription/prescriptions/show') || request()->is('prescription/prescription_for_doctor/show') ? 'menu-open' : null }} ">
                     <a href="#"
-                        class="nav-link {{ request()->is('prescription/prescriptions/show') || request()->is('prescription_for_doctor/prescriptions/show') ? 'active' : null }}">
+                        class="nav-link {{ request()->is('prescription/prescriptions/show') || request()->is('prescription/prescription_for_doctor/show') ? 'active' : null }}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             Prescription
@@ -63,10 +63,28 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ URL::to(session()->get('role')==2 ? 'prescription_for_doctor/prescriptions/show' : 'prescription/prescriptions/show') }}"
-                                class="nav-link {{ request()->is('prescription/prescriptions/show') || request()->is('prescription_for_doctor/prescriptions/show') ? 'active' : null }}">
+                            <a href="{{ URL::to(session()->get('role') == 2 ? 'prescription/prescription_for_doctor/show' : 'prescription/prescriptions/show') }}"
+                                class="nav-link {{ request()->is('prescription/prescriptions/show') || request()->is('prescription/prescription_for_doctor/show') ? 'active' : null }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Prescriptions</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item {{ request()->is('history') ? 'menu-open' : null }} ">
+                    <a href="#" class="nav-link {{ request()->is('history') ? 'active' : null }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            History
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('history') }}"
+                                class="nav-link {{ request()->is('history') ? 'active' : null }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Check History</p>
                             </a>
                         </li>
                     </ul>

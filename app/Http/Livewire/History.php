@@ -67,6 +67,11 @@ class History extends Component
         ]);
     }
 
+    public function back()
+    {
+        $this->details = null;
+    }
+
     public function view($id)
     {
         $details = prescriptions::with('medicines_for_patients', 'test', 'patients_problems', 'referred_to', 'frequency', 'foodTime', 'duration')->find($id);

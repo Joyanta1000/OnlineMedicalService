@@ -135,7 +135,8 @@
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
-        @include('patient.includes.sidebar')
+        @include('prescription.includes.navbar')
+        @include('prescription.includes.sidebar')
         <div class="content-wrapper">
             <section class="content-header">
                 <div class="container-fluid">
@@ -182,7 +183,7 @@
                 </div>
             </section>
         </div>
-        @include('patient.includes.footer')
+        @include('prescription.includes.footer')
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
     </div>

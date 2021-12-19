@@ -76,7 +76,7 @@ Route::get('/', function () {
 
 Route::get('/history', function () {
     return view('doctor/pages/history/history');
-});
+})->name('history');
 
 Route::resource('nid', NationalIdCardController::class);
 

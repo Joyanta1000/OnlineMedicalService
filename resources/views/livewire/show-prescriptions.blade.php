@@ -1,6 +1,5 @@
 @if (isset($details))
 
-
     <section class="content">
 
         @if (session('status'))
@@ -98,29 +97,39 @@
                     <hr>
                     <div class="field" style="margin-left: 15px;">
                         <b>Test:</b> <br>
-                        <form action="{{URL::to('prescription/prescriptions/update')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ URL::to('prescription/prescriptions/update') }}" method="POST"
+                            enctype="multipart/form-data">
                             @method('PUT')
                             @csrf
-                            <input type="hidden" name="prescription_id" wire:model="prescription_id" id="prescription_id">
-                        @for ($i=0; $i<count($details->test); $i++)
-                            {{-- {{$item->tests_id}} --}}
+                            <input type="hidden" name="prescription_id" wire:model="prescription_id"
+                                id="prescription_id">
+                            @for ($i = 0; $i < count($details->test); $i++)
+                                {{-- {{$item->tests_id}} --}}
 
-                            <span style="color: red">
-                                Name:
-                                {{ $details->test[$i]->tests_id ? App\Models\TestModel::find($details->test[$i]->tests_id)->test : 'N/A' }}
-                                <p style="color: blue">Details: {{ $details->test[$i]->details ?: 'N/A' }}</p>
+                                <span style="color: red">
+                                    Name:
+                                    {{ $details->test[$i]->tests_id ? App\Models\TestModel::find($details->test[$i]->tests_id)->test : 'N/A' }}
+                                    <p style="color: blue">Details: {{ $details->test[$i]->details ?: 'N/A' }}</p>
+                                    <span><img
+                                            src="{{ $details->test[$i]->getFirstMediaUrl('test_file', 'thumb') ? $details->test[$i]->getFirstMediaUrl('test_file', 'thumb') : asset('./default/nothing.jpg') }}"
+                                            width="120px"
+                                            style="margin-top: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></span>
+                                </span>
                                 @if (session()->get('role') == 3)
-                                    <input type="hidden" name="tests_id[]" wire:model="tests_id.{{$i}}">
-                                    
-                                    <input type="file" name="test_file[]" class="form-control" wire:model="test_file.{{$i}}" placeholder="Browse">
-                                    <div wire:loading wire:target="test_file.{{$i}}">Getting File...</div>
-                                 @endif
-                            </span>
-                            <br>
-                        @endfor
-                        @if (session()->get('role') == 3)
-                        <input type="submit" wire:click.prevent="store" value="Submit Test Report" class="btn btn-primary">
-                        @endif
+                                    <input type="hidden" name="tests_id[]" wire:model="tests_id.{{ $i }}">
+
+                                    <input type="file" name="test_file[]" class="form-control"
+                                        wire:model="test_file.{{ $i }}" placeholder="Browse">
+                                    <div wire:loading wire:target="test_file.{{ $i }}">Getting File...
+                                    </div>
+                                @endif
+                                </span>
+                                <br>
+                            @endfor
+                            @if (session()->get('role') == 3)
+                                <input type="submit" wire:click.prevent="store" value="Submit Test Report"
+                                    class="btn btn-primary">
+                            @endif
                         </form>
                     </div>
                     <hr>
@@ -205,6 +214,12 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                </div>
+                <hr>
+                <div>
+                    <div style="position: inline; right: 10px; padding: 10px;">
+                        <a href="{{ URL::to(session()->get('role')==2 ? 'prescription/prescription_for_doctor/show' : 'prescription/prescriptions/show') }}" class="btn btn-primary">Back</a>
                     </div>
                 </div>
             </div>

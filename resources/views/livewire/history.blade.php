@@ -118,16 +118,23 @@
                                           {{ $details->test[$i]->tests_id ? App\Models\TestModel::find($details->test[$i]->tests_id)->test : 'N/A' }}
                                           <p style="color: blue">Details: {{ $details->test[$i]->details ?: 'N/A' }}
                                           </p>
-                                          @if (session()->get('role') == 3)
-                                              <input type="hidden" name="tests_id[]"
-                                                  wire:model="tests_id.{{ $i }}">
 
-                                              <input type="file" name="test_file[]" class="form-control"
-                                                  wire:model="test_file.{{ $i }}" placeholder="Browse">
-                                              <div wire:loading wire:target="test_file.{{ $i }}">Getting
-                                                  File...</div>
-                                          @endif
+                                          <span><img
+                                                  src="{{ $details->test[$i]->getFirstMediaUrl('test_file', 'thumb') ? $details->test[$i]->getFirstMediaUrl('test_file', 'thumb') : asset('./default/nothing.jpg') }}"
+                                                  width="120px"
+                                                  style="margin-top: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></span>
                                       </span>
+                                      <br>
+                                      @if (session()->get('role') == 3)
+                                          <input type="hidden" name="tests_id[]"
+                                              wire:model="tests_id.{{ $i }}">
+
+                                          <input type="file" name="test_file[]" class="form-control"
+                                              wire:model="test_file.{{ $i }}" placeholder="Browse">
+                                          <div wire:loading wire:target="test_file.{{ $i }}">Getting
+                                              File...</div>
+                                      @endif
+
                                       <br>
                                   @endfor
                                   @if (session()->get('role') == 3)
@@ -211,13 +218,20 @@
                                               <td> <input type="checkbox" name="" id=""
                                                       {{ $before_food[$p++] == 1 ? 'checked' : '' }}> Before Food
                                                   <input type="checkbox" name="" id=""
-                                                      {{ $after_food[$q++] == 1 ? 'checked' : '' }}> After Food</td>
+                                                      {{ $after_food[$q++] == 1 ? 'checked' : '' }}> After Food
+                                              </td>
                                               <td>{{ $duration[$o++] }}</td>
                                               <td>{{ $qty[$m++] }}</td>
                                           </tr>
                                       @endforeach
                                   </tbody>
                               </table>
+                          </div>
+                          <hr>
+                          <div>
+                              <div style="position: inline; right: 10px; padding: 10px;">
+                                  <button wire:click="back()" class=" btn btn-primary ">Back</button>
+                              </div>
                           </div>
                       </div>
                   </div>
@@ -248,7 +262,7 @@
               </div>
               <div class="col">
                   @foreach ($prescription as $prescriptionBy)
-                      <div class="card">
+                      <div class="card" id="hover">
                           <div class="card-body">
                               {{-- <button wire:click="view({{ $prescription->id }})"
                                     class=" btn btn-primary ">View</button> --}}

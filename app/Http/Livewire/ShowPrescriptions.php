@@ -19,13 +19,18 @@ class ShowPrescriptions extends Component
     public $prescription_id;
     public $test_file = [];
     public $updateMode = false;
+    public $prescriptions;
 
     public function render()
     {
+        $prescriptions = prescriptions::when(session()->get('id'), function ($query) {
+            return $query->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
+        })->get();
+
+        $this->prescriptions = $prescriptions;
+
         return view('livewire.show-prescriptions', [
-            'prescriptions' => prescriptions::when(session()->get('id'), function ($query) {
-                return $query->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
-            })->get(),
+            'prescriptions' => $prescriptions,
         ]);
     }
 
@@ -37,6 +42,11 @@ class ShowPrescriptions extends Component
     public function kill($id)
     {
         prescriptions::destroy($id);
+    }
+
+    public function back()
+    {
+        $this->details = null;
     }
 
     public function view($id)

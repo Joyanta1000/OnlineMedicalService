@@ -101,7 +101,8 @@ class User extends Authenticatable
 
     public function chat()
     {
-        return $this->hasMany(chats::class, 'senders_id', 'recievers_id');
+        return $this->hasMany(chats::class, 'senders_id');
+        return $this->hasMany(chats::class, 'recievers_id');
     }
 
     public function prescriptions()

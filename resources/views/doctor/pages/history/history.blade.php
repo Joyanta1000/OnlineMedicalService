@@ -127,13 +127,18 @@
             padding: 10px;
         }
 
+        #hover:hover {
+            background-color: rgb(33, 72, 122);
+            color: beige
+        }
+
     </style>
 </head>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
-        @include('doctor.includes.navbar')
-        @include('doctor.includes.sidebar')
+        @include('default_layout.includes.navbar')
+        @include('default_layout.includes.sidebar')
         <div class="content-wrapper">
             <section class="content-header">
                 <div class="container-fluid">
@@ -180,7 +185,7 @@
                 </div>
             </section>
         </div>
-        @include('doctor.includes.footer')
+        @include('default_layout.includes.footer')
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
     </div>

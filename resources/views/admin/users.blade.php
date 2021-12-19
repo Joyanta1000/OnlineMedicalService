@@ -5,10 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AdminLTE 3 | DataTables</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="{{ asset('../../plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('../../dist/css/adminlte.min.css') }}">
 </head>
@@ -42,17 +44,17 @@
                                     <h3 class="card-title">User</h3>
                                 </div>
                                 @if (session('status'))
-                                <div class="card-header">
-                                    <div class="alert alert-success" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert">×</button>
-                                        {{ session('status') }}
-                                    </div>
+                                    <div class="card-header">
+                                        <div class="alert alert-success" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert">×</button>
+                                            {{ session('status') }}
+                                        </div>
                                     @elseif(session('failed'))
-                                    <div class="alert alert-danger" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert">×</button>
-                                        {{ session('failed') }}
+                                        <div class="alert alert-danger" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert">×</button>
+                                            {{ session('failed') }}
+                                        </div>
                                     </div>
-                                </div>
                                 @endif
                                 <div class="card-body">
                                     <table id="example1" class="table table-bordered table-striped">
@@ -67,20 +69,30 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($users as $user)
-                                            <tr>
-                                                <td>{{ $user->id }}</td>
-                                                <td>{{ $user->email }} ({{$user->role == 1 ? 'Admin' : ($user->role == 2 ? 'Doctor' : ($user->role == 3 ? 'Patient' : 'Pharmacy'))}})</td>
-                                                <td> <a href="" class="{{$user->is_active == 1 ? 'btn btn-primary' : 'btn btn-danger' }}">{{$user->is_active ==1 ? 'Verified' : 'Not Verified' }}</a></td>
-                                                <td><a href="{{route('user_status', ['requestFor' => 'permission' , 'id' => $user->id])}}" class="{{$user->is_enable == 1 ? 'btn btn-primary' : 'btn btn-danger' }}">{{$user->is_enable ==1 ? 'Enabled' : 'Disabled' }}</a></td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <a type="button" class="btn btn-primary {{$user->role == 3 ? 'disabled' : '' }}" href="{{ URL::to('view_user/' . $user->id) }}" >View</a>
-                                                    </div>
-                                                    <div class="btn-group">
-                                                        <a type="button" class="btn btn-danger" href="{{ URL::to('delete_user/' . $user->id) }}" onclick="return confirm('Are you sure to delete?')">Delete</a>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                <tr>
+                                                    <td>{{ $user->id }}</td>
+                                                    <td>{{ $user->email }}
+                                                        ({{ $user->role == 1 ? 'Admin' : ($user->role == 2 ? 'Doctor' : ($user->role == 3 ? 'Patient' : 'Pharmacy')) }})
+                                                    </td>
+                                                    <td> <a href=""
+                                                            class="{{ $user->is_active == 1 ? 'btn btn-primary' : 'btn btn-danger' }}">{{ $user->is_active == 1 ? 'Verified' : 'Not Verified' }}</a>
+                                                    </td>
+                                                    <td><a href="{{ route('user_status', ['requestFor' => 'permission', 'id' => $user->id]) }}"
+                                                            class="{{ $user->is_enable == 1 ? 'btn btn-primary' : 'btn btn-danger' }}">{{ $user->is_enable == 1 ? 'Enabled' : 'Disabled' }}</a>
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <a type="button"
+                                                                class="btn btn-primary {{ $user->role == 3 ? 'disabled' : '' }}"
+                                                                href="{{ URL::to('view_user/' . $user->id) }}">View</a>
+                                                        </div>
+                                                        <div class="btn-group">
+                                                            <a type="button" class="btn btn-danger"
+                                                                href="{{ URL::to('delete_user/' . $user->id) }}"
+                                                                onclick="return confirm('Are you sure to delete?')">Delete</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                         <tfoot>

@@ -24,8 +24,9 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Profile</h1>
+                            <h1></h1>
                         </div>
+
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -33,6 +34,21 @@
                             </ol>
                         </div>
                     </div>
+                </div>
+                <div>
+                    @if (session('status'))
+                        <div class="card-header">
+                            <div class="alert alert-success" role="alert">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                {{ session('status') }}
+                            </div>
+                        @elseif(session('failed'))
+                            <div class="alert alert-danger" role="alert">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                {{ session('failed') }}
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </section>
             <section class="content">
@@ -54,38 +70,33 @@
                                         {{ $details->role == 2 ? 'Doctor' : 'Pharmacy' }}
                                     </p>
                                     <ul class="list-group list-group-unbordered mb-3">
-                                        <li class="list-group-item">
-                                            <b>Appointment</b> <a
-                                                class="float-right">{{ $details->appointment ? $details->appointment->count() : '' }}</a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <b>Prescription</b> <a
-                                                class="float-right">{{ $details->prescriptions ? $details->prescriptions->count() : '' }}</a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <b>Chat</b> <a
-                                                class="float-right">{{ $details->chat ? $details->chat->count() : '' }}</a>
-                                        </li>
+                                        @if ($details->role == 2)
+                                            <li class="list-group-item">
+                                                <b>Appointment</b> <a
+                                                    class="float-right">{{ $details->appointment ? $details->appointment->count() : '' }}</a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Prescription</b> <a
+                                                    class="float-right">{{ $details->prescriptions ? $details->prescriptions->count() : '' }}</a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Chat</b> <a
+                                                    class="float-right">{{ $details->chat ? $details->chat->count() : '' }}</a>
+                                            </li>
+                                        @endif
                                     </ul>
-                                    <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                                    <a href="{{ route('user_status', ['requestFor' => 'permission', 'id' => $details->id]) }}"
+                                        class="{{ $details->is_enable == 1 ? 'btn btn-primary btn-block' : 'btn btn-danger btn-block' }}">{{ $details->is_enable == 1 ? 'Enabled' : 'Disabled' }}</a>
                                 </div>
                             </div>
                             <div class="card card-primary">
                                 <div class="card-header">
-                                    <h3 class="card-title">About {{ $details->doctor->first() ? $details->doctor->first()->first_name : $details->pharmacy->first()->phermacies_name }}
-                                                            {{ $details->doctor->first() ? $details->doctor->first()->last_name : '' }}</h3>
+                                    <h3 class="card-title">About
+                                        {{ $details->doctor->first() ? $details->doctor->first()->first_name : $details->pharmacy->first()->phermacies_name }}
+                                        {{ $details->doctor->first() ? $details->doctor->first()->last_name : '' }}
+                                    </h3>
                                 </div>
                                 <div class="card-body">
-                                    <strong><i class="fas fa-book mr-1"></i> Education</strong>
-                                    <p class="text-muted">
-                                        {{-- @foreach ($details->address as $item)
-                                            <span class="tag tag-danger">{{ $item->address }} , {{ $item->zip_code }}</span>
-                                            @if (!$loop->last)
-                                                ,
-                                            @endif
-                                        @endforeach --}}
-                                    </p>
-                                    <hr>
                                     <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
                                     <p class="text-muted">
                                         @foreach ($details->address as $item)
@@ -97,22 +108,21 @@
                                         @endforeach
                                     </p>
                                     <hr>
-                                    @if(isset($details->doctors_specialities))
-                                    <strong><i class="fas fa-pencil-alt mr-1"></i> Speciality </strong>
-                                    <p class="text-muted">
+                                    @if ($details->role == 2)
+                                        @if (isset($details->doctors_specialities))
+                                            <strong><i class="fas fa-pencil-alt mr-1"></i> Speciality </strong>
+                                            <p class="text-muted">
 
-                                        @foreach ($details->doctors_specialities as $item)
-                                            <span class="tag tag-danger">{{ $item->specialist_of }}</span>
-                                            @if (!$loop->last)
-                                                ,
-                                            @endif
-                                        @endforeach
-                                    </p>
-                                    <hr>
+                                                @foreach ($details->doctors_specialities as $item)
+                                                    <span class="tag tag-danger">{{ $item->specialist_of }}</span>
+                                                    @if (!$loop->last)
+                                                        ,
+                                                    @endif
+                                                @endforeach
+                                            </p>
+                                            <hr>
+                                        @endif
                                     @endif
-                                    <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                        Etiam fermentum enim neque.</p>
                                 </div>
                             </div>
                         </div>
@@ -122,10 +132,10 @@
                                     <ul class="nav nav-pills">
                                         <li class="nav-item"><a class="nav-link active" href="#activity"
                                                 data-toggle="tab">Evidence</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#timeline"
+                                        {{-- <li class="nav-item"><a class="nav-link" href="#timeline"
                                                 data-toggle="tab">Timeline</a></li>
                                         <li class="nav-item"><a class="nav-link" href="#settings"
-                                                data-toggle="tab">Settings</a></li>
+                                                data-toggle="tab">Settings</a></li> --}}
                                     </ul>
                                 </div>
                                 <div class="card-body">
@@ -152,12 +162,14 @@
                                                                 <div class="col-sm-6">
                                                                     @if (pathinfo($item->pdf_file_of_certificate ? $item->pdf_file_of_certificate : $item->evidence, PATHINFO_EXTENSION) == 'jpg' || pathinfo($item->pdf_file_of_certificate ? $item->pdf_file_of_certificate : $item->evidence, PATHINFO_EXTENSION) == 'png' || pathinfo($item->pdf_file_of_certificate ? $item->pdf_file_of_certificate : $item->evidence, PATHINFO_EXTENSION) == 'jpeg')
                                                                         <img class="img-fluid mb-3"
-                                                                        src="{{ $item->pdf_file_of_certificate ? $item->pdf_file_of_certificate : $item->evidence }}"
-                                                                        alt="Photo">
-                                                                    @elseif (pathinfo($item->pdf_file_of_certificate ? $item->pdf_file_of_certificate : $item->evidence, PATHINFO_EXTENSION) == 'pdf')
+                                                                            src="{{ $item->pdf_file_of_certificate ? $item->pdf_file_of_certificate : $item->evidence }}"
+                                                                            alt="Photo">
+                                                                    @elseif (pathinfo($item->pdf_file_of_certificate
+                                                                        ? $item->pdf_file_of_certificate :
+                                                                        $item->evidence, PATHINFO_EXTENSION) == 'pdf')
                                                                         <a href="{{ $item->pdf_file_of_certificate ? $item->pdf_file_of_certificate : $item->evidence }}"
                                                                             class="btn btn-primary btn-sm">View</a>
-                                                                    @endif  
+                                                                    @endif
                                                                 </div>
                                                             @endforeach
                                                         </div>
