@@ -17,6 +17,7 @@ use Spatie\Searchable\Search;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
+use Twilio\Rest\Chat;
 
 class ChatController extends Controller
 {
@@ -73,9 +74,7 @@ class ChatController extends Controller
      */
     public function contactList()
     {
-
         $session_id = session()->get('id');
-        // dd($session_id);
         $distinctedData = DB::table('chats')
             ->where('chats.recievers_id', session()->get('id'))
             ->orWhere('chats.senders_id', session()->get('id'))
@@ -83,7 +82,6 @@ class ChatController extends Controller
             ->orWhere('chats.recievers_id', session()->get('id'))
             ->distinct()
             ->get('senders_id');
-
         if (!empty(request()->get('name'))) {
             $userData = DB::table('chats')
                 ->join('users', function ($join) {
@@ -101,19 +99,11 @@ class ChatController extends Controller
                 ->join('doctors_profile_pictures', function ($join) {
                     $join->on('chats.recievers_id', '=', 'doctors_profile_pictures.doctors_id')->orOn('chats.senders_id', '=', 'doctors_profile_pictures.doctors_id');
                 })
-
-
                 ->select('chats.id', 'chats.created_at', 'chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture')
                 ->where('doctors.first_name', 'like', '%' . request()->get('name') . '%')
                 ->orWhere('patients.first_name', 'like', '%' . request()->get('name') . '%')
-                // ->where('chats.recievers_id', session()->get('id'))
-                // ->orWhere('chats.senders_id', session()->get('id'))
-                // ->where('chats.senders_id', 'chats.senders_id')
-                //->groupBy('message_id')
                 ->latest('chats.created_at')
                 ->orderBy('message_id', 'DESC')
-                //->distinct('message_id')
-                //->select(DB::raw(1))
                 ->get()->unique('message_id');
         } else {
             $userData = DB::table('chats')
@@ -135,54 +125,32 @@ class ChatController extends Controller
                 ->where('chats.recievers_id', session()->get('id'))
                 ->orWhere('chats.senders_id', session()->get('id'))
                 ->select('chats.id', 'chats.created_at', 'chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture')
-
-                // ->where('chats.senders_id', 'chats.senders_id')
-                //->groupBy('message_id')
                 ->latest('chats.created_at')
                 ->orderBy('message_id', 'DESC')
-                //->distinct('message_id')
-                //->select(DB::raw(1))
                 ->get()->unique('message_id');
         }
-
-
-
-        //->select('chats.message_id', 'chats.senders_id', 'chats.recievers_id', 'chats.message', 'chats.file', 'chats.is_seen', 'chats.is_deleted', 'users.email', 'users.role', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name', 'doctors_profile_pictures.profile_picture', 'patients_profile_pictures.patients_profile_picture');
-
-
-        //$select_group = $userData->first();
-
-
-        //$select_group = $userData->first();
-
         return json_encode(array('data' => $userData, 'session_id' => session()->get('id'), 'distinctedData' => $distinctedData, 'name' => request()->get('name')));
     }
-
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-
 
     public function chatData(Request $request)
     {
         $updateChat = "";
+        
+        if (!empty($request->get('patient_id')) && !empty($request->get('doctor_id'))){
+            $return = chats::where('senders_id', $request->get('doctor_id'))
+                ->where('recievers_id', $request->get('patient_id'))
+                ->orWhere('senders_id', $request->get('patient_id'))
+                ->where('recievers_id', $request->get('doctor_id'))
+                ->orderBy('id', 'DESC')
+                ->first();
+            return redirect()->route('chat.index', ['id' => $return->id]);
+        }
         $ids = chats::find($request->id);
         if ($ids->senders_id != session()->get('id')) {
             $updateChat = DB::table('chats')
                 ->where('id', $ids->id)
                 ->update(['is_seen' => 1]);
         }
-
-        
-
-
-
-
         $messageData = DB::table('chats')
             ->join('users', function ($join) {
                 $join->on(DB::raw('find_in_set(chats.recievers_id, users.id)'), DB::raw('find_in_set(chats.senders_id, users.id)'));
@@ -204,38 +172,18 @@ class ChatController extends Controller
             ->where('chats.senders_id', session()->get('id'))
             ->orWhere('chats.recievers_id', session()->get('id'))
             ->select('chats.*', 'users.email', 'patients_profile_pictures.patients_profile_picture', 'doctors_profile_pictures.profile_picture', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name')
-            // ->orderBy('chats.created_at', 'DESC')
             ->distinct('chats.id')
             ->get();
-        //     $sendersId = $request->senders_id;
-        //     $recieversId = session()->get('id');
-// dd($messageData);
-
         $SendersProfilePicture = (new Search())
             ->registerModel(doctors_profile_pictures::class, 'doctors_id')
             ->registerModel(patients_profile_picture::class, 'patients_id')
             ->perform($ids->senders_id)
             ->first();
-
         $RecieversProfilePicture = (new Search())
             ->registerModel(doctors_profile_pictures::class, 'doctors_id')
             ->registerModel(patients_profile_picture::class, 'patients_id')
             ->perform($ids->recievers_id)
             ->first();
-
-        //  $DESC = $SendersProfilePicture->sortByDesc('id');
-        //     $SendersProfilePicture =  doctors_profile_pictures::where('doctors_id', $sendersId)
-        //     // I need this album if any of its user's name matches the given input
-        //     ->orWhereHas('patients_profile_pictures', function ($q) use ($sendersId) {
-        //         return $q->where('patients_id', $sendersId );
-        //     })->get();
-
-        // $RecieversProfilePicture =  doctors_profile_pictures::where('doctors_id', $recieversId)
-        // // I need this album if any of its user's name matches the given input
-        // ->orWhereHas('patients_profile_pictures', function ($q) use ($recieversId) {
-        //     return $q->where('patients_id', $recieversId);
-        // })->get();
-
         return json_encode(array('data' => $messageData, 'seen' => $updateChat, 'SendersProfilePicture' => $SendersProfilePicture, 'RecieversProfilePicture' => $RecieversProfilePicture));
     }
 
@@ -259,8 +207,6 @@ $dateTime = $mytime->toDateTimeString();
                 'message_id' => $request->message_id,
                 'time' => $dateTime,
             ]);
-
-            // $this->pusher->trigger($this->chatChannel, 'new-message', $insertChat);
             return json_encode(array('data' => $insertChat));
         } else {
             $insertChat = chats::create([
@@ -270,67 +216,32 @@ $dateTime = $mytime->toDateTimeString();
                 'message_id' => $request->message_id,
                 'time' => $dateTime,
             ]);
-
-            // $this->pusher->trigger($this->chatChannel, 'new-message', $insertChat);
             return json_encode(array('data' => $insertChat));
         }
-
-        // dd('hey', request()->all());
-
-
-
-        // $pharmacies_profile_picture = new pharmacies_profile_pictures;
-        // $pharmacies_profile_picture->phermacies_id = $id;
-
-        // $pharmacies_profile_picture->pharmacies_profile_picture = '/Pharmacies_Files/Pharmacies_Profile_Pictures/' . $profile_pictures_name;
-        // $pharmacies_profile_picture->save();
     }
 
     public function store(Request $request)
     {
-        //
+        
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\chats  $chats
-     * @return \Illuminate\Http\Response
-     */
     public function show(chats $chats)
     {
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\chats  $chats
-     * @return \Illuminate\Http\Response
-     */
     public function edit(chats $chats)
     {
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\chats  $chats
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, chats $chats)
     {
-        //
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\chats  $chats
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(chats $chats)
     {
-        //
+        
     }
 }

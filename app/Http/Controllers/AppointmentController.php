@@ -112,15 +112,17 @@ class AppointmentController extends Controller
 
                 $details = [
                     'title' => 'Mail from Online Medical Service',
-                    'body' => 'Your Appointment Scheduled'
+                    'body' => 'Your appointment scheduled check your phones inbox, which phone number given.'
                 ];
+
+                $workplace = contact_information::where('doctors_id',$appointment->first()->doctor_id)->first()->work_place;
 
                 Mail::to($receiverEmail)->send(new \App\Mail\MyMail($details));
 
                 $doctorName = doctor::where('doctors_id', $appointment->first()->doctor_id)->first();
                 $receiverNumber = "+8801566019063";
                 $doctorEmail = User::find($appointment->first()->doctor_id)->email;
-                $message = "Appointment Scheduled By Doctor " . $doctorName->first_name . " " . $doctorName->last_name . "," . " His Email: " . $doctorEmail . "," . " Your Ticket: " . $ticket;
+                $message = "Appointment Scheduled By Doctor " . $doctorName->first_name . " " . $doctorName->last_name . "," . " His/Her Email: " . $doctorEmail . "," . " Your Ticket: " . $ticket . "," . " Place: " . $workplace . "," . " Time or anything will be informed by chat, you can consult with him/her by chatting also.";
 
                 try {
 

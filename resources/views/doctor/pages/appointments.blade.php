@@ -91,7 +91,8 @@
 
                                                         <a style="margin: 2px;"
                                                             href="{{ route('appointment.status_change', ['id' => $appointment->id, 'requestFor' => 'cancelation']) }}"
-                                                            class="btn btn-danger {{ $appointment->is_active == 0 ? '' : 'disabled' }}" onclick="return confirm('Are you sure?')">Cancel</a>
+                                                            class="btn btn-danger {{ $appointment->is_active == 0 ? '' : 'disabled' }}"
+                                                            onclick="return confirm('Are you sure?')">Cancel</a>
                                                     </td>
                                                     <td>{{ $appointment->ticket ? $appointment->ticket : 'N/A' }}
                                                     </td>
@@ -99,6 +100,11 @@
                                                         <div class="btn-group">
                                                             <a href="{{ route('prescription_for_doctor.index', ['id' => $appointment->patient_id, 'appointment_id' => $appointment->id]) }}"
                                                                 class="btn btn-success">Prescribe</a>
+
+                                                            <a style="margin: 2px;"
+                                                                href="{{ route('message.chatData', ['patient_id' => $appointment->patient_id, 'doctor_id' => $appointment->doctor_id]) }}"
+                                                                class="btn btn-danger {{ $appointment->is_active == 0 ? 'disabled' : '' }}"
+                                                                >Chat</a>
                                                         </div>
                                                     </td>
                                                 </tr>

@@ -34,8 +34,8 @@
         </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item {{ request()->is('appointment.list') ? 'menu-open' : null }} ">
-                    <a href="#" class="nav-link {{ request()->is('appointment.list') ? 'active' : null }}">
+                <li class="nav-item {{ request()->is('appointment/list') ? 'menu-open' : null }} ">
+                    <a href="#" class="nav-link {{ request()->is('appointment/list') ? 'active' : null }}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             Appointment
@@ -45,7 +45,7 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ route('appointment.list') }}"
-                                class="nav-link {{ request()->is('appointment.list') ? 'active' : null }}">
+                                class="nav-link {{ request()->is('appointment/list') ? 'active' : null }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Appointments</p>
                             </a>

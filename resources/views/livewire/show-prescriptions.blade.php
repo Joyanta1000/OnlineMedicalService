@@ -219,7 +219,8 @@
                 <hr>
                 <div>
                     <div style="position: inline; right: 10px; padding: 10px;">
-                        <a href="{{ URL::to(session()->get('role')==2 ? 'prescription/prescription_for_doctor/show' : 'prescription/prescriptions/show') }}" class="btn btn-primary">Back</a>
+                        <a href="{{ URL::to(session()->get('role') == 2 ? 'prescription/prescription_for_doctor/show' : 'prescription/prescriptions/show') }}"
+                            class="btn btn-primary">Back</a>
                     </div>
                 </div>
             </div>
@@ -229,7 +230,11 @@
     </aside>
 @else
     <div>
-        <table id="example1" class="table table-bordered table-striped">
+        <div style="position: absolute; right: 20px;"><b style="color: rgb(248, 245, 245); border-radius: 5px; background-color: red;">{{$archived->count()}} archived</b> &nbsp;
+        <button class="material-icons btn btn-primary" style="font-size:35px;color:rgb(243, 231, 231)" >archive</button></div>
+        <br>
+        <br><br>
+        <table style="margin-top: 10px;" id="example1" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>#</th>
@@ -254,11 +259,11 @@
                         </td>
                         <td>
                             @if ($confirming === $prescription->id)
-                                <button wire:click="kill({{ $prescription->id }})"
+                                <button wire:click="archive({{ $prescription->id }})"
                                     class=" btn btn-danger ">Sure?</button>
                             @else
-                                <button wire:click="confirmDelete({{ $prescription->id }})"
-                                    class=" btn btn-danger ">Delete</button>
+                                <button wire:click="confirmArchive({{ $prescription->id }})"
+                                    class=" btn btn-danger ">Archive</button>
                                 <button wire:click="view({{ $prescription->id }})"
                                     class=" btn btn-primary ">View</button>
                             @endif

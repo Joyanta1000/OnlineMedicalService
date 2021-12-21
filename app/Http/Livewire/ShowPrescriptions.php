@@ -20,28 +20,42 @@ class ShowPrescriptions extends Component
     public $test_file = [];
     public $updateMode = false;
     public $prescriptions;
+    public $archived;
 
     public function render()
     {
         $prescriptions = prescriptions::when(session()->get('id'), function ($query) {
-            return $query->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
+            return $query->where('is_archive', 0)->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
+        })->get();
+
+        $archived = prescriptions::when(session()->get('id'), function ($query) {
+            return $query->where('is_archive', 1)->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
         })->get();
 
         $this->prescriptions = $prescriptions;
+        $this->archived = $archived;
 
         return view('livewire.show-prescriptions', [
             'prescriptions' => $prescriptions,
+            'archived' => $archived,
         ]);
     }
 
-    public function confirmDelete($id)
+    public function confirmArchive($id)
     {
         $this->confirming = $id;
     }
 
-    public function kill($id)
+    public function archive($id)
     {
-        prescriptions::destroy($id);
+        $archiveReport = prescriptions::find($id);
+        if($archiveReport->is_archive == 0){
+            $archiveReport->is_archive = 1;
+            $archiveReport->save();
+        }else{
+            $archiveReport->is_archive = 0;
+            $archiveReport->save();
+        }
     }
 
     public function back()
