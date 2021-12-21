@@ -598,7 +598,6 @@
         var input = document.querySelector("#phone");
         window.intlTelInput(input, ({}));
         var count = 0;
-
         function process(event) {
             var countryCode = $('.iti__selected-flag').attr('title');
             var countryCode = countryCode.replace(/[^0-9]/g, '')
