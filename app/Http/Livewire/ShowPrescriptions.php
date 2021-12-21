@@ -8,7 +8,14 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
+use Illuminate\Support\Str;
+use Mediconesystems\LivewireDatatables\Column;
+use Mediconesystems\LivewireDatatables\NumberColumn;
+use Mediconesystems\LivewireDatatables\DateColumn;
+use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
+
 use function GuzzleHttp\Promise\all;
+use Livewire\WithPagination;
 
 class ShowPrescriptions extends Component
 {
@@ -24,7 +31,7 @@ class ShowPrescriptions extends Component
     public $archived;
     public $request = "";
     public $archivedResults;
-
+    use WithPagination;
 
     public function render()
     {
@@ -45,6 +52,23 @@ class ShowPrescriptions extends Component
             'archived' => $archived,
         ]);
     }
+
+    // public function columns()
+    // {
+    //     return [
+    //         NumberCo::name('id')
+    //             ->label('ID')
+    //             ->sortBy('id'),
+
+    //         Column::name('name')
+    //         ->label('Name'),
+
+    //         Column::name('email'),
+
+    //         DateColumn::name('created_at')
+    //         ->label('Creation Date')
+    //     ];
+    // }
 
     public function showArchived()
     {

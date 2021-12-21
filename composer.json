@@ -20,6 +20,7 @@
         "laravel/ui": "^3.3",
         "laravelcollective/html": "^6.2",
         "livewire/livewire": "^2.8",
+        "mediconesystems/livewire-datatables": "^0.6.8",
         "munafio/chatify": "^1.2",
         "nexmo/client": "^2.4",
         "pusher/pusher-php-server": "^7.0",
