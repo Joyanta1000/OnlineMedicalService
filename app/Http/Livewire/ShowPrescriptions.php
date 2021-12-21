@@ -14,6 +14,7 @@ class ShowPrescriptions extends Component
 {
     use WithFileUploads;
     public $confirming;
+    public $confirmingUnarchive;
     public $details;
     public $tests_id = [];
     public $prescription_id;
@@ -21,9 +22,13 @@ class ShowPrescriptions extends Component
     public $updateMode = false;
     public $prescriptions;
     public $archived;
+    public $request = "";
+    public $archivedResults;
+
 
     public function render()
     {
+        
         $prescriptions = prescriptions::when(session()->get('id'), function ($query) {
             return $query->where('is_archive', 0)->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
         })->get();
@@ -41,21 +46,51 @@ class ShowPrescriptions extends Component
         ]);
     }
 
+    public function showArchived()
+    {
+        $this->prescriptions = null;
+        $archivedResults = prescriptions::when(session()->get('id'), function ($query) {
+            return $query->where('is_archive', 1)->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
+        })->get();
+        // dd($archived);
+        $archived = prescriptions::when(session()->get('id'), function ($query) {
+            return $query->where('is_archive', 1)->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
+        })->get();
+        $this->archivedResults = $archivedResults;
+        $this->archived = $archived;
+        $this->updateMode = true;
+        return view('livewire.show-prescriptions', [
+            'archivedResults' => $archivedResults,
+            'archived' => $archived,
+        ]);
+    }
+
     public function confirmArchive($id)
     {
+        $this->confirmingUnarchive = null;
         $this->confirming = $id;
     }
 
-    public function archive($id)
+    public function confirmUnarchive($id)
     {
+        $this->confirming = null;
+        $this->confirmingUnarchive = $id;
+    }
+
+    public function archiveOperation($id)
+    {
+        // dd('hey');
+        // dd($id);
         $archiveReport = prescriptions::find($id);
-        if($archiveReport->is_archive == 0){
-            $archiveReport->is_archive = 1;
-            $archiveReport->save();
-        }else{
+        if($archiveReport->is_archive == 1){
             $archiveReport->is_archive = 0;
             $archiveReport->save();
+        }else{
+            $archiveReport->is_archive = 1;
+            $archiveReport->save();
         }
+
+        $this->archivedResults = null;
     }
 
     public function back()

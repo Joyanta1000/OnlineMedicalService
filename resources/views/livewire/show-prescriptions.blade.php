@@ -228,10 +228,72 @@
     </section>
     <aside class="control-sidebar control-sidebar-dark">
     </aside>
-@else
+@elseif(isset($archivedResults))
     <div>
-        <div style="position: absolute; right: 20px;"><b style="color: rgb(248, 245, 245); border-radius: 5px; background-color: red;">{{$archived->count()}} archived</b> &nbsp;
-        <button class="material-icons btn btn-primary" style="font-size:35px;color:rgb(243, 231, 231)" >archive</button></div>
+        <div style="position: absolute; right: 20px;"><b
+                style="color: rgb(248, 245, 245); border-radius: 5px; background-color: red;">{{ $archived->count() }}
+                archived</b> &nbsp;
+            <button class="material-icons btn btn-primary" wire:click="showArchived()"
+                style="font-size:35px;color:rgb(243, 231, 231)">archive</button>
+        </div>
+        <br>
+        <br><br>
+        <table style="margin-top: 10px;" id="example1" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Doctors Name</th>
+                    <th>Patients Name</th>
+                    <th>Prescribing Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($archivedResults as $archivedResult)
+                    <tr>
+                        <td>{{ $archivedResult->id }}</td>
+                        <td>{{ App\Models\doctor::where('doctors_id', $archivedResult->doctors_id)->first()->first_name }}
+                            {{ App\Models\doctor::where('doctors_id', $archivedResult->doctors_id)->first()->last_name }}
+                        </td>
+                        <td>{{ App\Models\patient::where('patients_id', $archivedResult->patients_id)->first()->first_name }}
+                            {{ App\Models\patient::where('patients_id', $archivedResult->patients_id)->first()->last_name }}
+                        </td>
+                        <td>{{ $archivedResult->created_at->format('d-m-Y') }}
+                            ({{ $archivedResult->created_at->diffForHumans() }})
+                        </td>
+                        <td>
+                            @if ($confirmingUnarchive === $archivedResult->id)
+                                <button wire:click="archiveOperation({{ $archivedResult->id }})"
+                                    class=" btn btn-danger ">Sure?</button>
+                            @else
+                                <button wire:click="confirmUnarchive({{ $archivedResult->id }})"
+                                    class=" btn btn-danger ">{{ $archivedResult->is_archive == 1 ? 'Unarchive' : 'Archive' }}</button>
+                                <button wire:click="view({{ $archivedResult->id }})"
+                                    class=" btn btn-primary ">View</button>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>#</th>
+                    <th>Doctors Name</th>
+                    <th>Patients Name</th>
+                    <th>Prescribing Date</th>
+                    <th>Actions</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+@elseif(isset($prescriptions))
+    <div>
+        <div style="position: absolute; right: 20px;"><b
+                style="color: rgb(248, 245, 245); border-radius: 5px; background-color: red;">{{ $archived->count() }}
+                archived</b> &nbsp;
+            <button class="material-icons btn btn-primary" wire:click="showArchived()"
+                style="font-size:35px;color:rgb(243, 231, 231)">archive</button>
+        </div>
         <br>
         <br><br>
         <table style="margin-top: 10px;" id="example1" class="table table-bordered table-striped">
@@ -259,11 +321,11 @@
                         </td>
                         <td>
                             @if ($confirming === $prescription->id)
-                                <button wire:click="archive({{ $prescription->id }})"
+                                <button wire:click="archiveOperation({{ $prescription->id }})"
                                     class=" btn btn-danger ">Sure?</button>
                             @else
                                 <button wire:click="confirmArchive({{ $prescription->id }})"
-                                    class=" btn btn-danger ">Archive</button>
+                                    class=" btn btn-danger ">{{ $prescription->is_archive == 1 ? 'Archived' : 'Archive' }}</button>
                                 <button wire:click="view({{ $prescription->id }})"
                                     class=" btn btn-primary ">View</button>
                             @endif
