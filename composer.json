@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "aloha/twilio": "^5.0",
         "barryvdh/laravel-debugbar": "^3.6",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
@@ -20,11 +21,14 @@
         "laravelcollective/html": "^6.2",
         "livewire/livewire": "^2.8",
         "munafio/chatify": "^1.2",
+        "nexmo/client": "^2.4",
         "pusher/pusher-php-server": "^7.0",
         "spatie/laravel-medialibrary": "^9.6.0",
         "spatie/laravel-permission": "^5.4",
         "spatie/laravel-searchable": "^1.10",
-        "stripe/stripe-php": "^7.100"
+        "stripe/stripe-php": "^7.100",
+        "twilio/sdk": "^6.32",
+        "vonage/client": "^2.4"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

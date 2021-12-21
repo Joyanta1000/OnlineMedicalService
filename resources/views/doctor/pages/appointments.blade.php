@@ -35,27 +35,31 @@
                     </div>
                 </div>
             </section>
+
+
+
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
+                            @if (session('status'))
+                                <div class="card-header">
+                                    <div class="alert alert-success" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        {{ session('status') }}
+                                    </div>
+                                @elseif(session('failed'))
+                                    <div class="alert alert-danger" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        {{ session('failed') }}
+                                    </div>
+                                </div>
+                            @endif
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">DataTable with default features</h3>
                                 </div>
-                                @if (session('status'))
-                                    <div class="card-header">
-                                        <div class="alert alert-success" role="alert">
-                                            <button type="button" class="close" data-dismiss="alert">×</button>
-                                            {{ session('status') }}
-                                        </div>
-                                    @elseif(session('failed'))
-                                        <div class="alert alert-danger" role="alert">
-                                            <button type="button" class="close" data-dismiss="alert">×</button>
-                                            {{ session('failed') }}
-                                        </div>
-                                    </div>
-                                @endif
+
                                 <div class="card-body">
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
@@ -66,7 +70,8 @@
                                                 <th>Amount</th>
                                                 <th>Payment From</th>
                                                 <th>Payment Method Type</th>
-                                                <th>Actiive/Inactive</th>
+                                                <th>Appintment Taken/Not</th>
+                                                <th>Ticket</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -81,8 +86,14 @@
                                                     <td>{{ $appointment->payment_from }}</td>
                                                     <td>{{ $appointment->payment_method_types }}</td>
                                                     <td>
-                                                        <a href="{{ route('appointment.status_change', $appointment->id) }}"
-                                                            class="{{ $appointment->is_active == 1 ? 'btn btn-primary' : 'btn btn-danger' }}">{{ $appointment->is_active == 1 ? 'Appointed' : 'Not Appointed' }}</a>
+                                                        <a href="{{ route('appointment.status_change', $appointment->is_active == 1 ? ['id' => $appointment->id, 'requestFor' => 'cancelation'] : $appointment->id) }}"
+                                                            class="{{ $appointment->is_active == 1 ? 'btn btn-primary' : 'btn btn-danger' }}">{{ $appointment->is_active == 2 ? 'Canceled' : ($appointment->is_active == 1 ? 'Scheduled' : 'Request') }}</a>
+
+                                                        <a style="margin: 2px;"
+                                                            href="{{ route('appointment.status_change', ['id' => $appointment->id, 'requestFor' => 'cancelation']) }}"
+                                                            class="btn btn-danger {{ $appointment->is_active == 0 ? '' : 'disabled' }}" onclick="return confirm('Are you sure?')">Cancel</a>
+                                                    </td>
+                                                    <td>{{ $appointment->ticket ? $appointment->ticket : 'N/A' }}
                                                     </td>
                                                     <td>
                                                         <div class="btn-group">
@@ -101,7 +112,8 @@
                                                 <th>Amount</th>
                                                 <th>Payment From</th>
                                                 <th>Payment Method Type</th>
-                                                <th>Actiive/Inactive</th>
+                                                <th>Appintment Taken/Not</th>
+                                                <th>Ticket</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </tfoot>

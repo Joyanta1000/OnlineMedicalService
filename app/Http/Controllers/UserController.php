@@ -28,6 +28,7 @@ use App\Models\important_information;
 use App\Models\patient;
 use App\Models\patients_files;
 use App\Models\patients_profile_picture;
+use App\Models\PatientsContactInfo;
 use App\Models\pharmacies;
 use App\Models\pharmacies_files;
 use App\Models\pharmacies_profile_pictures;
@@ -297,6 +298,7 @@ class UserController extends Controller
 
     public function register_patient(Request $request)
     {
+        dd($request->all());
         $rules = [
             // 'first_name' => 'required',
             // 'last_name' => 'required',
@@ -404,6 +406,11 @@ class UserController extends Controller
                 $permanent_address->permanent_address = $data['permanent_address'];
                 $permanent_address->permanent_address_zip_code = $data['permanent_address_zip_code'];
                 $permanent_address->save();
+
+                $phonenumber = PatientsContactInfo::create([
+                    'patients_id' => $id,
+                    'phonenumber' => $data['phonenumber'],
+                ]);
 
                 $important_information = new important_information;
                 $important_information->patients_id = $id;
