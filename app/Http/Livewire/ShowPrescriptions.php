@@ -9,13 +9,24 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 
 use Illuminate\Support\Str;
-use Mediconesystems\LivewireDatatables\Column;
+
 use Mediconesystems\LivewireDatatables\NumberColumn;
 use Mediconesystems\LivewireDatatables\DateColumn;
 use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 
 use function GuzzleHttp\Promise\all;
 use Livewire\WithPagination;
+
+use App\Models\prescriptions as ModelsPrescriptions;
+use Illuminate\Support\Carbon;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\Eloquent\Builder;
+use PowerComponents\LivewirePowerGrid\Button;
+use PowerComponents\LivewirePowerGrid\Column;
+use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
+use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 
 class ShowPrescriptions extends Component
 {
@@ -32,6 +43,7 @@ class ShowPrescriptions extends Component
     public $request = "";
     public $archivedResults;
     use WithPagination;
+    use ActionButton;
 
     public function render()
     {
@@ -52,23 +64,6 @@ class ShowPrescriptions extends Component
             'archived' => $archived,
         ]);
     }
-
-    // public function columns()
-    // {
-    //     return [
-    //         NumberCo::name('id')
-    //             ->label('ID')
-    //             ->sortBy('id'),
-
-    //         Column::name('name')
-    //         ->label('Name'),
-
-    //         Column::name('email'),
-
-    //         DateColumn::name('created_at')
-    //         ->label('Creation Date')
-    //     ];
-    // }
 
     public function showArchived()
     {
@@ -103,8 +98,7 @@ class ShowPrescriptions extends Component
 
     public function archiveOperation($id)
     {
-        // dd('hey');
-        // dd($id);
+
         $archiveReport = prescriptions::find($id);
         if($archiveReport->is_archive == 1){
             $archiveReport->is_archive = 0;
@@ -131,7 +125,6 @@ class ShowPrescriptions extends Component
             $this->tests_id[$i] = $details->test[$i]->tests_id;
             $this->test_file[$i] = '';
         }
-        // dd($details->test);
         $this->updateMode = true;
         return view('livewire.show-prescriptions', [
             'details' => $details,
@@ -151,20 +144,136 @@ class ShowPrescriptions extends Component
             'tests_id' => 'required',
             'test_file' => 'required',
         ]);
-
-        // dd(request()->all());
         for ($i = 0; $i < count($this->tests_id); $i++) {
             $save = Test::where(['prescriptions_id' => $this->prescription_id, 'tests_id' => $this->tests_id[$i]])->first();
             $save->test_file = 2;
-            
-            // if (request()->hasFile('test_file[$i]') && request()->file('test_file[$i]')->isValid()) {
-            //     $save->addMedia($this->test_file[$i])
-            // ->toMediaCollection('test_file');
-            // }
             $save->update();
         }
 
         $this->resetInput();
         $this->updateMode = false;
+    }
+
+    public bool $showUpdateMessages = true;
+
+    public function setUp(): void
+    {
+        $this->showCheckBox()
+            ->showPerPage()
+            ->showSearchInput()
+            ->showExportOption('download', ['excel', 'csv']);
+    }
+
+    public function datasource(): ?Builder
+    {
+        return ModelsPrescriptions::query();
+    }
+
+    public function relationSearch(): array
+    {
+        return [];
+    }
+
+    public function addColumns(): ?PowerGridEloquent
+    {
+        return PowerGrid::eloquent()
+            ->addColumn('id')
+            ->addColumn('patients_id')
+            ->addColumn('doctors_id')
+            ->addColumn('appointment_id')
+            ->addColumn('created_at_formatted', function(ModelsPrescriptions $model) { 
+                return Carbon::parse($model->created_at)->format('d/m/Y H:i:s');
+            })
+            ->addColumn('updated_at_formatted', function(ModelsPrescriptions $model) { 
+                return Carbon::parse($model->updated_at)->format('d/m/Y H:i:s');
+            });
+    }
+
+    public function columns(): array
+    {
+        return [
+            Column::add()
+                ->title('ID')
+                ->field('id')
+                ->makeInputRange(),
+
+            Column::add()
+                ->title('PATIENTS ID')
+                ->field('patients_id')
+                ->makeInputRange(),
+
+            Column::add()
+                ->title('DOCTORS ID')
+                ->field('doctors_id')
+                ->makeInputRange(),
+
+            Column::add()
+                ->title('APPOINTMENT ID')
+                ->field('appointment_id')
+                ->makeInputRange(),
+
+            Column::add()
+                ->title('CREATED AT')
+                ->field('created_at_formatted', 'created_at')
+                ->searchable()
+                ->sortable()
+                ->makeInputDatePicker('created_at'),
+
+            Column::add()
+                ->title('UPDATED AT')
+                ->field('updated_at_formatted', 'updated_at')
+                ->searchable()
+                ->sortable()
+                ->makeInputDatePicker('updated_at'),
+
+        ]
+;
+    }
+
+    public function actions(): array
+    {
+       return [
+           Button::add('edit')
+               ->caption('Edit')
+               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
+               ->route('prescriptions.edit', ['prescriptions' => 'id']),
+
+           Button::add('destroy')
+               ->caption('Delete')
+               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
+               ->route('prescriptions.destroy', ['prescriptions' => 'id'])
+               ->method('delete')
+        ];
+    }
+    
+    public function update(array $data ): bool
+    {
+       try {
+           $updated = prescriptions::query()->findOrFail($data['id'])
+                ->update([
+                    $data['field'] => $data['value'],
+                ]);
+       } catch (QueryException $exception) {
+           $updated = false;
+       }
+       return $updated;
+    }
+
+    public function updateMessages(string $status = 'error', string $field = '_default_message'): string
+    {
+        $updateMessages = [
+            'success'   => [
+                '_default_message' => __('Data has been updated successfully!'),
+                //'custom_field'   => __('Custom Field updated successfully!'),
+            ],
+            'error' => [
+                '_default_message' => __('Error updating the data.'),
+                //'custom_field'   => __('Error updating custom field.'),
+            ]
+        ];
+
+        $message = ($updateMessages[$status][$field] ?? $updateMessages[$status]['_default_message']);
+
+        return (is_string($message)) ? $message : 'Error!';
     }
 }

@@ -23,6 +23,7 @@
         "mediconesystems/livewire-datatables": "^0.6.8",
         "munafio/chatify": "^1.2",
         "nexmo/client": "^2.4",
+        "power-components/livewire-powergrid": "^1.5",
         "pusher/pusher-php-server": "^7.0",
         "spatie/laravel-medialibrary": "^9.6.0",
         "spatie/laravel-permission": "^5.4",

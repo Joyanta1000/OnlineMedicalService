@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class prescriptions extends Model
 {
     use HasFactory;
@@ -14,6 +15,29 @@ class prescriptions extends Model
         'doctors_id',
         'appointment_id'
     ];
+
+    public function __construct(array $arr = array())
+    {
+
+        $obj =
+            prescriptions::join('users', 'prescriptions.patients_id', '=', 'users.id')
+            ->where('is_archive', 0)->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'))
+            ->select('prescriptions.*', 'users.*')->get();
+
+        foreach ($obj as $ob) {
+            $array = [
+                'id' => $ob->id,
+                'patients_id' => $ob->patients_id,
+                'first_name' => patient::where('patients_id', $ob->patients_id)->first()->first_name,
+                'doctors_id' => $ob->doctors_id,
+                'appointment_id' => $ob->appointment_id,
+                'created_at' => $ob->created_at,
+                'updated_at' => $ob->updated_at,
+            ];
+            array_push($arr, $array);
+        }
+        parent::__construct($arr);
+    }
 
     public function user()
     {
