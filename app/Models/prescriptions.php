@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,18 +13,20 @@ class prescriptions extends Model
     protected $fillable = [
         'id',
         'patients_id',
+        'first_name',
         'doctors_id',
         'appointment_id'
     ];
 
-    public function __construct(array $arr = array())
+    public function testData()
     {
 
-        $obj =
-            prescriptions::join('users', 'prescriptions.patients_id', '=', 'users.id')
+    $obj =
+        prescriptions::join('users', 'prescriptions.patients_id', '=', 'users.id')
             ->where('is_archive', 0)->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'))
             ->select('prescriptions.*', 'users.*')->get();
 
+            $arr = array();
         foreach ($obj as $ob) {
             $array = [
                 'id' => $ob->id,
@@ -34,9 +37,14 @@ class prescriptions extends Model
                 'created_at' => $ob->created_at,
                 'updated_at' => $ob->updated_at,
             ];
-            array_push($arr, $array);
+            $topic = new prescriptions($array);
+            array_push($arr, $topic);
         }
-        parent::__construct($arr);
+
+        $query = $arr;
+
+        // $topic = new prescriptions($arr);
+        return $query;
     }
 
     public function user()

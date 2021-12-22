@@ -55,9 +55,10 @@ final class prescriptions extends PowerGridComponent
     */
     public function datasource(): ?Builder
     {
-        $obj = ModelsPrescriptions::query();
-
-        return $obj;
+        
+        $topic = new ModelsPrescriptions();
+        dd($topic->testData());
+        return $topic->testData();
     }
 
     /*
@@ -91,9 +92,7 @@ final class prescriptions extends PowerGridComponent
         return PowerGrid::eloquent()
             ->addColumn('id')
             ->addColumn('patients_id')
-            ->addColumn('patients_name', function (ModelsPrescriptions $model) {
-                return patient::where('patients_id', $model->patients_id)->first()->first_name;
-            })
+            ->addColumn('first_name')
             ->addColumn('doctors_id')
             ->addColumn('appointment_id')
             ->addColumn('created_at_formatted', function (ModelsPrescriptions $model) {
@@ -129,6 +128,11 @@ final class prescriptions extends PowerGridComponent
             Column::add()
                 ->title('PATIENTS ID')
                 ->field('patients_id')
+                ->makeInputRange(),
+
+            Column::add()
+                ->title('PATIENTS NAME')
+                ->field('first_name')
                 ->makeInputRange(),
 
             Column::add()
