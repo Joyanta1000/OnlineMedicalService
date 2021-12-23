@@ -153,12 +153,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Advanced Form</h1>
+                            <h1></h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Advanced Form</li>
+                                <li class="breadcrumb-item active">Prescription Form</li>
                             </ol>
                         </div>
                     </div>
@@ -227,7 +227,7 @@
                                 <div>
                                     <div>
                                         <div class="field">
-                                            <select id="select-test" placeholder="Select test...">
+                                            <select id="select-test" name="test" placeholder="Select test..." >
                                                 <option value="">Select test...</option>
                                                 @foreach ($tests as $test)
                                                     <option value="{{ $test->id }}">
@@ -235,7 +235,12 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                            Or
+                                            <input type="text" class="form-control" id="testD" name="test" placeholder="Enter test..." onkeypress="testData()" />
+                                            <br>
+                                            <div id="appear"></div>
                                         </div>
+                                        {{-- <button type="button" onclick="testData()">Try it</button> --}}
                                         <hr>
                                         <div class="testShow">
                                         </div>
@@ -279,7 +284,7 @@
                                 <div>
                                     <div>
                                         <div class="field">
-                                            <select id="select-state" placeholder="Pick a medicine...">
+                                            <select id="select-state" placeholder="Pick a medicine..." required>
                                                 <option value="">Select a state...</option>
                                                 @foreach ($medicines as $medicine)
                                                     <option value="{{ $medicine->id }}">
@@ -314,6 +319,7 @@
                 </div>
             </section>
         </div>
+        <br>
         @include('doctor.includes.footer')
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
@@ -328,12 +334,64 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
         integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
     <script>
+         function testData(){
+                    var x = document.getElementById("testD").value;
+                    console.log(x);
+                    if(x != null){
+                        $('#appear').html('');
+                        $('#appear').html('<button type="button" class="btn btn-primary" onclick="addData()">Add</button>');
+                    }
+                    else{
+                        $('#appear').html('');
+                    }
+                }
+                function addData(){
+                    var wrapperTest = $(".testShow");
+                //    $('#select-test').change(function() {
+                    var x = 1;
+                    // var y = 0;
+                    // var max_fields = 10;
+                    // console.log($(this).val());
+                    // console.log($('#select-test').find("option:selected").text());
+                    // if ($(this).val() != '') {
+                        // if (x < max_fields) {
+                            // x++;
+                            $(wrapperTest).append(
+                                '<span><input type="hidden" name="tests_id[]" value="' + document.getElementById("testD").value + '"/><button class="btn btn-primary">"' + document.getElementById("testD").value +
+                                '" </button><br><br><textarea class="form-control" name="details[]" placeholder="Enter Details" required></textarea><br><a href="#"" class="deleteTest btn btn-danger">Delete</a><br> <br></span>'
+                            );
+                            // y++;
+                        // } else {
+                        //     alert('You Reached the limits')
+                        // }
+                    // }
+                // });
+                $(wrapperTest).on("click", ".deleteTest", function(e) {
+                    e.preventDefault();
+                    $(this).closest("span").remove();
+                    x--;
+                });
+               }
         var jq14 = jQuery.noConflict(true);
         (function($) {
             $(document).ready(function() {
 
+               
 
                 var wrapperTest = $(".testShow");
+                $('#select-test').selectize({
+                    valueField: 'id',
+                    labelField: 'test',
+                    searchField: 'test',
+                });
+                $('#select-test').val('');
+                console.log($('#select-test').search);
+                
+                // function inputTest(){
+                //     alert('test');
+                //     console.log($('#select-test').val());
+                // }
+
                 $('#select-test').change(function() {
                     var x = 1;
                     var y = 0;
@@ -345,9 +403,9 @@
                             x++;
                             $(wrapperTest).append(
                                 '<span><input type="hidden" name="tests_id[]" value="' + $(this)
-                                .val() + '"/><input class="form-control" value="' + $(this).find(
+                                .val() + '"/><button class="btn btn-primary">"' + $(this).find(
                                     "option:selected").text() +
-                                '" readonly/><br><textarea class="form-control" name="details[]" placeholder="Enter Details" required></textarea><br><a href="#"" class="deleteTest btn btn-danger">Delete</a><br></span>'
+                                '"</button><br><br><textarea class="form-control" name="details[]" placeholder="Enter Details" required></textarea><br><a href="#"" class="deleteTest btn btn-danger">Delete</a><br><br></span>'
                             );
                             y++;
                         } else {

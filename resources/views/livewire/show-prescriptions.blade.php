@@ -220,7 +220,7 @@
                 <div>
                     <div style="position: inline; right: 10px; padding: 10px;">
                         <a href="{{ URL::to(session()->get('role') == 2 ? 'prescription/prescription_for_doctor/show' : 'prescription/prescriptions/show') }}"
-                            class="btn btn-primary">Back</a>
+                            class="btn btn-primary"> Back</a>
                     </div>
                 </div>
             </div>
@@ -230,9 +230,13 @@
     </aside>
 @elseif(isset($archivedResults))
     <div>
-        <div style="position: absolute; right: 20px;"><b
-                style="color: rgb(248, 245, 245); border-radius: 5px; background-color: red;">{{ $archived->count() }}
-                archived</b> &nbsp;
+        <div style="position: absolute; right: 20px;">
+            @if ($backtolist == 1)
+                <button wire:click="backtoMainList()" class=" btn btn-success "><i class="fa fa-arrow-left"></i>
+                    Back</button>
+            @endif
+            &nbsp;
+            <a type="button" class="btn btn-danger" href="#">{{ $archived->count() }} archived</a> &nbsp;
             <button class="material-icons btn btn-primary" wire:click="showArchived()"
                 style="font-size:35px;color:rgb(243, 231, 231)">archive</button>
         </div>
@@ -250,7 +254,18 @@
             </thead>
             <tbody>
                 @foreach ($archivedResults as $archivedResult)
-                    <tr>
+                    @php
+                        $count = 0;
+                    @endphp
+                    @foreach ($archivedResult->archive as $item)
+                        @if ($item->archived_by == session()->get('id'))
+                            @php
+                                $count++;
+                            @endphp
+                        @endif
+                    @endforeach
+
+                    <tr style="{{ $count >= 1 ? '' : 'display: none;' }}">
                         <td>{{ $archivedResult->id }}</td>
                         <td>{{ App\Models\doctor::where('doctors_id', $archivedResult->doctors_id)->first()->first_name }}
                             {{ App\Models\doctor::where('doctors_id', $archivedResult->doctors_id)->first()->last_name }}
@@ -267,7 +282,7 @@
                                     class=" btn btn-danger ">Sure?</button>
                             @else
                                 <button wire:click="confirmUnarchive({{ $archivedResult->id }})"
-                                    class=" btn btn-danger ">{{ $archivedResult->is_archive == 1 ? 'Unarchive' : 'Archive' }}</button>
+                                    class=" btn btn-danger ">{{ $count >= 1 ? 'Unarchive' : 'Archive'}}</button>
                                 <button wire:click="view({{ $archivedResult->id }})"
                                     class=" btn btn-primary ">View</button>
                             @endif
@@ -288,44 +303,69 @@
     </div>
 @elseif(isset($prescriptions))
     <div>
-        <div style="position: absolute; right: 20px;"><b
-                style="color: rgb(248, 245, 245); border-radius: 5px; background-color: red;">{{ $archived->count() }}
-                archived</b> &nbsp;
+
+        <div style="position: absolute; right: 20px;"><a type="button" class="btn btn-danger"
+                href="#">{{ $archived->count() }} archived</a> &nbsp;
             <button class="material-icons btn btn-primary" wire:click="showArchived()"
                 style="font-size:35px;color:rgb(243, 231, 231)">archive</button>
         </div>
+
         <br>
         <br><br>
         <table style="margin-top: 10px;" id="example1" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Doctors Name</th>
-                    <th>Patients Name</th>
+                    @if (session()->get('role') != 2)
+                        <th>Doctors Name</th>
+                    @endif
+                    @if (session()->get('role') != 3)
+                        <th>Patients Name</th>
+                    @endif
                     <th>Prescribing Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($prescriptions as $prescription)
-                    <tr>
+                    @php
+                        $count = 0;
+                    @endphp
+                    @foreach ($prescription->archive as $item)
+                        @if ($item->archived_by == session()->get('id'))
+                            @php
+                                $count++;
+                            @endphp
+                        @endif
+                    @endforeach
+
+                    <tr style="{{ $count >= 1 ? 'display: none;' : '' }}">
                         <td>{{ $prescription->id }}</td>
-                        <td>{{ App\Models\doctor::where('doctors_id', $prescription->doctors_id)->first()->first_name }}
-                            {{ App\Models\doctor::where('doctors_id', $prescription->doctors_id)->first()->last_name }}
-                        </td>
-                        <td>{{ App\Models\patient::where('patients_id', $prescription->patients_id)->first()->first_name }}
-                            {{ App\Models\patient::where('patients_id', $prescription->patients_id)->first()->last_name }}
-                        </td>
+                        @if (session()->get('role') != 2)
+                            <td>{{ App\Models\doctor::where('doctors_id', $prescription->doctors_id)->first()->first_name }}
+                                {{ App\Models\doctor::where('doctors_id', $prescription->doctors_id)->first()->last_name }}
+                            </td>
+                        @endif
+                        @if (session()->get('role') != 3)
+                            <td>{{ App\Models\patient::where('patients_id', $prescription->patients_id)->first()->first_name }}
+                                {{ App\Models\patient::where('patients_id', $prescription->patients_id)->first()->last_name }}
+                            </td>
+                        @endif
                         <td>{{ $prescription->created_at->format('d-m-Y') }}
                             ({{ $prescription->created_at->diffForHumans() }})
                         </td>
                         <td>
+
                             @if ($confirming === $prescription->id)
                                 <button wire:click="archiveOperation({{ $prescription->id }})"
                                     class=" btn btn-danger ">Sure?</button>
+
                             @else
+
                                 <button wire:click="confirmArchive({{ $prescription->id }})"
-                                    class=" btn btn-danger ">{{ $prescription->is_archive == 1 ? 'Archived' : 'Archive' }}</button>
+                                    class=" btn btn-danger ">{{ $count >= 1 ? 'Unarchive' : 'Archive'}}</button>
+
+
                                 <button wire:click="view({{ $prescription->id }})"
                                     class=" btn btn-primary ">View</button>
                             @endif
@@ -336,12 +376,17 @@
             <tfoot>
                 <tr>
                     <th>#</th>
-                    <th>Doctors Name</th>
-                    <th>Patients Name</th>
+                    @if (session()->get('role') != 2)
+                        <th>Doctors Name</th>
+                    @endif
+                    @if (session()->get('role') != 3)
+                        <th>Patients Name</th>
+                    @endif
                     <th>Prescribing Date</th>
                     <th>Actions</th>
                 </tr>
             </tfoot>
         </table>
+
     </div>
 @endif

@@ -17,7 +17,10 @@
     {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
     {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
     {{-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> --}}
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.9.2/tailwind.min.css" integrity="sha512-l7qZAq1JcXdHei6h2z8h8sMe3NbMrmowhOl+QkP3UhifPpCW2MC4M0i26Y8wYpbz1xD9t61MLT9L1N773dzlOA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.9.2/tailwind.min.css"
+        integrity="sha512-l7qZAq1JcXdHei6h2z8h8sMe3NbMrmowhOl+QkP3UhifPpCW2MC4M0i26Y8wYpbz1xD9t61MLT9L1N773dzlOA=="
+        crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     @livewireStyles
     @powerGridStyles
     <style>
@@ -179,8 +182,8 @@
                                 @endif
                                 <div class="card-body">
                                     @livewire('show-prescriptions')
-
-                                     <livewire:prescriptions/>
+                                    <br>
+                                    {{-- <livewire:prescriptions /> --}}
                                 </div>
                             </div>
                         </div>
@@ -192,6 +195,24 @@
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microplugin/0.0.3/microplugin.min.js"
+        integrity="sha512-7amIsiQ/hxbdPNawBZwmWBWPiwQRNEJlxTj6eVO+xmWd71fs79Iydr4rYARHwDf0rKHpysFxWbj64fjPRHbqfA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microplugin/0.0.3/microplugin.js"
+        integrity="sha512-IGkpKApwIHDYxPMj2y0hX8dZsPslpdO8Bi12c2aNvLKsF8YjnwJHtjx0NvrTXBm8R9Qq+Nn0Sf/Hf+InGpmBeA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+        integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+    {{-- <script>
+        // alert({{session()->get('role')}});
+        $(document).ready(function() {
+            if({{session()->get('role')}} == 2) {
+                alert({{session()->get('role')}});
+                $('#doctor_name').hide();
+            }
+        });
+    </script> --}}
     <script src="{{ asset('../../plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('../../plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('../../plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -228,7 +249,7 @@
         });
     </script>
     @livewireScripts
-     @powerGridScripts
+    @powerGridScripts
 </body>
 
 </html>

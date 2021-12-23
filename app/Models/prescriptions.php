@@ -14,8 +14,10 @@ class prescriptions extends Model
         'id',
         'patients_id',
         'first_name',
+        'last_name',
         'doctors_id',
-        'appointment_id'
+        'appointment_id',
+        'is_archive'
     ];
 
     public function testData()
@@ -47,6 +49,11 @@ class prescriptions extends Model
         return $query;
     }
 
+    public function archive()
+    {
+        return $this->hasMany(Archive::class, 'prescription_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'doctors_id');
@@ -57,6 +64,7 @@ class prescriptions extends Model
     {
         return $this->belongsTo(doctor::class, 'doctors_id');
     }
+    
     public function patient()
     {
         return $this->belongsTo(patient::class, 'patients_id');

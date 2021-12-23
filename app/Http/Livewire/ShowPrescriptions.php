@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Archive;
 use App\Models\prescriptions;
 use App\Models\Test;
 use App\Models\User;
@@ -44,21 +45,18 @@ class ShowPrescriptions extends Component
     public $archivedResults;
     use WithPagination;
     use ActionButton;
+    public $backtolist = false;
 
     public function render()
     {
-        
-        $prescriptions = prescriptions::when(session()->get('id'), function ($query) {
-            return $query->where('is_archive', 0)->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
+        $prescriptions = prescriptions::with('archive')->when(session()->get('id'), function ($query) {
+            return $query->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
         })->get();
-
-        $archived = prescriptions::when(session()->get('id'), function ($query) {
-            return $query->where('is_archive', 1)->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
+        $archived = Archive::when(session()->get('id'), function ($query) {
+            return $query->where('archived_by', session()->get('id'));
         })->get();
-
         $this->prescriptions = $prescriptions;
         $this->archived = $archived;
-
         return view('livewire.show-prescriptions', [
             'prescriptions' => $prescriptions,
             'archived' => $archived,
@@ -67,13 +65,13 @@ class ShowPrescriptions extends Component
 
     public function showArchived()
     {
+        $this->backtolist = true;
         $this->prescriptions = null;
-        $archivedResults = prescriptions::when(session()->get('id'), function ($query) {
-            return $query->where('is_archive', 1)->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
+        $archivedResults = prescriptions::with('archive')->when(session()->get('id'), function ($query) {
+            return $query->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
         })->get();
-        // dd($archived);
-        $archived = prescriptions::when(session()->get('id'), function ($query) {
-            return $query->where('is_archive', 1)->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
+        $archived = Archive::when(session()->get('id'), function ($query) {
+            return $query->where('archived_by', session()->get('id'));
         })->get();
         $this->archivedResults = $archivedResults;
         $this->archived = $archived;
@@ -82,6 +80,12 @@ class ShowPrescriptions extends Component
             'archivedResults' => $archivedResults,
             'archived' => $archived,
         ]);
+    }
+
+    public function backtoMainList()
+    {
+        $this->backtolist = false;
+        $this->archivedResults = null;
     }
 
     public function confirmArchive($id)
@@ -98,16 +102,18 @@ class ShowPrescriptions extends Component
 
     public function archiveOperation($id)
     {
-
-        $archiveReport = prescriptions::find($id);
-        if($archiveReport->is_archive == 1){
-            $archiveReport->is_archive = 0;
-            $archiveReport->save();
-        }else{
-            $archiveReport->is_archive = 1;
-            $archiveReport->save();
+        $isExist = Archive::where(['prescription_id' => $id, 'archived_by' => session()->get('id')])->exists();
+        if ($isExist == false) {
+            Archive::create([
+                'prescription_id' => $id,
+                'archived_by' => session()->get('id'),
+            ]);
+        } else {
+            Archive::where([
+                'prescription_id' => $id,
+                'archived_by' => session()->get('id'),
+            ])->delete();
         }
-
         $this->archivedResults = null;
     }
 
@@ -181,10 +187,10 @@ class ShowPrescriptions extends Component
             ->addColumn('patients_id')
             ->addColumn('doctors_id')
             ->addColumn('appointment_id')
-            ->addColumn('created_at_formatted', function(ModelsPrescriptions $model) { 
+            ->addColumn('created_at_formatted', function (ModelsPrescriptions $model) {
                 return Carbon::parse($model->created_at)->format('d/m/Y H:i:s');
             })
-            ->addColumn('updated_at_formatted', function(ModelsPrescriptions $model) { 
+            ->addColumn('updated_at_formatted', function (ModelsPrescriptions $model) {
                 return Carbon::parse($model->updated_at)->format('d/m/Y H:i:s');
             });
     }
@@ -226,37 +232,36 @@ class ShowPrescriptions extends Component
                 ->sortable()
                 ->makeInputDatePicker('updated_at'),
 
-        ]
-;
+        ];
     }
 
     public function actions(): array
     {
-       return [
-           Button::add('edit')
-               ->caption('Edit')
-               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('prescriptions.edit', ['prescriptions' => 'id']),
+        return [
+            Button::add('edit')
+                ->caption('Edit')
+                ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
+                ->route('prescriptions.edit', ['prescriptions' => 'id']),
 
-           Button::add('destroy')
-               ->caption('Delete')
-               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('prescriptions.destroy', ['prescriptions' => 'id'])
-               ->method('delete')
+            Button::add('destroy')
+                ->caption('Delete')
+                ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
+                ->route('prescriptions.destroy', ['prescriptions' => 'id'])
+                ->method('delete')
         ];
     }
-    
-    public function update(array $data ): bool
+
+    public function update(array $data): bool
     {
-       try {
-           $updated = prescriptions::query()->findOrFail($data['id'])
+        try {
+            $updated = prescriptions::query()->findOrFail($data['id'])
                 ->update([
                     $data['field'] => $data['value'],
                 ]);
-       } catch (QueryException $exception) {
-           $updated = false;
-       }
-       return $updated;
+        } catch (QueryException $exception) {
+            $updated = false;
+        }
+        return $updated;
     }
 
     public function updateMessages(string $status = 'error', string $field = '_default_message'): string

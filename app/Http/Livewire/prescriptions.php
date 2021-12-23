@@ -2,10 +2,7 @@
 
 namespace App\Http\Livewire;
 
-// use App\Models\prescriptions;
-
-// use App\Models\patient;
-
+use App\Models\doctor;
 use App\Models\patient;
 use App\Models\prescriptions as ModelsPrescriptions;
 use Illuminate\Support\Carbon;
@@ -23,21 +20,8 @@ final class prescriptions extends PowerGridComponent
 {
     use ActionButton;
 
-    // public function render()
-    // {
-    //     datasource();
-    // }
-
-    //Messages informing success/error data is updated.
     public bool $showUpdateMessages = true;
 
-    /*
-    |--------------------------------------------------------------------------
-    |  Features Setup
-    |--------------------------------------------------------------------------
-    | Setup Table's general features
-    |
-    */
     public function setUp(): void
     {
         $this->showCheckBox()
@@ -46,55 +30,35 @@ final class prescriptions extends PowerGridComponent
             ->showExportOption('download', ['excel', 'csv']);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    |  Datasource
-    |--------------------------------------------------------------------------
-    | Provides data to your Table using a Model or Collection
-    |
-    */
     public function datasource(): ?Builder
     {
-        
-        $topic = new ModelsPrescriptions();
-        dd($topic->testData());
-        return $topic->testData();
+
+        // $topic = new ModelsPrescriptions();
+        // dd($topic->testData());
+        // return $topic->testData();
+        return ModelsPrescriptions::query()->where('is_archive', 0)->where('doctors_id', session()->get('id'))->orWhere('patients_id', session()->get('id'));
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    |  Relationship Search
-    |--------------------------------------------------------------------------
-    | Configure here relationships to be used by the Search and Table Filters.
-    |
-    */
-
-    /**
-     * Relationship search.
-     *
-     * @return array<string, array<int, string>>
-     */
     public function relationSearch(): array
     {
         return [];
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    |  Add Column
-    |--------------------------------------------------------------------------
-    | Make Datasource fields available to be used as columns.
-    | You can pass a closure to transform/modify the data.
-    |
-    */
     public function addColumns(): ?PowerGridEloquent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
-            ->addColumn('patients_id')
-            ->addColumn('first_name')
-            ->addColumn('doctors_id')
+            ->addColumn(session()->get('role') != 2 ? 'doctors_id' : 'patients_id')
+            ->addColumn('first_name', function (ModelsPrescriptions $model) {
+                return session()->get('role') != 2 ? doctor::where('doctors_id', $model->doctors_id)->first()->first_name : patient::where('patients_id', $model->patients_id)->first()->first_name;
+            })
+            ->addColumn('last_name', function (ModelsPrescriptions $model) {
+                return session()->get('role') != 2 ? doctor::where('doctors_id', $model->doctors_id)->first()->last_name : patient::where('patients_id', $model->patients_id)->first()->last_name;
+            })
             ->addColumn('appointment_id')
+            // ->addColumn('is_archive', function (ModelsPrescriptions $model) {
+            //     return $model->is_archive == 1 ? '<b style="color:red;">Archived</b>' : '';
+            // })
             ->addColumn('created_at_formatted', function (ModelsPrescriptions $model) {
                 return Carbon::parse($model->created_at)->format('d/m/Y H:i:s');
             })
@@ -103,20 +67,6 @@ final class prescriptions extends PowerGridComponent
             });
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    |  Include Columns
-    |--------------------------------------------------------------------------
-    | Include the columns added columns, making them visible on the Table.
-    | Each column can be configured with properties, filters, actions...
-    |
-    */
-
-    /**
-     * PowerGrid Columns.
-     *
-     * @return array<int, Column>
-     */
     public function columns(): array
     {
         return [
@@ -125,25 +75,29 @@ final class prescriptions extends PowerGridComponent
                 ->field('id')
                 ->makeInputRange(),
 
+
             Column::add()
-                ->title('PATIENTS ID')
-                ->field('patients_id')
+                ->title(session()->get('role') != 2 ? 'DOCTORS ID' : 'PATIENTS ID')
+                ->field(session()->get('role') != 2 ? 'doctors_id' : 'patients_id')
                 ->makeInputRange(),
 
             Column::add()
-                ->title('PATIENTS NAME')
-                ->field('first_name')
-                ->makeInputRange(),
+                ->title(session()->get('role') != 2 ? 'DOCTORS FIRST NAME' : 'PATIENTS FIRST NAME')
+                ->field('first_name'),
 
             Column::add()
-                ->title('DOCTORS ID')
-                ->field('doctors_id')
-                ->makeInputRange(),
+                ->title(session()->get('role') != 2 ? 'DOCTORS LAST NAME' : 'PATIENTS LAST NAME')
+                ->field('last_name'),
 
             Column::add()
                 ->title('APPOINTMENT ID')
                 ->field('appointment_id')
                 ->makeInputRange(),
+
+            // Column::add()
+            //     ->title('ARCHIVED/NOT')
+            //     ->field('is_archive')
+            //     ->makeInputRange(),
 
             Column::add()
                 ->title('CREATED AT')
@@ -162,21 +116,6 @@ final class prescriptions extends PowerGridComponent
         ];
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Actions Method
-    |--------------------------------------------------------------------------
-    | Enable this section only when you have defined routes for these actions.
-    |
-    */
-
-    /**
-     * PowerGrid prescriptions action buttons.
-     *
-     * @return array<int, \PowerComponents\LivewirePowerGrid\Button>
-     */
-
-
     public function actions(): array
     {
         return [
@@ -189,7 +128,7 @@ final class prescriptions extends PowerGridComponent
             //        ->caption('Delete')
             //        ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
             //        ->route('prescriptions.destroy', ['prescriptions' => 'id'])
-                //    ->method('delete')
+            //    ->method('delete')
             // Button::add('archive')
             //     ->caption('Archive')
             //     ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
@@ -211,34 +150,17 @@ final class prescriptions extends PowerGridComponent
         }
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Edit Method
-    |--------------------------------------------------------------------------
-    | Enable this section to use editOnClick() or toggleable() methods.
-    | Data must be validated and treated (see "Update Data" in PowerGrid doc).
-    |
-    */
-
-    /**
-     * PowerGrid prescriptions Update.
-     *
-     * @param array<string,string> $data
-     */
-
-    
-    public function update(array $data ): bool
+    public function update(array $data): bool
     {
-       try {
-           $updated = ModelsPrescriptions::query()->findOrFail($data['id'])
+        try {
+            $updated = ModelsPrescriptions::query()->findOrFail($data['id'])
                 ->update([
                     $data['field'] => $data['value'],
                 ]);
-       } catch (QueryException $exception) {
-           $updated = false;
-       }
-       return $updated;
+        } catch (QueryException $exception) {
+            $updated = false;
+        }
+        return $updated;
     }
 
     public function updateMessages(string $status = 'error', string $field = '_default_message'): string
@@ -258,5 +180,4 @@ final class prescriptions extends PowerGridComponent
 
         return (is_string($message)) ? $message : 'Error!';
     }
-    
 }

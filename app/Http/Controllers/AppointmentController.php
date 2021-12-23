@@ -11,6 +11,7 @@ use App\Models\doctor;
 use App\Models\chats;
 use App\Models\contact_information;
 use App\Models\important_information;
+use App\Models\PatientsContactInfo;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Exception;
 use Illuminate\Support\Facades\Mail;
@@ -120,7 +121,8 @@ class AppointmentController extends Controller
                 Mail::to($receiverEmail)->send(new \App\Mail\MyMail($details));
 
                 $doctorName = doctor::where('doctors_id', $appointment->first()->doctor_id)->first();
-                $receiverNumber = "+8801566019063";
+                $receiverNumber = PatientsContactInfo::where('patient_id', $appointment->first()->patient_id)->first()->phonenumber;
+                // dd($receiverNumber);
                 $doctorEmail = User::find($appointment->first()->doctor_id)->email;
                 $message = "Appointment Scheduled By Doctor " . $doctorName->first_name . " " . $doctorName->last_name . "," . " His/Her Email: " . $doctorEmail . "," . " Your Ticket: " . $ticket . "," . " Place: " . $workplace . "," . " Time or anything will be informed by chat, you can consult with him/her by chatting also.";
 
@@ -156,7 +158,8 @@ class AppointmentController extends Controller
                 Mail::to($receiverEmail)->send(new \App\Mail\MyMail($details));
 
                 $doctorName = doctor::where('doctors_id', $appointment->first()->doctor_id)->first();
-                $receiverNumber = "+8801566019063";
+                $receiverNumber = PatientsContactInfo::where('patient_id', $appointment->first()->patient_id)->first()->phonenumber;
+                // dd($receiverNumber);
                 $doctorEmail = User::find($appointment->first()->doctor_id)->email;
                 $message = "Appointment Canceled By Doctor " . $doctorName->first_name . " " . $doctorName->last_name . "," . " His Email: " . $doctorEmail . "," . " Your Ticket: " . $appointment->find($id)->ticket;
 
