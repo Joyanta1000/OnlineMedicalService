@@ -357,44 +357,46 @@
 
     <script>
         var myCount = 0;
+
         function durationCount() {
             // alert(myCount);
-            for(var i = 0; i < myCount; i++) {
+            for (var i = 0; i < myCount; i++) {
                 // $('#duration' + i).remove();
-            
-            var duration = document.getElementById('duration'+i).value;
-            var date1 = new Date();
 
-            var mn = document.getElementById('mn'+i);
-            var af = document.getElementById('af'+i);
-            var en = document.getElementById('en'+i);
-            var nt = document.getElementById('nt'+i);
-            var before_food = document.getElementById('before_food'+i);
-            var after_food = document.getElementById('after_food'+i);
+                var duration = document.getElementById('duration' + i).value;
+                var date1 = new Date();
 
-            var date2 = new Date(duration);
+                var mn = document.getElementById('mn' + i);
+                var af = document.getElementById('af' + i);
+                var en = document.getElementById('en' + i);
+                var nt = document.getElementById('nt' + i);
+                var before_food = document.getElementById('before_food' + i);
+                var after_food = document.getElementById('after_food' + i);
 
-            function formatDate(date) {
-                var d = new Date(date),
-                    month = '' + (d.getMonth() + 1),
-                    day = '' + d.getDate(),
-                    year = d.getFullYear();
+                var date2 = new Date(duration);
 
-                if (month.length < 2)
-                    month = '0' + month;
-                if (day.length < 2)
-                    day = '0' + day;
+                function formatDate(date) {
+                    var d = new Date(date),
+                        month = '' + (d.getMonth() + 1),
+                        day = '' + d.getDate(),
+                        year = d.getFullYear();
 
-                return [year, month, day].join('-');
+                    if (month.length < 2)
+                        month = '0' + month;
+                    if (day.length < 2)
+                        day = '0' + day;
+
+                    return [year, month, day].join('-');
+                }
+                var diffTime = Math.abs(date2 - date1);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                console.log(diffDays, mn.checked, af.checked, en.checked, nt.checked, before_food.checked, after_food
+                    .checked);
+
+                document.getElementById('qty' + i).value = diffDays * ((mn.checked * (before_food.checked + after_food.checked)) + (af.checked * (before_food.checked + after_food.checked)) + (en.checked * (before_food.checked + after_food.checked)) + (nt.checked * (before_food.checked + after_food.checked)));
+
+
             }
-            var diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            console.log(diffDays, mn.checked, af.checked, en.checked, nt.checked, before_food.checked, after_food.checked);
-            
-                document.getElementById('qty'+i).value = diffDays*(mn.checked+af.checked+en.checked+nt.checked+before_food.checked+after_food.checked);
-            
-            
-        }
 
         }
 
@@ -464,25 +466,35 @@
                                             "medicineD").value) +
                                     '</td><td><input type="hidden" checked value="0" name="mn[' +
                                     y +
-                                    ']" /><input type="checkbox" id="mn'+ y +'" name="mn[' + y +
+                                    ']" /><input type="checkbox" id="mn' + y + '" name="mn[' +
+                                    y +
                                     ']" value="1">MN<input type="hidden" checked value="0" name="af[' +
-                                    y + ']" /><input type="checkbox" id="af'+ y +'" name="af[' +
+                                    y + ']" /><input type="checkbox" id="af' + y +
+                                    '" name="af[' +
                                     y +
                                     ']" value="1">AF<input type="hidden" checked value="0" name="en[' +
-                                    y + ']" /><input type="checkbox" id="en'+ y +'" name="en[' +
+                                    y + ']" /><input type="checkbox" id="en' + y +
+                                    '" name="en[' +
                                     y +
                                     ']" value="1">EN<input type="hidden" checked value="0" name="nt[' +
-                                    y + ']" /><input type="checkbox" id="nt'+ y +'" name="nt[' +
+                                    y + ']" /><input type="checkbox" id="nt' + y +
+                                    '" name="nt[' +
                                     y +
                                     ']" value="1">NT</td><td><input type="hidden" checked value="0" name="before_food[' +
                                     y +
-                                    ']" /><input type="checkbox" id="before_food'+ y +'" id="flexRadioDefault1" name="before_food[' +
+                                    ']" /><input type="checkbox" id="before_food' + y +
+                                    '" id="flexRadioDefault1" name="before_food[' +
                                     y +
                                     ']" value="1"> Before Food<input type="hidden" checked value="0" name="after_food[' +
                                     y +
-                                    ']" /><input type="checkbox" id="after_food'+ y +'" name="after_food[' +
+                                    ']" /><input type="checkbox" id="after_food' + y +
+                                    '" name="after_food[' +
                                     y +
-                                    ']" value="1"> After Food</td><td><input class="form-control" type="date" id="duration'+ y +'" name="duration[]" onclick = "durationCount()"></td><td><input class="form-control" type="number" id = "qty'+ y +'" name="qty[]" readonly></td><td><a href="#"" class="delete btn btn-danger">Delete</a></td></tr>'
+                                    ']" value="1"> After Food</td><td><input class="form-control" type="date" id="duration' +
+                                    y +
+                                    '" name="duration[]" onclick = "durationCount()"></td><td><input class="form-control" type="number" id = "qty' +
+                                    y +
+                                    '" name="qty[]" readonly></td><td><a href="#"" class="delete btn btn-danger">Delete</a></td></tr>'
                                 );
                                 y++;
                                 myCount = y;
