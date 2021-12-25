@@ -186,7 +186,8 @@
                     </div>
                 @endif
                 <div class="container-fluid">
-                    <form action="{{ route('prescription_for_doctor.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('prescription_for_doctor.store') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                             <div class="container">
@@ -201,12 +202,16 @@
                                                 <h3>{{ $doctors_specialities->specialist_of }}</h3>
                                             @endforeach
 
-                                            <h3>{{ $doctorsAddresses->address }}, Zip:
-                                                {{ $doctorsAddresses->zip_code }}</h3>
-                                            <h3>{{ $doctorsAddresses->area->area }},
-                                                {{ $doctorsAddresses->thana->thana }},
-                                                {{ $doctorsAddresses->city->city }},
-                                                {{ $doctorsAddresses->country->country }}</h3>
+                                            <h3>Work Place:
+                                                {{ App\Models\contact_information::where('doctors_id', $doctorsInfo->doctor->first()->doctors_id)->first()->work_place }}
+                                            </h3>
+                                            <h3>Work Mobile Number:
+                                                {{ App\Models\contact_information::where('doctors_id', $doctorsInfo->doctor->first()->doctors_id)->first()->works_mobile_phone }}
+                                            </h3>
+                                            <h3>Fax:
+                                                {{ App\Models\contact_information::where('doctors_id', $doctorsInfo->doctor->first()->doctors_id)->first()->fax }}
+                                            </h3>
+
                                         </div>
                                     </div>
                                 </div>
@@ -227,7 +232,16 @@
                                 <div>
                                     <div>
                                         <div class="field">
-                                            <select id="select-test" name="test" placeholder="Select test..." >
+                                            <textarea name="history" id="" cols="30" rows="10" class="form-control"
+                                                placeholder="General History"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div>
+                                        <div class="field">
+                                            <select id="select-test" name="test" placeholder="Select test...">
                                                 <option value="">Select test...</option>
                                                 @foreach ($tests as $test)
                                                     <option value="{{ $test->id }}">
@@ -236,7 +250,8 @@
                                                 @endforeach
                                             </select>
                                             Or
-                                            <input type="text" class="form-control" id="testD" name="test" placeholder="Enter test..." onkeypress="testData()" />
+                                            <input type="text" class="form-control" id="testD" name="test"
+                                                placeholder="Enter test..." onkeypress="testData()" />
                                             <br>
                                             <div id="appear"></div>
                                         </div>
@@ -284,13 +299,18 @@
                                 <div>
                                     <div>
                                         <div class="field">
-                                            <select id="select-state" placeholder="Pick a medicine..." required>
-                                                <option value="">Select a state...</option>
+                                            <select id="select-state" placeholder="Pick a medicine...">
+                                                <option value="">Select a medicine...</option>
                                                 @foreach ($medicines as $medicine)
                                                     <option value="{{ $medicine->id }}">
                                                         {{ $medicine->medicines_name }}</option>
                                                 @endforeach
                                             </select>
+                                            Or
+                                            <input type="text" class="form-control" id="medicineD" name=""
+                                                placeholder="Enter medicine..." onkeypress="medicineData()" />
+                                            <br>
+                                            <div id="appearToAddMedicine"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -309,7 +329,7 @@
                                         <tbody class="rows">
                                         </tbody>
                                     </table>
-                                    <input type="hidden" name="appointment_id" value="{{$appointment_id}}"/>
+                                    <input type="hidden" name="appointment_id" value="{{ $appointment_id }}" />
                                     <button type="submit" name="submit"
                                         class="btn btn-primary form-control">Prescribe</button>
                                 </div>
@@ -324,6 +344,7 @@
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microplugin/0.0.3/microplugin.min.js"
         integrity="sha512-7amIsiQ/hxbdPNawBZwmWBWPiwQRNEJlxTj6eVO+xmWd71fs79Iydr4rYARHwDf0rKHpysFxWbj64fjPRHbqfA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -333,164 +354,294 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
         integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+
     <script>
-         function testData(){
-                    var x = document.getElementById("testD").value;
-                    console.log(x);
-                    if(x != null){
-                        $('#appear').html('');
-                        $('#appear').html('<button type="button" class="btn btn-primary" onclick="addData()">Add</button>');
-                    }
-                    else{
-                        $('#appear').html('');
-                    }
-                }
-                function addData(){
-                    var wrapperTest = $(".testShow");
-                //    $('#select-test').change(function() {
-                    var x = 1;
-                    // var y = 0;
-                    // var max_fields = 10;
-                    // console.log($(this).val());
-                    // console.log($('#select-test').find("option:selected").text());
-                    // if ($(this).val() != '') {
-                        // if (x < max_fields) {
-                            // x++;
-                            $(wrapperTest).append(
-                                '<span><input type="hidden" name="tests_id[]" value="' + document.getElementById("testD").value + '"/><button class="btn btn-primary">"' + document.getElementById("testD").value +
-                                '" </button><br><br><textarea class="form-control" name="details[]" placeholder="Enter Details" required></textarea><br><a href="#"" class="deleteTest btn btn-danger">Delete</a><br> <br></span>'
-                            );
-                            // y++;
-                        // } else {
-                        //     alert('You Reached the limits')
-                        // }
-                    // }
-                // });
-                $(wrapperTest).on("click", ".deleteTest", function(e) {
-                    e.preventDefault();
-                    $(this).closest("span").remove();
-                    x--;
-                });
-               }
+        var myCount = 0;
+        function durationCount() {
+            // alert(myCount);
+            for(var i = 0; i < myCount; i++) {
+                // $('#duration' + i).remove();
+            
+            var duration = document.getElementById('duration'+i).value;
+            var date1 = new Date();
+
+            var mn = document.getElementById('mn'+i);
+            var af = document.getElementById('af'+i);
+            var en = document.getElementById('en'+i);
+            var nt = document.getElementById('nt'+i);
+            var before_food = document.getElementById('before_food'+i);
+            var after_food = document.getElementById('after_food'+i);
+
+            var date2 = new Date(duration);
+
+            function formatDate(date) {
+                var d = new Date(date),
+                    month = '' + (d.getMonth() + 1),
+                    day = '' + d.getDate(),
+                    year = d.getFullYear();
+
+                if (month.length < 2)
+                    month = '0' + month;
+                if (day.length < 2)
+                    day = '0' + day;
+
+                return [year, month, day].join('-');
+            }
+            var diffTime = Math.abs(date2 - date1);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            console.log(diffDays, mn.checked, af.checked, en.checked, nt.checked, before_food.checked, after_food.checked);
+            
+                document.getElementById('qty'+i).value = diffDays*(mn.checked+af.checked+en.checked+nt.checked+before_food.checked+after_food.checked);
+            
+            
+        }
+
+        }
+
+        function testData() {
+            var x = document.getElementById("testD").value;
+            console.log(x);
+            if (x != null) {
+                $('#appear').html('');
+                $('#appear').html('<button type="button" class="btn btn-primary" onclick="addData()">Add</button>');
+            } else {
+                $('#appear').html('');
+            }
+        }
+
+        function addData() {
+            var wrapperTest = $(".testShow");
+            var x = 1;
+            // var new_id = {{ App\Models\doctor::where('doctors_id', $prescription->doctors_id)->first()->first_name }}
+            $(wrapperTest).append(
+                '<span><input type="hidden" name="test_new[]" value="' + document.getElementById("testD").value +
+                '"/><button class="btn btn-primary">"' + document.getElementById("testD").value +
+                '" </button><br><br><textarea class="form-control" name="details_new[]" placeholder="Enter Details" required></textarea><br><a href="#"" class="deleteTest btn btn-danger">Delete</a><br> <br></span>'
+            );
+            $(wrapperTest).on("click", ".deleteTest", function(e) {
+                e.preventDefault();
+                $(this).closest("span").remove();
+                x--;
+            });
+        }
+
+        function medicineData() {
+            var x = document.getElementById("medicineD").value;
+            console.log(x);
+            if (x != null) {
+                $('#appearToAddMedicine').html('');
+                $('#appearToAddMedicine').html(
+                    '<button type="button" id="" class="btn btn-primary editCategory">Add</button>'
+                );
+            } else {
+                $('#appearToAddMedicine').html('');
+            }
+        }
+
+        // function addMedicineData() {
+        //     // alert('hi');
+        //     var wrapper = $(".rows");
+        //     var x = 1;
+        //     var y = 0;
+        //     var max_fields = 10;
+        //     // $('#select-state').change(function() {
+        //     // console.log($('#select-state').find("option:selected").text());
+        //     // console.log('The option with value ' + $(this).val() + ' and text ' + $(this)
+        //     //     .text() + ' was selected.');
+        //     if (document.getElementById("medicineD").value != '') {
+        //         if (x < max_fields) {
+        //             x++;
+        //             $(wrapper).append(
+        //                 '<tr><td><input type="hidden" name="medicines_id[]" value="' + document.getElementById(
+        //                     "medicineD").value + '"/>' + document.getElementById("medicineD").value +
+        //                 '</td><td><input type="hidden" checked value="0" name="mn[' + y +
+        //                 ']" /><input type="checkbox" id="mn" name="mn[' + y +
+        //                 ']" value="1">MN<input type="hidden" checked value="0" name="af[' +
+        //                 y + ']" /><input type="checkbox" id="af" name="af[' + y +
+        //                 ']" value="1">AF<input type="hidden" checked value="0" name="en[' +
+        //                 y + ']" /><input type="checkbox" id="en" name="en[' + y +
+        //                 ']" value="1">EN<input type="hidden" checked value="0" name="nt[' +
+        //                 y + ']" /><input type="checkbox" id="nt" name="nt[' + y +
+        //                 ']" value="1">NT</td><td><input type="hidden" checked value="0" name="before_food[' +
+        //                 y +
+        //                 ']" /><input type="checkbox" id="flexRadioDefault1" name="before_food[' +
+        //                 y +
+        //                 ']" value="1"> Before Food<input type="hidden" checked value="0" name="after_food[' +
+        //                 y + ']" /><input type="checkbox" id="" name="after_food[' + y +
+        //                 ']" value="1"> After Food</td><td><input type="date" name="duration[]"></td><td><input type="number" name="qty[]"></td><td><a href="#"" class="delete btn btn-danger">Delete</a></td></tr>'
+        //             );
+        //             y++;
+        //         } else {
+        //             alert('You Reached the limits')
+        //         }
+        //     }
+        //     // });
+        //     $(wrapper).on("click", ".delete", function(e) {
+        //         e.preventDefault();
+        //         $(this).closest("tr").remove();
+        //         x--;
+        //     });
+        // }
+
+        // var callback = function() {
+        //                 alert('hi');
+        //             };
+        //             function addMedicineData() {
+        //                 alert('hi');
+        //             };
+
+        //             $('#select-state').change(callback);
+
         var jq14 = jQuery.noConflict(true);
         (function($) {
-            $(document).ready(function() {
+            document.addEventListener('DOMContentLoaded', function() {
+                $(document).ready(function() {
 
-               
-
-                var wrapperTest = $(".testShow");
-                $('#select-test').selectize({
-                    valueField: 'id',
-                    labelField: 'test',
-                    searchField: 'test',
-                });
-                $('#select-test').val('');
-                console.log($('#select-test').search);
-                
-                // function inputTest(){
-                //     alert('test');
-                //     console.log($('#select-test').val());
-                // }
-
-                $('#select-test').change(function() {
                     var x = 1;
                     var y = 0;
                     var max_fields = 10;
-                    console.log($(this).val());
-                    console.log($('#select-test').find("option:selected").text());
-                    if ($(this).val() != '') {
-                        if (x < max_fields) {
-                            x++;
-                            $(wrapperTest).append(
-                                '<span><input type="hidden" name="tests_id[]" value="' + $(this)
-                                .val() + '"/><button class="btn btn-primary">"' + $(this).find(
-                                    "option:selected").text() +
-                                '"</button><br><br><textarea class="form-control" name="details[]" placeholder="Enter Details" required></textarea><br><a href="#"" class="deleteTest btn btn-danger">Delete</a><br><br></span>'
-                            );
-                            y++;
-                        } else {
-                            alert('You Reached the limits')
-                        }
-                    }
-                });
-                $(wrapperTest).on("click", ".deleteTest", function(e) {
-                    e.preventDefault();
-                    $(this).closest("span").remove();
-                    x--;
-                });
 
-                var wrapperProblem = $(".problemShow");
-                $('#select-problem').change(function() {
-                    var x = 1;
-                    var y = 0;
-                    var max_fields = 10;
-                    console.log($(this).val());
-                    console.log($('#select-problem').find("option:selected").text());
-                    if ($(this).val() != '') {
-                        if (x < max_fields) {
-                            x++;
-                            $(wrapperProblem).append(
-                                '<span><input type="hidden" name="problem[]" value="' + $(this)
-                                .val() + '"/><input class="form-control" value="' + $(this).find(
-                                    "option:selected").text() +
-                                '" readonly/><a href="#"" class="deleteProblem btn btn-danger">Delete</a></span>'
-                            );
-                            y++;
-                        } else {
-                            alert('You Reached the limits')
+                    var callback = function() {
+
+                        var wrapper = $(".rows");
+
+                        // $('#select-state').change(function() {
+                        // console.log($('#select-state').find("option:selected").text());
+                        // console.log('The option with value ' + $(this).val() + ' and text ' + $(
+                        //         this)
+                        //     .text() + ' was selected.');
+                        if (document.getElementById("medicineD").value != '' || $('#select-state')
+                            .val() != '') {
+                            if (x < max_fields) {
+                                x++;
+                                $(wrapper).append(
+                                    '<tr><td><input type="hidden" name="medicines_id[]" value="' +
+                                    ($('#select-state').val() ? $('#select-state').val() :
+                                        document.getElementById("medicineD").value) + '"/>' + (
+                                        $('#select-state').find(
+                                            "option:selected").text() ? $('#select-state').find(
+                                            "option:selected").text() : document.getElementById(
+                                            "medicineD").value) +
+                                    '</td><td><input type="hidden" checked value="0" name="mn[' +
+                                    y +
+                                    ']" /><input type="checkbox" id="mn'+ y +'" name="mn[' + y +
+                                    ']" value="1">MN<input type="hidden" checked value="0" name="af[' +
+                                    y + ']" /><input type="checkbox" id="af'+ y +'" name="af[' +
+                                    y +
+                                    ']" value="1">AF<input type="hidden" checked value="0" name="en[' +
+                                    y + ']" /><input type="checkbox" id="en'+ y +'" name="en[' +
+                                    y +
+                                    ']" value="1">EN<input type="hidden" checked value="0" name="nt[' +
+                                    y + ']" /><input type="checkbox" id="nt'+ y +'" name="nt[' +
+                                    y +
+                                    ']" value="1">NT</td><td><input type="hidden" checked value="0" name="before_food[' +
+                                    y +
+                                    ']" /><input type="checkbox" id="before_food'+ y +'" id="flexRadioDefault1" name="before_food[' +
+                                    y +
+                                    ']" value="1"> Before Food<input type="hidden" checked value="0" name="after_food[' +
+                                    y +
+                                    ']" /><input type="checkbox" id="after_food'+ y +'" name="after_food[' +
+                                    y +
+                                    ']" value="1"> After Food</td><td><input class="form-control" type="date" id="duration'+ y +'" name="duration[]" onclick = "durationCount()"></td><td><input class="form-control" type="number" id = "qty'+ y +'" name="qty[]" readonly></td><td><a href="#"" class="delete btn btn-danger">Delete</a></td></tr>'
+                                );
+                                y++;
+                                myCount = y;
+                            } else {
+                                alert('You Reached the limits')
+                            }
+
+                            document.getElementById("medicineD").value = '';
+                            $('#select-state').val('');
                         }
-                    }
-                });
-                $(wrapperProblem).on("click", ".deleteProblem", function(e) {
-                    e.preventDefault();
-                    $(this).closest("span").remove();
-                    x--;
-                });
-                var wrapper = $(".rows");
-                var x = 1;
-                var y = 0;
-                var max_fields = 10;
-                $('#select-state').change(function() {
-                    console.log($('#select-state').find("option:selected").text());
-                    console.log('The option with value ' + $(this).val() + ' and text ' + $(this)
-                        .text() + ' was selected.');
-                    if ($(this).val() != '') {
-                        if (x < max_fields) {
-                            x++;
-                            $(wrapper).append(
-                                '<tr><td><input type="hidden" name="medicines_id[]" value="' + $(
-                                    this).val() + '"/>' + $(this).find("option:selected").text() +
-                                '</td><td><input type="hidden" checked value="0" name="mn[' + y +
-                                ']" /><input type="checkbox" id="mn" name="mn[' + y +
-                                ']" value="1">MN<input type="hidden" checked value="0" name="af[' +
-                                y + ']" /><input type="checkbox" id="af" name="af[' + y +
-                                ']" value="1">AF<input type="hidden" checked value="0" name="en[' +
-                                y + ']" /><input type="checkbox" id="en" name="en[' + y +
-                                ']" value="1">EN<input type="hidden" checked value="0" name="nt[' +
-                                y + ']" /><input type="checkbox" id="nt" name="nt[' + y +
-                                ']" value="1">NT</td><td><input type="hidden" checked value="0" name="before_food[' +
-                                y +
-                                ']" /><input type="checkbox" id="flexRadioDefault1" name="before_food[' +
-                                y +
-                                ']" value="1"> Before Food<input type="hidden" checked value="0" name="after_food[' +
-                                y + ']" /><input type="checkbox" id="" name="after_food[' + y +
-                                ']" value="1"> After Food</td><td><input type="date" name="duration[]"></td><td><input type="number" name="qty[]"></td><td><a href="#"" class="delete btn btn-danger">Delete</a></td></tr>'
-                            );
-                            y++;
-                        } else {
-                            alert('You Reached the limits')
+                        // });
+                        $(wrapper).on("click", ".delete", function(e) {
+                            e.preventDefault();
+                            $(this).closest("tr").remove();
+                            x--;
+                        });
+
+                    };
+
+                    $(document).on('click', 'button.editCategory', function(event) {
+                        callback();
+                    });
+
+                    $('#select-state').change(callback);
+
+
+                    var wrapperTest = $(".testShow");
+                    $('#select-test').selectize({
+                        valueField: 'id',
+                        labelField: 'test',
+                        searchField: 'test',
+                    });
+                    $('#select-test').val('');
+                    console.log($('#select-test').search);
+
+                    $('#select-test').change(function() {
+                        var x = 1;
+                        var y = 0;
+                        var max_fields = 10;
+                        console.log($(this).val());
+                        console.log($('#select-test').find("option:selected").text());
+                        if ($(this).val() != '') {
+                            if (x < max_fields) {
+                                x++;
+                                $(wrapperTest).append(
+                                    '<span><input type="hidden" name="tests_id[]" value="' +
+                                    $(this)
+                                    .val() + '"/><button class="btn btn-primary">"' + $(
+                                        this).find(
+                                        "option:selected").text() +
+                                    '"</button><br><br><textarea class="form-control" name="details[]" placeholder="Enter Details" required></textarea><br><a href="#"" class="deleteTest btn btn-danger">Delete</a><br><br></span>'
+                                );
+                                y++;
+                            } else {
+                                alert('You Reached the limits')
+                            }
                         }
-                    }
+                    });
+                    $(wrapperTest).on("click", ".deleteTest", function(e) {
+                        e.preventDefault();
+                        $(this).closest("span").remove();
+                        x--;
+                    });
+
+                    var wrapperProblem = $(".problemShow");
+                    $('#select-problem').change(function() {
+                        var x = 1;
+                        var y = 0;
+                        var max_fields = 10;
+                        console.log($(this).val());
+                        console.log($('#select-problem').find("option:selected").text());
+                        if ($(this).val() != '') {
+                            if (x < max_fields) {
+                                x++;
+                                $(wrapperProblem).append(
+                                    '<span><input type="hidden" name="problem[]" value="' +
+                                    $(this)
+                                    .val() + '"/><input class="form-control" value="' + $(
+                                        this).find(
+                                        "option:selected").text() +
+                                    '" readonly/><a href="#"" class="deleteProblem btn btn-danger">Delete</a></span>'
+                                );
+                                y++;
+                            } else {
+                                alert('You Reached the limits')
+                            }
+                        }
+                    });
+                    $(wrapperProblem).on("click", ".deleteProblem", function(e) {
+                        e.preventDefault();
+                        $(this).closest("span").remove();
+                        x--;
+                    });
+
+                    $('select').selectize({
+                        sortField: 'text'
+                    });
                 });
-                $(wrapper).on("click", ".delete", function(e) {
-                    e.preventDefault();
-                    $(this).closest("tr").remove();
-                    x--;
-                });
-                $('select').selectize({
-                    sortField: 'text'
-                });
-            });
+            }, false);
         }(jq14));
     </script>
     <script src="{{ asset('../../plugins/jquery/jquery.min.js') }}"></script>
@@ -503,7 +654,7 @@
     <script src="{{ asset('../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
     <script src="{{ asset('../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
     <script src="{{ asset('../../plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
-    <script src="{{ asset('../../plugins/bs-stepper/js/bs-stepper') }}.min.js"></script>
+    <script src="{{ asset('../../plugins/bs-stepper/js/bs-stepper.min.js') }}"></script>
     <script src="{{ asset('../../plugins/dropzone/min/dropzone.min.js') }}"></script>
     <script src="{{ asset('../../dist/js/adminlte.min.js') }}"></script>
     <script src="{{ asset('../../dist/js/demo.js') }}"></script>

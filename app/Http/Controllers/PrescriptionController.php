@@ -7,6 +7,7 @@ use App\Models\doctor;
 use App\Models\Duration;
 use App\Models\FoodTime;
 use App\Models\Frequency;
+use App\Models\GeneralHistory;
 use App\Models\medicines;
 use App\Models\medicines_for_patients;
 use App\Models\patients_having_problems;
@@ -54,8 +55,7 @@ class PrescriptionController extends Controller
 
     public function store(Request $request)
     {
-
-        // dd($request->tests_id);
+        // dd($request->all());
         $id = IdGenerator::generate(['table' => 'prescriptions', 'length' => 10, 'prefix' => date('ym')]);
 
         $createPrescription = prescriptions::create([
@@ -65,19 +65,65 @@ class PrescriptionController extends Controller
             'patients_id' => $request->patients_id,
         ]);
 
+        $createHistory = GeneralHistory::create([
+            'prescription_id' => $createPrescription->id,
+            'history' => $request->history,
+        ]);
+
         foreach ($request->medicines_id as $key => $value) {
 
+            if(is_numeric($value) == false){
+                $medicine = medicines::create([
+                    'medicines_name' => $value,
+                    'is_active' => 1,
+                ]);
+                $value = $medicine->id;
+            }
             $medicines_for_patients = medicines_for_patients::create([
                 'prescriptions_id' => $createPrescription->id,
                 'medicines_id' => $value,
             ]);
         }
 
-        for ($i = 0; $i < count($request->tests_id); $i++) {
+        $mergedTest = $request->tests_id;
+        $mergedDetails = $request->details;
+
+        if (isset($request->test_new)) {
+            $mergedTest = null;
+            $mergedDetails = null;
+            $arr = array();
+
+            for ($i = 0; $i < count($request->test_new); $i++) {
+                $ar['test'] = $request->test_new[$i];
+                $ar['details'] = $request->details_new[$i] ? $request->details_new[$i] : '';
+                array_push($arr, $ar);
+            }
+
+            $newTestsValue = array();
+            $newTestsDetails = array();
+            for ($i = 0; $i < count($arr); $i++) {
+
+                $new_test = TestModel::create([
+                    'test' => $arr[$i]['test'],
+                ]);
+
+                array_push($newTestsValue, $new_test->id);
+                array_push($newTestsDetails, $arr[$i]['details']);
+            }
+
+            $mergedTest = array_merge($request->tests_id, $newTestsValue);
+            $mergedDetails = array_merge($request->details, $newTestsDetails);
+        }
+
+        // dd($mergedTest);
+
+
+
+        for ($i = 0; $i < count($mergedTest); $i++) {
             $test_for_patients = Test::create([
                 'prescriptions_id' => $createPrescription->id,
-                'tests_id' => $request->tests_id[$i],
-                'details' => $request->details[$i],
+                'tests_id' => $mergedTest[$i],
+                'details' => $mergedDetails[$i],
             ]);
         }
 

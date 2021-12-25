@@ -5,13 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class medicines extends Model
+class GeneralHistory extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'id',
-        'medicines_name',
-        'is_active',
+        'prescription_id',
+        'history',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'prescription_id');
+    }
 }

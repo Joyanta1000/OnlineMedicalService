@@ -105,4 +105,9 @@ class prescriptions extends Model
         return $this->hasMany(Duration::class, 'prescriptions_id');
     }
 
+    public function history()
+    {
+        return $this->hasMany(GeneralHistory::class, 'prescription_id');
+    }
+
 }
