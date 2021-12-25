@@ -412,7 +412,6 @@
         function addData() {
             var wrapperTest = $(".testShow");
             var x = 1;
-            // var new_id = {{ App\Models\doctor::where('doctors_id', $prescription->doctors_id)->first()->first_name }}
             $(wrapperTest).append(
                 '<span><input type="hidden" name="test_new[]" value="' + document.getElementById("testD").value +
                 '"/><button class="btn btn-primary">"' + document.getElementById("testD").value +
@@ -438,60 +437,6 @@
             }
         }
 
-        // function addMedicineData() {
-        //     // alert('hi');
-        //     var wrapper = $(".rows");
-        //     var x = 1;
-        //     var y = 0;
-        //     var max_fields = 10;
-        //     // $('#select-state').change(function() {
-        //     // console.log($('#select-state').find("option:selected").text());
-        //     // console.log('The option with value ' + $(this).val() + ' and text ' + $(this)
-        //     //     .text() + ' was selected.');
-        //     if (document.getElementById("medicineD").value != '') {
-        //         if (x < max_fields) {
-        //             x++;
-        //             $(wrapper).append(
-        //                 '<tr><td><input type="hidden" name="medicines_id[]" value="' + document.getElementById(
-        //                     "medicineD").value + '"/>' + document.getElementById("medicineD").value +
-        //                 '</td><td><input type="hidden" checked value="0" name="mn[' + y +
-        //                 ']" /><input type="checkbox" id="mn" name="mn[' + y +
-        //                 ']" value="1">MN<input type="hidden" checked value="0" name="af[' +
-        //                 y + ']" /><input type="checkbox" id="af" name="af[' + y +
-        //                 ']" value="1">AF<input type="hidden" checked value="0" name="en[' +
-        //                 y + ']" /><input type="checkbox" id="en" name="en[' + y +
-        //                 ']" value="1">EN<input type="hidden" checked value="0" name="nt[' +
-        //                 y + ']" /><input type="checkbox" id="nt" name="nt[' + y +
-        //                 ']" value="1">NT</td><td><input type="hidden" checked value="0" name="before_food[' +
-        //                 y +
-        //                 ']" /><input type="checkbox" id="flexRadioDefault1" name="before_food[' +
-        //                 y +
-        //                 ']" value="1"> Before Food<input type="hidden" checked value="0" name="after_food[' +
-        //                 y + ']" /><input type="checkbox" id="" name="after_food[' + y +
-        //                 ']" value="1"> After Food</td><td><input type="date" name="duration[]"></td><td><input type="number" name="qty[]"></td><td><a href="#"" class="delete btn btn-danger">Delete</a></td></tr>'
-        //             );
-        //             y++;
-        //         } else {
-        //             alert('You Reached the limits')
-        //         }
-        //     }
-        //     // });
-        //     $(wrapper).on("click", ".delete", function(e) {
-        //         e.preventDefault();
-        //         $(this).closest("tr").remove();
-        //         x--;
-        //     });
-        // }
-
-        // var callback = function() {
-        //                 alert('hi');
-        //             };
-        //             function addMedicineData() {
-        //                 alert('hi');
-        //             };
-
-        //             $('#select-state').change(callback);
-
         var jq14 = jQuery.noConflict(true);
         (function($) {
             document.addEventListener('DOMContentLoaded', function() {
@@ -505,11 +450,6 @@
 
                         var wrapper = $(".rows");
 
-                        // $('#select-state').change(function() {
-                        // console.log($('#select-state').find("option:selected").text());
-                        // console.log('The option with value ' + $(this).val() + ' and text ' + $(
-                        //         this)
-                        //     .text() + ' was selected.');
                         if (document.getElementById("medicineD").value != '' || $('#select-state')
                             .val() != '') {
                             if (x < max_fields) {
@@ -553,7 +493,6 @@
                             document.getElementById("medicineD").value = '';
                             $('#select-state').val('');
                         }
-                        // });
                         $(wrapper).on("click", ".delete", function(e) {
                             e.preventDefault();
                             $(this).closest("tr").remove();
