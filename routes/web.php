@@ -283,6 +283,9 @@ Route::middleware(['isDoctor'])->group(function () {
         }
     );
 
+    
+    Route::get('prescription_pdf/{id}', [PrescriptionController::class, 'pdf'])->name('prescription_pdf');
+
     // Route::get('/historyCheck', History::class);
 });
 

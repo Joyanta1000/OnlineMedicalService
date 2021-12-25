@@ -163,6 +163,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         'Barryvdh\Debugbar\ServiceProvider',
+        Barryvdh\DomPDF\ServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -230,7 +231,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Pusher' => Pusher\Pusher::class,
         'Debugbar' => 'Barryvdh\Debugbar\Facade',
-
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

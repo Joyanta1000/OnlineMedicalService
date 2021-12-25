@@ -1,35 +1,133 @@
-@if (isset($details))
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | DataTables</title>
+    <style>
+        .header {
+            background-color: #2c2f33;
+            color: white;
+            /* text-align: center; */
+            max-width: 100%;
+            max-height: 500px;
+            display: flex;
+        }
+
+        .h {
+            float: right;
+            color: rgb(248, 244, 244);
+            margin-left: 0px;
+            margin-top: 10px;
+            font-size: 10px;
+        }
+
+        h1 {
+            font-size: 20px;
+        }
+
+        h2 {
+            font-size: 20px;
+        }
+
+        h3 {
+            font-size: 20px;
+        }
+
+        .img {
+            margin: 30px;
+        }
+
+        .time {
+            float: right;
+            position: absolute;
+            right: 10px;
+            color: rgb(0, 0, 0);
+        }
+
+        .another_div {
+            display: flex;
+            max-height: 400px;
+            margin-top: 10px;
+            max-width: 500px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            padding: 10px;
+        }
+
+        .grid-item {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            font-size: 20px;
+            text-align: center;
+            max-width: 800px;
+            min-width: 20px;
+            font-size: 20px;
+        }
+
+        .grid-width-1 {
+            width: 200px;
+            min-width: 20px;
+        }
+
+        .grid-width-2 {
+            width: 1020px;
+            min-width: 20px;
+        }
+
+        @mediaonlyscreenand(max-width: 768px) {
+            [class*="grid-width-"] {
+                width: 20%;
+            }
+        }
+
+        #prescription {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #prescription td,
+        #prescription th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #prescription tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #prescription tr:hover {
+            background-color: #ddd;
+        }
+
+        #prescription th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #0b0c0c;
+            color: white;
+        }
+
+        div.container {
+            padding: 10px;
+        }
+
+    </style>
+</head>
+<body class="">
     <section class="content">
-
-        @if (session('status'))
-            <div class="alert alert-success" role="alert">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                {{ session('status') }} {{ session('prescriptions_id') }}
-            </div>
-        @elseif(session('failed'))
-            <div class="alert alert-danger" role="alert">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                {{ session('failed') }}
-            </div>
-        @endif
-
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <div class="container-fluid">
-
-            @csrf
+        <div class="">
             <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 <div class="container">
-                    <div class="header">
+                    <div style="background-color: #2c2f33;
+            color: white;
+            height: 200px;">
                         <div>
                             <img class="img" style="max-height: 120px; max-width: 120px;"
                                 src="{{ asset('./logo/logo_4.png') }}" alt="">
@@ -95,7 +193,7 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="field" style="margin-left: 15px;">
+                    <div class="" style="margin-left: 15px;">
                         <b>Test:</b> <br>
                         <form action="{{ URL::to('prescription/prescriptions/update') }}" method="POST"
                             enctype="multipart/form-data">
@@ -118,7 +216,7 @@
                                 @if (session()->get('role') == 3)
                                     <input type="hidden" name="tests_id[]" wire:model="tests_id.{{ $i }}">
 
-                                    <input type="file" name="test_file[]" class="form-control"
+                                    <input type="file" name="test_file[]" class=""
                                         wire:model="test_file.{{ $i }}" placeholder="Browse">
                                     <div wire:loading wire:target="test_file.{{ $i }}">Getting File...
                                     </div>
@@ -135,7 +233,7 @@
                     <hr>
                     <div>
                         <div>
-                            <div class="field" style="margin-left: 15px;">
+                            <div class="" style="margin-left: 15px;">
                                 <b>Patients Problems:</b>
                                 @php $jsn = json_decode(App\Models\patients_problems::where('prescriptions_id', $details->id)->first()->problem)  @endphp
                                 @foreach ($jsn as $key => $value)
@@ -155,7 +253,7 @@
 
                     <div>
                         <div>
-                            <div class="field" style="margin-left: 15px;">
+                            <div class="" style="margin-left: 15px;">
                                 <b>Referred to:</b>
                                 {{ App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first() ? App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first()->first_name : '' }}
                                 {{ App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first() ? App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first()->last_name : '' }}
@@ -167,13 +265,7 @@
                     <div style="margin: 15px;">
                         <table style="width: 100%; font-size: 15px; text-align: center; padding: 20px;"
                             id="prescription">
-                            <thead>
-                                <th>Medicine</th>
-                                <th>Frequency</th>
-                                <th>Time </th>
-                                <th>Duration</th>
-                                <th>Qty</th>
-                            </thead>
+                            
                             <tbody class="rows">
 
                                 @php $mn = json_decode(App\Models\Frequency::where('prescriptions_id', $details->id)->first()->mn)  @endphp
@@ -194,6 +286,13 @@
                                     $p = 0;
                                     $q = 0;
                                 @endphp
+                                <tr>
+                                <th>Medicine</th>
+                                <th>Frequency</th>
+                                <th>Time </th>
+                                <th>Duration</th>
+                                <th>Qty</th>
+                                </tr>
                                 @foreach (App\Models\medicines_for_patients::where('prescriptions_id', $details->id)->get() as $medicines)
                                     <tr>
                                         <td>{{ App\Models\medicines::where('id', $medicines->medicines_id)->first()->medicines_name }}
@@ -208,7 +307,7 @@
                                                 {{ $before_food[$p++] == 1 ? 'checked' : '' }}> Before Food <input
                                                 type="checkbox" name="" id=""
                                                 {{ $after_food[$q++] == 1 ? 'checked' : '' }}> After Food</td>
-                                        <td>{{ $duration[$o++] }}</td>
+                                        <td>Upto: {{ $duration[$o++] }}</td>
                                         <td>{{ $qty[$m++] }}</td>
                                     </tr>
                                 @endforeach
@@ -216,180 +315,9 @@
                         </table>
                     </div>
                 </div>
-                <hr>
-                <div>
-                    <div style="position: inline; right: 10px; padding: 10px;">
-                        <a href="{{ URL::to(session()->get('role') == 2 ? 'prescription/prescription_for_doctor/show' : 'prescription/prescriptions/show') }}"
-                            class="btn btn-primary"> Back</a>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
-    <aside class="control-sidebar control-sidebar-dark">
-    </aside>
-@elseif(isset($archivedResults))
-    <div>
-        <div style="position: absolute; right: 20px;">
-            @if ($backtolist == 1)
-                <button wire:click="backtoMainList()" class=" btn btn-success "><i class="fa fa-arrow-left"></i>
-                    Back</button>
-            @endif
-            &nbsp;
-            <a type="button" class="btn btn-danger" href="#">{{ $archived->count() }} archived</a> &nbsp;
-            <button class="material-icons btn btn-primary" wire:click="showArchived()"
-                style="font-size:35px;color:rgb(243, 231, 231)">archive</button>
-        </div>
-        <br>
-        <br><br>
-        <table style="margin-top: 10px;" id="example1" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Doctors Name</th>
-                    <th>Patients Name</th>
-                    <th>Prescribing Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($archivedResults as $archivedResult)
-                    @php
-                        $count = 0;
-                    @endphp
-                    @foreach ($archivedResult->archive as $item)
-                        @if ($item->archived_by == session()->get('id'))
-                            @php
-                                $count++;
-                            @endphp
-                        @endif
-                    @endforeach
+</body>
 
-                    <tr style="{{ $count >= 1 ? '' : 'display: none;' }}">
-                        <td>{{ $archivedResult->id }}</td>
-                        <td>{{ App\Models\doctor::where('doctors_id', $archivedResult->doctors_id)->first()->first_name }}
-                            {{ App\Models\doctor::where('doctors_id', $archivedResult->doctors_id)->first()->last_name }}
-                        </td>
-                        <td>{{ App\Models\patient::where('patients_id', $archivedResult->patients_id)->first()->first_name }}
-                            {{ App\Models\patient::where('patients_id', $archivedResult->patients_id)->first()->last_name }}
-                        </td>
-                        <td>{{ $archivedResult->created_at->format('d-m-Y') }}
-                            ({{ $archivedResult->created_at->diffForHumans() }})
-                        </td>
-                        <td>
-                            @if ($confirmingUnarchive === $archivedResult->id)
-                                <button wire:click="archiveOperation({{ $archivedResult->id }})"
-                                    class=" btn btn-danger ">Sure?</button>
-                            @else
-                                <button wire:click="confirmUnarchive({{ $archivedResult->id }})"
-                                    class=" btn btn-danger ">{{ $count >= 1 ? 'Unarchive' : 'Archive' }}</button>
-                                <button wire:click="view({{ $archivedResult->id }})"
-                                    class=" btn btn-primary ">View</button>
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>#</th>
-                    <th>Doctors Name</th>
-                    <th>Patients Name</th>
-                    <th>Prescribing Date</th>
-                    <th>Actions</th>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-@elseif(isset($prescriptions))
-    <div>
-
-        <div style="position: absolute; right: 20px;"><a type="button" class="btn btn-danger"
-                href="#">{{ $archived->count() }} archived</a> &nbsp;
-            <button class="material-icons btn btn-primary" wire:click="showArchived()"
-                style="font-size:35px;color:rgb(243, 231, 231)">archive</button>
-        </div>
-
-        <br>
-        <br><br>
-        <table style="margin-top: 10px;" id="example1" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    @if (session()->get('role') != 2)
-                        <th>Doctors Name</th>
-                    @endif
-                    @if (session()->get('role') != 3)
-                        <th>Patients Name</th>
-                    @endif
-                    <th>Prescribing Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($prescriptions as $prescription)
-                    @php
-                        $count = 0;
-                    @endphp
-                    @foreach ($prescription->archive as $item)
-                        @if ($item->archived_by == session()->get('id'))
-                            @php
-                                $count++;
-                            @endphp
-                        @endif
-                    @endforeach
-
-                    <tr style="{{ $count >= 1 ? 'display: none;' : '' }}">
-                        <td>{{ $prescription->id }}</td>
-                        @if (session()->get('role') != 2)
-                            <td>{{ App\Models\doctor::where('doctors_id', $prescription->doctors_id)->first()->first_name }}
-                                {{ App\Models\doctor::where('doctors_id', $prescription->doctors_id)->first()->last_name }}
-                            </td>
-                        @endif
-                        @if (session()->get('role') != 3)
-                            <td>{{ App\Models\patient::where('patients_id', $prescription->patients_id)->first()->first_name }}
-                                {{ App\Models\patient::where('patients_id', $prescription->patients_id)->first()->last_name }}
-                            </td>
-                        @endif
-                        <td>{{ $prescription->created_at->format('d-m-Y') }}
-                            ({{ $prescription->created_at->diffForHumans() }})
-                        </td>
-                        <td>
-
-                            @if ($confirming === $prescription->id)
-                                <button wire:click="archiveOperation({{ $prescription->id }})"
-                                    class=" btn btn-danger ">Sure?</button>
-
-                            @else
-
-                                <button wire:click="confirmArchive({{ $prescription->id }})"
-                                    class=" btn btn-danger ">{{ $count >= 1 ? 'Unarchive' : 'Archive' }}</button>
-
-
-                                <button wire:click="view({{ $prescription->id }})"
-                                    class=" btn btn-primary ">View</button>
-                                <a href="{{route('prescription_pdf', $prescription->id)}}" class="btn btn-success"><i class="fa fa-file-pdf-o"
-                                        style="font-size:20px;color:rgb(241, 232, 232)"></i></a>
-
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>#</th>
-                    @if (session()->get('role') != 2)
-                        <th>Doctors Name</th>
-                    @endif
-                    @if (session()->get('role') != 3)
-                        <th>Patients Name</th>
-                    @endif
-                    <th>Prescribing Date</th>
-                    <th>Actions</th>
-                </tr>
-            </tfoot>
-        </table>
-
-    </div>
-@endif
+</html>
