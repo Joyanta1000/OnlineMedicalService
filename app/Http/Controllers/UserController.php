@@ -43,6 +43,9 @@ use Illuminate\Support\Facades\DB as FacadesDB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
+
 // return redirect()->back()->withErrors($validator)->withInput();
 
 class UserController extends Controller
@@ -620,6 +623,17 @@ class UserController extends Controller
         }
     }
 
+    public function userOnlineStatus()
+    {
+        $users = User::all();
+        foreach ($users as $user) {
+            if (Cache::has('user-is-online-' . $user->id))
+                echo $user->email . " is online. Last seen: " . Carbon::parse($user->last_seen)->diffForHumans() . " <br>";
+            else
+                echo $user->email . " is offline. Last seen: " . Carbon::parse($user->last_seen)->diffForHumans() . " <br>";
+        }
+    }
+
     public function IndexForAdmin()
     {
         return redirect('admin');
@@ -757,12 +771,12 @@ class UserController extends Controller
             ->join('contact_informations', 'users.id', '=', 'contact_informations.doctors_id')
             ->join('addresses', 'users.id', '=', 'addresses.doctors_id')
             ->join('permanent_addresses', 'users.id', '=', 'permanent_addresses.doctors_id')
-            ->join('important_informations', 'users.id', '=', 'important_informations.doctors_id')
+            // ->join('important_informations', 'users.id', '=', 'important_informations.doctors_id')
             ->join('doctors_other_informations', 'users.id', '=', 'doctors_other_informations.doctors_id')
             ->join('doctors_schedules', 'users.id', '=', 'doctors_schedules.doctors_id')
-            ->select('users.id as user_id', 'doctors.*', 'doctors_profile_pictures.*', 'doctors_files.*', 'contact_informations.*', 'addresses.*', 'permanent_addresses.*', 'important_informations.*', 'doctors_other_informations.*', 'doctors_schedules.schedule')
+            ->select('users.*','users.id as user_id', 'doctors.*', 'doctors_profile_pictures.*', 'doctors_files.*', 'contact_informations.*', 'addresses.*', 'permanent_addresses.*', 'doctors_other_informations.*', 'doctors_schedules.schedule')
             ->paginate(4);
-
+            
         $doctors_social_networks = DB::table('users')
             ->join('social_networks', 'users.id', '=', 'social_networks.doctors_id')
             ->select('social_networks.*')

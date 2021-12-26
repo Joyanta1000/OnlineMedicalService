@@ -17,15 +17,22 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\BirthCertificateController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NationalIdCardController;
 use App\Http\Controllers\PrescriptionController;
+use App\Http\Controllers\WebsiteController;
 use App\Http\Livewire\History;
 use App\Http\Livewire\ShowPrescriptions;
 use App\Models\Appointment;
 use App\Models\BirthCertificate;
+use App\Models\prescriptions;
 use App\Models\User;
+use App\Models\VisitorsLocation;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Stevebauman\Location\Facades\Location;
 
 // Route::group(['middleware' => ['web']], function () {
 
@@ -58,9 +65,7 @@ Route::get('migrate_fresh_seed', function () {
     dd('Done');
 });
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::resource('/', WebsiteController::class);
 
 Route::get('/history', function () {
     return view('doctor/pages/history/history');
@@ -132,6 +137,8 @@ Route::post('/reset_user_password/{email}', [UserController::class, 'reset_user_
 
 Route::get('/logout', [UserController::class, 'logout']);
 
+Route::get('/status', [UserController::class, 'userOnlineStatus']);
+
 Route::middleware(['isAdmin'])->group(function () {
 
     Route::get('/users/', [UserController::class, 'users'])->name('users');
@@ -141,7 +148,20 @@ Route::middleware(['isAdmin'])->group(function () {
     Route::get('/admin', function () {
         $countUser = User::whereNotIn('id', [session()->get('id')])->count();
         $countAppointments = Appointment::count();
-        return view('admin.index', compact('countUser', 'countAppointments'));
+        $countPrescriptions = prescriptions::count();
+        $location = VisitorsLocation::distinct()->get(['ip_address']);
+        $users = User::all();
+        $countOnline = 0;
+        $countOffline = 0;
+        foreach ($users as $user) {
+            if (Cache::has('user-is-online-' . $user->id))
+            $countOnline++;
+            else
+            $countOffline++;
+                // echo $user->email . " is offline. Last seen: " . Carbon::parse($user->last_seen)->diffForHumans() . " <br>";
+        }
+
+        return view('admin.index', compact('countUser', 'countAppointments', 'countPrescriptions', 'location', 'countOnline', 'countOffline'));
     })->name('admin');
 
     Route::get('/add_gender', function () {

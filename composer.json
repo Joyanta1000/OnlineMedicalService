@@ -29,6 +29,7 @@
         "spatie/laravel-medialibrary": "^9.6.0",
         "spatie/laravel-permission": "^5.4",
         "spatie/laravel-searchable": "^1.10",
+        "stevebauman/location": "^6.2",
         "stripe/stripe-php": "^7.100",
         "twilio/sdk": "^6.32",
         "vonage/client": "^2.4"

@@ -177,6 +177,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Stevebauman\Location\LocationServiceProvider::class,
 
     ],
 
@@ -232,6 +233,7 @@ return [
         'Pusher' => Pusher\Pusher::class,
         'Debugbar' => 'Barryvdh\Debugbar\Facade',
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Location' => 'Stevebauman\Location\Facades\Location',
     ],
 
 ];
