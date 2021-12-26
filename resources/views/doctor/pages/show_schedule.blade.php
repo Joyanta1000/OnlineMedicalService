@@ -54,7 +54,7 @@
                         <div class="col-md-6">
                             <div class="card card-primary">
                                 <div class="card-header">
-                                    <h3 class="card-title">Add Schedule</h3>
+                                    <h3 class="card-title">Schedule</h3>
                                 </div>
                                 <form action="{{ route('add_doctors_schedule') }}" method="POST">
                                     <div class="card-body">
@@ -81,61 +81,15 @@
                                             </div>
                                         @endif
                                         <div class="form-group">
-                                            {{ csrf_field() }}
-                                            <label for="">Saturday:</label>
-                                            <input class="form-control" id="sat_time_1" type="time"
-                                                name="sat_time_1" />
-                                            to
-                                            <input class="form-control" id="sat_time_2" type="time"
-                                                name="sat_time_2" />
-                                            <br />
-                                            <label for="">Sunday:</label>
-                                            <input class="form-control" id="sun_time_1" type="time"
-                                                name="sun_time_1" />
-                                            to
-                                            <input class="form-control" id="sun_time_2" type="time"
-                                                name="sun_time_2" />
-                                            <br />
-                                            <label for="">Monday:</label>
-                                            <input class="form-control" id="mon_time_1" type="time"
-                                                name="mon_time_1" />
-                                            to
-                                            <input class="form-control" id="mon_time_2" type="time"
-                                                name="mon_time_2" />
-                                            <br />
-                                            <label for="">Tuesday:</label>
-                                            <input class="form-control" id="tue_time_1" type="time"
-                                                name="tue_time_1" />
-                                            to
-                                            <input class="form-control" id="tue_time_2" type="time"
-                                                name="tue_time_2" />
-                                            <br />
-                                            <label for="">Wednesday:</label>
-                                            <input class="form-control" id="wed_time_1" type="time"
-                                                name="wed_time_1" />
-                                            to
-                                            <input class="form-control" id="wed_time_2" type="time"
-                                                name="wed_time_2" />
-                                            <br />
-                                            <label for="">Thursday:</label>
-                                            <input class="form-control" id="thu_time_1" type="time"
-                                                name="thu_time_1" />
-                                            to
-                                            <input class="form-control" id="thu_time_2" type="time"
-                                                name="thu_time_2" />
-                                            <br />
-                                            <label for="">Friday:</label>
-                                            <input class="form-control" id="fri_time_1" type="time"
-                                                name="fri_time_1" />
-                                            to
-                                            <input class="form-control" id="fri_time_2" type="time"
-                                                name="fri_time_2" />
+                                            {{-- {{ dd(json_decode($showSchedule->schedule)) }} --}}
+                                            @foreach (json_decode($showSchedule->schedule) as $key => $value)
+                                                <label for="">{{strtok($key, " ")}}:</label>
+                                                <input class="form-control" type="time" value="{{ $value }}" readonly />
+                                                {{-- @if (!$loop->last)
+                                                    (to)
+                                                @endif --}}
+                                            @endforeach
                                         </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary">
-                                            Add
-                                        </button>
                                     </div>
                                 </form>
                             </div>

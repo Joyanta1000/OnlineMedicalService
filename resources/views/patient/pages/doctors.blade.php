@@ -18,7 +18,7 @@
             <a href="../../index3.html" class="brand-link">
                 <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
                     style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+                <span class="brand-text font-weight-light"></span>
             </a>
             @include('patient.includes.sidebar')
         </aside>
@@ -80,21 +80,6 @@
                                                                     class="fas fa-lg fa-phone"></i></span> Phone
                                                             #: {{ $doctor->works_mobile_phone }} </li>
                                                     </ul>
-                                                    <ul class="ml-4 mb-0 fa-ul text-muted">
-                                                        <li class="small"><span class="fa-li"><i
-                                                                    class="fas fa-lg fa-clock"></i></span> Schedule
-                                                            #: @php $jsn = json_decode($doctor->schedule)  @endphp
-                                                            <table>
-                                                                @foreach ($jsn as $key => $value)
-                                                                    <tr>
-                                                                        <td>{{ $key }}</td>
-                                                                        <td>{{ $value }}</td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </table>
-                                                            @php @endphp
-                                                        </li>
-                                                    </ul>
                                                 </div>
                                                 <div class="col-5 text-center">
                                                     <img src="{{ $doctor->profile_picture }}" alt="user-avatar"
@@ -104,12 +89,12 @@
                                         </div>
                                         <div class="card-footer">
                                             <div class="text-right">
-                                                <a href="#" class="btn btn-sm bg-teal">
-                                                    <i class="fas fa-comments"></i>
+                                                <a href="{{route('view_doctor_for_patient', $doctor->doctors_id)}}" class="btn btn-sm bg-teal">
+                                                    <i class="fas fa-user"></i> View profile
                                                 </a>
-                                                <a href="{{ route('appointment.checkout.index', $doctor->doctors_id) }}"
+                                                <a class="{{App\Models\Appointment::where(['doctor_id' => $doctor->doctors_id, 'is_active' => 1])->get()->count() > 5 ? 'disabled' : '' }}" href="{{ route('appointment.checkout.index', $doctor->doctors_id) }}"
                                                     class="btn btn-sm btn-primary">
-                                                    <i class="fas fa-user"></i> Make Appointment
+                                                    <i class="fas fa-calendar"></i> Make Appointment
                                                 </a>
                                             </div>
                                         </div>

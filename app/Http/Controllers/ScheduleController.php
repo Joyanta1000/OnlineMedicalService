@@ -7,39 +7,27 @@ use \Illuminate\Http\Response;
 use Session;
 use DB;
 use App\Models\DoctorsSchedule;
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\DB as FacadesDB;
+use Illuminate\Support\Facades\Session as FacadesSession;
 
 class ScheduleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $schedules = DoctorsSchedule::where('doctors_id', session()->get('id'))->get();
+        return view('doctor.pages.schedules', compact('schedules'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function add_doctors_schedule(Request $request)
     {
 
-        $id = Session::get('id');
+        $id = FacadesSession::get('id');
 
         $data = $request->input();
 
@@ -55,7 +43,6 @@ class ScheduleController extends Controller
         else{
             $Schedule = new DoctorsSchedule;
             $Schedule->doctors_id = $id;
-            //$Schedule->doctors_id = 1;
             $Schedule->schedule = $Doctors_Schedule;
             if ($Schedule->save()) {
                 return redirect('add_schedule')->with('status', "Schedule added successfully");
@@ -72,51 +59,35 @@ class ScheduleController extends Controller
             'data' => $id,
 
         ], 201);
-        //print_r();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function changeScheduleStatus(Request $request)
+    {
+        DoctorsSchedule::where('id', $request->schedule_id)->update(['is_active' => $request->is_active]);
+    }
+
     public function show($id)
     {
-        //
+        $showSchedule = DoctorsSchedule::find($id);
+
+        return view('doctor.pages.show_schedule', compact('showSchedule'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $showSchedule = DoctorsSchedule::find($id);
+
+        return view('doctor.pages.edit_schedule', compact('showSchedule'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $showSchedule = DoctorsSchedule::destroy($id);
+        return redirect('schedules')->with('status', "Schedule deleted successfully");
     }
 }

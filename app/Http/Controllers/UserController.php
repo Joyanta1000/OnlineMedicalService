@@ -776,7 +776,7 @@ class UserController extends Controller
             ->join('doctors_schedules', 'users.id', '=', 'doctors_schedules.doctors_id')
             ->select('users.*','users.id as user_id', 'doctors.*', 'doctors_profile_pictures.*', 'doctors_files.*', 'contact_informations.*', 'addresses.*', 'permanent_addresses.*', 'doctors_other_informations.*', 'doctors_schedules.schedule')
             ->paginate(4);
-            
+
         $doctors_social_networks = DB::table('users')
             ->join('social_networks', 'users.id', '=', 'social_networks.doctors_id')
             ->select('social_networks.*')
@@ -803,6 +803,13 @@ class UserController extends Controller
         $details = User::with('doctor', 'doctors_specialities', 'patient', 'pharmacy_profile_picture', 'chat', 'pharmacy', 'prescriptions', 'address', 'doctors_profile_picture', 'patients_profile_picture', 'doctors_file', 'pharmacy_file', 'appointment')->where('id',$id)->first();
         // dd($details);
         return view('admin.user_details', compact('details'));
+    }
+
+    public function view_doctor_for_patient($id)
+    {
+        $details = User::with('doctor', 'doctors_specialities', 'patient', 'pharmacy_profile_picture', 'chat', 'pharmacy', 'prescriptions', 'address', 'doctors_profile_picture', 'patients_profile_picture', 'doctors_file', 'pharmacy_file', 'appointment', 'schedule')->where('id', $id)->first();
+        // dd($details);
+        return view('patient.pages.doctors_profile', compact('details'));
     }
 
     public function logout()

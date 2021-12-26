@@ -116,4 +116,9 @@ class User extends Authenticatable
         return $this->hasMany(prescriptions::class, 'patients_id');
     }
 
+    public function schedule()
+    {
+        return $this->hasMany(DoctorsSchedule::class, 'doctors_id');
+    }
+
 }

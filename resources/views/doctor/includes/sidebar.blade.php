@@ -72,6 +72,33 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item {{ request()->is('add_schedule') ? 'menu-open' : null }} ">
+                    <a href="#" class="nav-link {{ request()->is('add_schedule') ? 'active' : null }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Schedule
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    @if (session()->get('role') == 2)
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('schedules') }}"
+                                    class="nav-link {{ request()->is('schedules') ? 'active' : null }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Schedule</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('add_schedule') }}"
+                                    class="nav-link {{ request()->is('add_schedule') ? 'active' : null }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Add Schedule</p>
+                                </a>
+                            </li>
+                        </ul>
+                    @endif
+                </li>
                 <li class="nav-item {{ request()->is('history') ? 'menu-open' : null }} ">
                     <a href="#" class="nav-link {{ request()->is('history') ? 'active' : null }}">
                         <i class="nav-icon fas fa-edit"></i>

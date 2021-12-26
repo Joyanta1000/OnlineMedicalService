@@ -290,12 +290,18 @@ Route::middleware(['isDoctor'])->group(function () {
         return view('doctor.pages.add_schedule');
     })->name('add_schedule');
 
+    Route::get('schedules', [ScheduleController::class, 'index'])->name('schedules');
+    Route::get('schedules/view/{id}', [ScheduleController::class, 'show'])->name('schedules.view');
+    Route::get('schedules/edit/{id}', [ScheduleController::class, 'edit'])->name('schedules.edit');
+    Route::get('schedules/delete/{id}', [ScheduleController::class, 'destroy'])->name('schedules.delete');
     Route::post('/add_doctors_schedule', [ScheduleController::class, 'add_doctors_schedule'])->name('add_doctors_schedule');
 
     Route::prefix('appointment')->group(function () {
         Route::get('/list', [AppointmentController::class, 'list'])->name('appointment.list');
         Route::get('/status_change/{id}', [AppointmentController::class, 'changeStatus'])->name('appointment.status_change');
     });
+
+    Route::post('/changeScheduleStatus', [ScheduleController::class, 'changeScheduleStatus'])->name('changeScheduleStatus');
 
     Route::prefix('prescription')->group(
         function () {
@@ -323,6 +329,8 @@ Route::middleware(['isPatient'])->group(function () {
         Route::post('/checkout/store/{id}', [AppointmentController::class, 'store'])->name('appointment.checkout.store');
     });
     Route::get('/doctors', [UserController::class, 'doctors'])->name('doctors');
+
+    Route::get('/view_doctor_for_patient/{id}', [UserController::class, 'view_doctor_for_patient'])->name('view_doctor_for_patient');
 
     Route::prefix('prescription')->group(
         function () {
