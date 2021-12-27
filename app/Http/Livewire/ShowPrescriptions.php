@@ -28,13 +28,16 @@ use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ShowPrescriptions extends Component
 {
     use WithFileUploads;
     public $confirming;
     public $confirmingUnarchive;
+    public $confirmingDelete;
     public $details;
+    public $details1;
     public $tests_id = [];
     public $prescription_id;
     public $test_file = [];
@@ -46,6 +49,9 @@ class ShowPrescriptions extends Component
     use WithPagination;
     use ActionButton;
     public $backtolist = false;
+    public $deleteImage = false;
+
+    protected $listeners = ['delete', 'deleteCheckedCountries'];
 
     public function render()
     {
@@ -62,6 +68,11 @@ class ShowPrescriptions extends Component
             'archived' => $archived,
         ]);
     }
+
+    // public function mount($id)
+    // {
+    //     $this->view($id);
+    // }
 
     public function showArchived()
     {
@@ -160,6 +171,73 @@ class ShowPrescriptions extends Component
         $this->updateMode = false;
     }
 
+    public function deleteImageFromLibrary($id, $media_id)
+    {
+        // $this->details = null;
+
+        // $this->deleteImage = true;
+
+        $this->confirmingDelete = $media_id;
+
+        // dd($this->confirmingDelete, $media_id);
+
+        // dd($id, $media_id);
+
+        // return view('livewire.show-prescriptions', [
+        //     'deleteImage' => $this->deleteImage,
+        // ]);
+
+        // $details = prescriptions::with('medicines_for_patients', 'test', 'patients_problems', 'referred_to', 'frequency', 'foodTime', 'duration')->find($id);
+        // $this->details = $details;
+        // $this->prescription_id = $details->id;
+        // for ($i = 0; $i < count($details->test); $i++) {
+        //     $this->tests_id[$i] = $details->test[$i]->tests_id;
+        //     $this->test_file[$i] = '';
+        // }
+        $this->prescriptions = null;
+        $this->updateMode = true;
+
+        $this->details = null;
+
+        // $details = prescriptions::with('medicines_for_patients', 'test', 'patients_problems', 'referred_to', 'frequency', 'foodTime', 'duration')->find($id);
+        // $this->details = $details;
+        // $this->prescription_id = $details->id;
+        // for ($i = 0; $i < count($details->test); $i++) {
+        //     $this->tests_id[$i] = $details->test[$i]->tests_id;
+        //     $this->test_file[$i] = '';
+        // }
+        // $this->updateMode = true;
+        // return view('livewire.show-prescriptions', [
+        //     'details' => $details,
+        // ]);
+
+        // $this->details1 = $id;
+        // $info = Media::find($media_id);
+        // $details1 = $this->details1;
+        // session()->flash('message', $info->file_name.' report file successfully deleted. Your prescription id is '. $id);
+        // return redirect()->to(
+        //     'prescription/prescriptions/show', compact(
+        //     'details1')
+        // );
+
+        // $info = Media::find($media_id);
+        // // dd($info);
+        // $this->dispatchBrowserEvent('SwalConfirm', [
+        //     'title' => 'Are you sure?',
+        //     'html' => 'You want to delete <strong>' . $info->file_name . '</strong>',
+        //     'id' => $media_id
+        // ]);
+
+        // session()->flash('message', $info->file_name.' report successfully deleted.');
+
+    }
+
+    public function deleteImageFromLibrarySure($id, $media_id)
+    {
+        Media::find($id)->delete();
+        $this->deleteImage = false;
+    }
+
     public bool $showUpdateMessages = true;
 
     public function setUp(): void
@@ -169,6 +247,8 @@ class ShowPrescriptions extends Component
             ->showSearchInput()
             ->showExportOption('download', ['excel', 'csv']);
     }
+
+    
 
     public function datasource(): ?Builder
     {

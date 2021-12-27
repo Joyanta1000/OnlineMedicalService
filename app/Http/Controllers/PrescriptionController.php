@@ -183,14 +183,15 @@ class PrescriptionController extends Controller
 
     public function update(Request $request)
     {
-        for ($i = 0; $i < count($request->tests_id); $i++) {
-            $save = Test::where(['prescriptions_id' => $request->prescription_id, 'tests_id' => $request->tests_id[$i]])->first();
-            $save->addMedia($request->test_file[$i])
+        // dd($request->all(), $request->test_file[0]);
+        // for ($i = 0; $i < count($request->tests_id); $i++) {
+            $save = Test::where(['prescriptions_id' => $request->prescription_id, 'tests_id' => $request->tests_id[0]])->first();
+            $save->addMedia($request->test_file[0])
                 ->toMediaCollection('test_file');
             $mediaItems = $save->load('media')->getMedia('test_file');
-            $save->test_file = str_replace($request->test_file[$i], $mediaItems[count($mediaItems) - 1]->getFullUrl(), $save->test_file);
+            $save->test_file = str_replace($request->test_file[0], $mediaItems[count($mediaItems) - 1]->getFullUrl(), $save->test_file);
             $save->update();
-        }
+        // }
 
         if ($save) {
             return redirect()->back()->with(['status' => 'Reports added', 'prescriptions_id' => $save->prescriptions_id]);

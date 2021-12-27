@@ -109,21 +109,20 @@ class AppointmentController extends Controller
             
             if ($appointment->where('id', $id)->update(['is_active' => 1, 'ticket' => $ticket])) {
 
-                $receiverEmail = User::find($appointment->first()->patient_id)->email;
+                $receiverEmail = User::find($appointment->where('id', $id)->first()->patient_id)->email;
 
                 $details = [
                     'title' => 'Mail from Online Medical Service',
                     'body' => 'Your appointment scheduled check your phones inbox, which phone number given.'
                 ];
 
-                $workplace = contact_information::where('doctors_id',$appointment->first()->doctor_id)->first()->work_place;
+                $workplace = contact_information::where('doctors_id',$appointment->where('id', $id)->first()->doctor_id)->first()->work_place;
 
                 Mail::to($receiverEmail)->send(new \App\Mail\MyMail($details));
 
-                $doctorName = doctor::where('doctors_id', $appointment->first()->doctor_id)->first();
-                $receiverNumber = PatientsContactInfo::where('patient_id', $appointment->first()->patient_id)->first()->phonenumber;
-                // dd($receiverNumber);
-                $doctorEmail = User::find($appointment->first()->doctor_id)->email;
+                $doctorName = doctor::where('doctors_id', $appointment->where('id', $id)->first()->doctor_id)->first();
+                $receiverNumber = PatientsContactInfo::where('patient_id', $appointment->where('id', $id)->first()->patient_id)->first()->phonenumber;
+                $doctorEmail = User::find($appointment->where('id', $id)->first()->doctor_id)->email;
                 $message = "Appointment Scheduled By Doctor " . $doctorName->first_name . " " . $doctorName->last_name . "," . " His/Her Email: " . $doctorEmail . "," . " Your Ticket: " . $ticket . "," . " Place: " . $workplace . "," . " Time or anything will be informed by chat, you can consult with him/her by chatting also.";
 
                 try {
@@ -148,7 +147,7 @@ class AppointmentController extends Controller
         } else if (request()->get('requestFor') == 'cancelation') {
             if ($appointment->where('id', $id)->update(['is_active' => 2])) {
 
-                $receiverEmail = User::find($appointment->first()->patient_id)->email;
+                $receiverEmail = User::find($appointment->where('id', $id)->first()->patient_id)->email;
 
                 $details = [
                     'title' => 'Mail from Online Medical Service',
@@ -157,10 +156,10 @@ class AppointmentController extends Controller
 
                 Mail::to($receiverEmail)->send(new \App\Mail\MyMail($details));
 
-                $doctorName = doctor::where('doctors_id', $appointment->first()->doctor_id)->first();
-                $receiverNumber = PatientsContactInfo::where('patient_id', $appointment->first()->patient_id)->first()->phonenumber;
+                $doctorName = doctor::where('doctors_id', $appointment->where('id', $id)->first()->doctor_id)->first();
+                $receiverNumber = PatientsContactInfo::where('patient_id', $appointment->where('id', $id)->first()->patient_id)->first()->phonenumber;
                 // dd($receiverNumber);
-                $doctorEmail = User::find($appointment->first()->doctor_id)->email;
+                $doctorEmail = User::find($appointment->where('id', $id)->first()->doctor_id)->email;
                 $message = "Appointment Canceled By Doctor " . $doctorName->first_name . " " . $doctorName->last_name . "," . " His Email: " . $doctorEmail . "," . " Your Ticket: " . $appointment->find($id)->ticket;
 
                 try {

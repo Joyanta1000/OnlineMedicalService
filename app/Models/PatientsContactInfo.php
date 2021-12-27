@@ -9,6 +9,11 @@ class PatientsContactInfo extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'patient_id',
+        'phonenumber',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'patient_id');

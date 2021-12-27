@@ -14,6 +14,8 @@
             </div>
         @endif
 
+        
+
         @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <ul>
@@ -25,7 +27,6 @@
         @endif
 
         <div class="container-fluid">
-
             @csrf
             <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 <div class="container">
@@ -97,40 +98,66 @@
                     <hr>
                     <div class="field" style="margin-left: 15px;">
                         <b>Test:</b> <br>
-                        <form action="{{ URL::to('prescription/prescriptions/update') }}" method="POST"
-                            enctype="multipart/form-data">
-                            @method('PUT')
-                            @csrf
-                            <input type="hidden" name="prescription_id" wire:model="prescription_id"
-                                id="prescription_id">
-                            @for ($i = 0; $i < count($details->test); $i++)
-                                {{-- {{$item->tests_id}} --}}
 
-                                <span style="color: red">
-                                    Name:
-                                    {{ $details->test[$i]->tests_id ? App\Models\TestModel::find($details->test[$i]->tests_id)->test : 'N/A' }}
-                                    <p style="color: blue">Details: {{ $details->test[$i]->details ?: 'N/A' }}</p>
-                                    <span><img
-                                            src="{{ $details->test[$i]->getFirstMediaUrl('test_file', 'thumb') ? $details->test[$i]->getFirstMediaUrl('test_file', 'thumb') : asset('./default/nothing.jpg') }}"
-                                            width="120px"
-                                            style="margin-top: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></span>
-                                </span>
-                                @if (session()->get('role') == 3)
+
+                        @for ($i = 0; $i < count($details->test); $i++)
+                            {{-- {{$item->tests_id}} --}}
+
+                            <span style="color: red">
+                                Name:
+                                {{ $details->test[$i]->tests_id ? App\Models\TestModel::find($details->test[$i]->tests_id)->test : 'N/A' }}
+                                <p style="color: blue">Details: {{ $details->test[$i]->details ?: 'N/A' }}</p>
+                                @if ($details->test[$i]->getMedia('test_file')->count() > 0)
+                                    <span class="{{ $details->test[$i]->getMedia('test_file') ? '' : 'disabled' }}">
+                                        <a
+                                            href="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"><img
+                                                src="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
+                                                width="120px"
+                                                style="margin-top: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></a>
+
+                                        <br>
+                                        {{-- <button class="material-icons btn btn-danger"
+                                            wire:click="deleteImageFromLibrary({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
+                                            style="font-size:10px;color:rgb(243, 231, 231);">&#10007;</button> --}}
+                                            {{-- {{dd($confirmingDelete, $details->test[$i]->getMedia('test_file')->last()->id)}} --}}
+                                        @if ($confirmingDelete === $details->test[$i]->getMedia('test_file')->last()->id)
+                                            <button class="material-icons btn btn-danger"
+                                                wire:click="deleteImageFromLibrary({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
+                                                style="font-size:10px;color:rgb(243, 231, 231);">Sure?</button>
+                                        {{-- {{dd($confirmingDelete, $details->test[$i]->getMedia('test_file')->last()->id)}} --}}
+                                {{-- <button wire:click="deleteImageFromLibrarySure({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
+                                    class=" btn btn-danger ">Sure?</button> --}}
+                            @else
+                                <button wire:click="deleteImageFromLibrary({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
+                                    class=" btn btn-danger " style="font-size:10px;color:rgb(243, 231, 231);" >&#10007;</button>
+                               
+                            @endif
+                                            <br>
+                                    </span>
+                                @endif
+                            </span>
+                            <br>
+                            @if (session()->get('role') == 3)
+                                <form action="{{ URL::to('prescription/prescriptions/update') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @method('PUT')
+                                    @csrf
+                                    <input type="hidden" name="prescription_id" wire:model="prescription_id"
+                                        id="prescription_id">
                                     <input type="hidden" name="tests_id[]" wire:model="tests_id.{{ $i }}">
 
                                     <input type="file" name="test_file[]" class="form-control"
                                         wire:model="test_file.{{ $i }}" placeholder="Browse">
                                     <div wire:loading wire:target="test_file.{{ $i }}">Getting File...
                                     </div>
-                                @endif
-                                </span>
-                                <br>
-                            @endfor
-                            @if (session()->get('role') == 3)
-                                <input type="submit" wire:click.prevent="store" value="Submit Test Report"
-                                    class="btn btn-primary">
+                                    <br>
+                                    <input type="submit" wire:click.prevent="store" value="Submit Test Report"
+                                        class="btn btn-primary">
+                                </form>
                             @endif
-                        </form>
+                            </span>
+                            <br>
+                        @endfor
                     </div>
                     <hr>
                     <div>
@@ -301,7 +328,7 @@
             </tfoot>
         </table>
     </div>
-@elseif(isset($prescriptions))
+@elseif(isset($prescriptions) && $details1 == null)
     <div>
 
         <div style="position: absolute; right: 20px;"><a type="button" class="btn btn-danger"
@@ -368,7 +395,8 @@
 
                                 <button wire:click="view({{ $prescription->id }})"
                                     class=" btn btn-primary ">View</button>
-                                <a href="{{route('prescription_pdf', $prescription->id)}}" class="btn btn-success"><i class="fa fa-file-pdf-o"
+                                <a href="{{ route('prescription_pdf', $prescription->id) }}"
+                                    class="btn btn-success"><i class="fa fa-file-pdf-o"
                                         style="font-size:20px;color:rgb(241, 232, 232)"></i></a>
 
                             @endif

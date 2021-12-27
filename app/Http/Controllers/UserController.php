@@ -301,7 +301,6 @@ class UserController extends Controller
 
     public function register_patient(Request $request)
     {
-        dd($request->all());
         $rules = [
             // 'first_name' => 'required',
             // 'last_name' => 'required',
@@ -411,7 +410,7 @@ class UserController extends Controller
                 $permanent_address->save();
 
                 $phonenumber = PatientsContactInfo::create([
-                    'patients_id' => $id,
+                    'patient_id' => $id,
                     'phonenumber' => $data['phonenumber'],
                 ]);
 

@@ -17,11 +17,13 @@
     {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
     {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
     {{-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.9.2/tailwind.min.css"
         integrity="sha512-l7qZAq1JcXdHei6h2z8h8sMe3NbMrmowhOl+QkP3UhifPpCW2MC4M0i26Y8wYpbz1xD9t61MLT9L1N773dzlOA=="
         crossorigin="anonymous" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('sweetalert2/sweetalert2.min.css') }}">
     @livewireStyles
     @powerGridStyles
     <style>
@@ -181,6 +183,13 @@
                                         </div>
                                     </div>
                                 @endif
+                                <div style="padding: 20px;">
+                                    @if (session()->has('message'))
+                                        <div class="alert alert-success">
+                                            {{ session('message') }}
+                                        </div>
+                                    @endif
+                                </div>
                                 <div class="card-body">
                                     @livewire('show-prescriptions')
                                     <br>
@@ -196,6 +205,31 @@
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
     </div>
+    @livewireScripts
+    @powerGridScripts
+    <script src="{{ asset('sweetalert2/sweetalert2.min.js') }}"></script>
+    <script>
+        window.addEventListener('SwalConfirm', function(event) {
+            swal.fire({
+                title: event.detail.title,
+                imageWidth: 48,
+                imageHeight: 48,
+                html: event.detail.html,
+                showCloseButton: true,
+                showCancelButton: true,
+                cancelButtonText: 'Cancel',
+                confirmButtonText: 'Yes, Delete',
+                cancelButtonColor: '#d33',
+                confirmButtonColor: '#3085d6',
+                width: 300,
+                allowOutsideClick: false
+            }).then(function(result) {
+                if (result.value) {
+                    window.livewire.emit('delete', event.detail.id);
+                }
+            })
+        })
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microplugin/0.0.3/microplugin.min.js"
         integrity="sha512-7amIsiQ/hxbdPNawBZwmWBWPiwQRNEJlxTj6eVO+xmWd71fs79Iydr4rYARHwDf0rKHpysFxWbj64fjPRHbqfA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -249,8 +283,7 @@
             });
         });
     </script>
-    @livewireScripts
-    @powerGridScripts
+
 </body>
 
 </html>
