@@ -14,8 +14,6 @@
             </div>
         @endif
 
-        
-
         @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <ul>
@@ -48,37 +46,14 @@
                                     @endforeach
                                 </h3>
 
-                                <h3>
-                                    @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                        {{ $doctors_address->address }}
-                                        @if (!$loop->last)
-                                            ,
-                                        @endif
-                                    @endforeach
-                                    , Zip:
-                                    @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                        {{ $doctors_address->zip_code }}
-                                        @if (!$loop->last)
-                                            ,
-                                        @endif
-                                    @endforeach
+                                <h3>Work Place:
+                                    {{ App\Models\contact_information::where('doctors_id', $details->doctors_id)->first()->work_place }}
                                 </h3>
-                                <h3>
-                                    @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                        {{ App\Models\area::where('id', $doctors_address->area_id)->first()->area }}
-                                    @endforeach
-                                    ,
-                                    @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                        {{ App\Models\thana::where('id', $doctors_address->thana_id)->first()->thana }}
-                                    @endforeach
-                                    ,
-                                    @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                        {{ App\Models\city::where('id', $doctors_address->city_id)->first()->city }}
-                                    @endforeach
-                                    ,
-                                    @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                        {{ App\Models\country::where('id', $doctors_address->country_id)->first()->country }}
-                                    @endforeach
+                                <h3>Work Mobile Number:
+                                    {{ App\Models\contact_information::where('doctors_id', $details->doctors_id)->first()->works_mobile_phone }}
+                                </h3>
+                                <h3>Fax:
+                                    {{ App\Models\contact_information::where('doctors_id', $details->doctors_id)->first()->fax }}
                                 </h3>
                             </div>
                         </div>
@@ -109,30 +84,39 @@
                                 <p style="color: blue">Details: {{ $details->test[$i]->details ?: 'N/A' }}</p>
                                 @if ($details->test[$i]->getMedia('test_file')->count() > 0)
                                     <span class="{{ $details->test[$i]->getMedia('test_file') ? '' : 'disabled' }}">
-                                        <a
-                                            href="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"><img
-                                                src="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
-                                                width="120px"
-                                                style="margin-top: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></a>
-
-                                        <br>
+                                        @if (pathinfo($details->test[$i]->getMedia('test_file')->last()->file_name ? $details->test[$i]->getMedia('test_file')->last()->file_name : $item->evidence, PATHINFO_EXTENSION) == 'pdf')
+                                        <a href="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}" download>  
+                                        <iframe src="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
+                                                class="btn btn-primary btn-sm" ></iframe> Download</a>
+                                            
+                                        @else
+                                        
+                                            <a
+                                                href="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}" download><img
+                                                    src="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
+                                                    width="120px"
+                                                    style="margin-top: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></a>
+                                        @endif
+                                        
                                         {{-- <button class="material-icons btn btn-danger"
                                             wire:click="deleteImageFromLibrary({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
                                             style="font-size:10px;color:rgb(243, 231, 231);">&#10007;</button> --}}
-                                            {{-- {{dd($confirmingDelete, $details->test[$i]->getMedia('test_file')->last()->id)}} --}}
-                                        @if ($confirmingDelete === $details->test[$i]->getMedia('test_file')->last()->id)
-                                            <button class="material-icons btn btn-danger"
-                                                wire:click="deleteImageFromLibrary({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
-                                                style="font-size:10px;color:rgb(243, 231, 231);">Sure?</button>
                                         {{-- {{dd($confirmingDelete, $details->test[$i]->getMedia('test_file')->last()->id)}} --}}
-                                {{-- <button wire:click="deleteImageFromLibrarySure({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
+                                        {{-- @if ($confirmingDelete == $details->test[$i]->getMedia('test_file')->last()->id) --}}
+                                        {{-- {{dd($confirmingDelete)}} --}}
+                                        {{-- <button class="material-icons btn btn-danger"
+                                                wire:click="deleteImageFromLibrarySure({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
+                                                style="font-size:10px;color:rgb(243, 231, 231);">Sure?</button> --}}
+                                        {{-- {{dd($confirmingDelete, $details->test[$i]->getMedia('test_file')->last()->id)}} --}}
+                                        {{-- <button wire:click="deleteImageFromLibrarySure({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
                                     class=" btn btn-danger ">Sure?</button> --}}
-                            @else
+                                        {{-- @elseif(session()->get('role') != 3)
                                 <button wire:click="deleteImageFromLibrary({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
                                     class=" btn btn-danger " style="font-size:10px;color:rgb(243, 231, 231);" >&#10007;</button>
                                
-                            @endif
-                                            <br>
+                            @endif --}}
+
+                                        <br>
                                     </span>
                                 @endif
                             </span>
@@ -308,10 +292,17 @@
                                 <button wire:click="archiveOperation({{ $archivedResult->id }})"
                                     class=" btn btn-danger ">Sure?</button>
                             @else
+
                                 <button wire:click="confirmUnarchive({{ $archivedResult->id }})"
                                     class=" btn btn-danger ">{{ $count >= 1 ? 'Unarchive' : 'Archive' }}</button>
-                                <button wire:click="view({{ $archivedResult->id }})"
-                                    class=" btn btn-primary ">View</button>
+                                @if (session()->get('role') != 3)
+                                    <button wire:click="view({{ $archivedResult->id }})"
+                                        class=" btn btn-primary ">View</button>
+                                @else
+                                    <a type="button" class=" btn btn-primary "
+                                        href="{{ route('prescription.view', $archivedResult->id) }}">View</a>
+
+                                @endif
                             @endif
                         </td>
                     </tr>
@@ -392,10 +383,16 @@
                                 <button wire:click="confirmArchive({{ $prescription->id }})"
                                     class=" btn btn-danger ">{{ $count >= 1 ? 'Unarchive' : 'Archive' }}</button>
 
+                                @if (session()->get('role') != 3)
+                                    <button wire:click="view({{ $prescription->id }})"
+                                        class=" btn btn-primary ">View</button>
+                                @else
+                                    <a type="button" class=" btn btn-primary "
+                                        href="{{ route('prescription.view', $prescription->id) }}">View</a>
 
-                                <button wire:click="view({{ $prescription->id }})"
-                                    class=" btn btn-primary ">View</button>
-                                <a href="{{ route('prescription_pdf', $prescription->id) }}"
+                                @endif
+
+                                <a href="{{ route(session()->get('role') == 3 ? 'prescription_pdf_download_by_patient' : 'prescription_pdf', $prescription->id) }}"
                                     class="btn btn-success"><i class="fa fa-file-pdf-o"
                                         style="font-size:20px;color:rgb(241, 232, 232)"></i></a>
 

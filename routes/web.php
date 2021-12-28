@@ -338,7 +338,11 @@ Route::middleware(['isPatient'])->group(function () {
         }
     );
 
+    Route::get('prescription/view/{id}', [PrescriptionController::class, 'view'])->name('prescription.view');
+    Route::get('report/delete/{id}', [PrescriptionController::class, 'report_delete'])->name('report.delete');
     // Route::post('/store', [ShowPrescriptions::class, 'store']);
+    Route::get('prescription_pdf_download_by_patient/{id}', [PrescriptionController::class, 'pdf'
+    ])->name('prescription_pdf_download_by_patient');
 
 });
 

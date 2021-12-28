@@ -120,6 +120,7 @@
 
     </style>
 </head>
+
 <body class="">
     <section class="content">
         <div class="">
@@ -130,7 +131,7 @@
             height: 200px;">
                         <div>
                             <img class="img" style="max-height: 120px; max-width: 120px;"
-                                src="{{ asset('./logo/logo_4.png') }}" alt="">
+                                src="{{ asset('logo/logo_4.png') }}" alt="">
                             <div class="h" style="margin: 15px;">
                                 <h1>
                                     {{ App\Models\doctor::where('doctors_id', $details->doctors_id)->first()->first_name }}
@@ -145,37 +146,14 @@
                                     @endforeach
                                 </h3>
 
-                                <h3>
-                                    @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                        {{ $doctors_address->address }}
-                                        @if (!$loop->last)
-                                            ,
-                                        @endif
-                                    @endforeach
-                                    , Zip:
-                                    @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                        {{ $doctors_address->zip_code }}
-                                        @if (!$loop->last)
-                                            ,
-                                        @endif
-                                    @endforeach
+                                <h3>Work Place:
+                                    {{ App\Models\contact_information::where('doctors_id', $details->doctors_id)->first()->work_place }}
                                 </h3>
-                                <h3>
-                                    @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                        {{ App\Models\area::where('id', $doctors_address->area_id)->first()->area }}
-                                    @endforeach
-                                    ,
-                                    @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                        {{ App\Models\thana::where('id', $doctors_address->thana_id)->first()->thana }}
-                                    @endforeach
-                                    ,
-                                    @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                        {{ App\Models\city::where('id', $doctors_address->city_id)->first()->city }}
-                                    @endforeach
-                                    ,
-                                    @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                        {{ App\Models\country::where('id', $doctors_address->country_id)->first()->country }}
-                                    @endforeach
+                                <h3>Work Mobile Number:
+                                    {{ App\Models\contact_information::where('doctors_id', $details->doctors_id)->first()->works_mobile_phone }}
+                                </h3>
+                                <h3>Fax:
+                                    {{ App\Models\contact_information::where('doctors_id', $details->doctors_id)->first()->fax }}
                                 </h3>
                             </div>
                         </div>
@@ -208,26 +186,25 @@
                                     Name:
                                     {{ $details->test[$i]->tests_id ? App\Models\TestModel::find($details->test[$i]->tests_id)->test : 'N/A' }}
                                     <p style="color: blue">Details: {{ $details->test[$i]->details ?: 'N/A' }}</p>
-                                    <span><img
-                                            src="{{ $details->test[$i]->getFirstMediaUrl('test_file', 'thumb') ? $details->test[$i]->getFirstMediaUrl('test_file', 'thumb') : asset('./default/nothing.jpg') }}"
-                                            width="120px"
-                                            style="margin-top: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></span>
-                                </span>
-                                @if (session()->get('role') == 3)
-                                    <input type="hidden" name="tests_id[]" wire:model="tests_id.{{ $i }}">
+                                    <span>
+                                        @if (pathinfo($details->test[$i]->getMedia('test_file')->last()->file_name ? $details->test[$i]->getMedia('test_file')->last()->file_name : $item->evidence, PATHINFO_EXTENSION) == 'pdf')
+                                            <a href="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
+                                                class="btn btn-primary btn-sm">View</a>
+                                            <br>
+                                        @else
+                                            <a
+                                                href="{{ asset('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"><img
+                                                    src="{{ asset('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
+                                                    width="120px"
+                                                    style="margin-top: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></a>
+                                        @endif
+                                        <br>
+                                    </span>
 
-                                    <input type="file" name="test_file[]" class=""
-                                        wire:model="test_file.{{ $i }}" placeholder="Browse">
-                                    <div wire:loading wire:target="test_file.{{ $i }}">Getting File...
-                                    </div>
-                                @endif
                                 </span>
                                 <br>
                             @endfor
-                            @if (session()->get('role') == 3)
-                                <input type="submit" wire:click.prevent="store" value="Submit Test Report"
-                                    class="btn btn-primary">
-                            @endif
+
                         </form>
                     </div>
                     <hr>
@@ -265,7 +242,7 @@
                     <div style="margin: 15px;">
                         <table style="width: 100%; font-size: 15px; text-align: center; padding: 20px;"
                             id="prescription">
-                            
+
                             <tbody class="rows">
 
                                 @php $mn = json_decode(App\Models\Frequency::where('prescriptions_id', $details->id)->first()->mn)  @endphp
@@ -287,11 +264,11 @@
                                     $q = 0;
                                 @endphp
                                 <tr>
-                                <th>Medicine</th>
-                                <th>Frequency</th>
-                                <th>Time </th>
-                                <th>Duration</th>
-                                <th>Qty</th>
+                                    <th>Medicine</th>
+                                    <th>Frequency</th>
+                                    <th>Time </th>
+                                    <th>Duration</th>
+                                    <th>Qty</th>
                                 </tr>
                                 @foreach (App\Models\medicines_for_patients::where('prescriptions_id', $details->id)->get() as $medicines)
                                     <tr>

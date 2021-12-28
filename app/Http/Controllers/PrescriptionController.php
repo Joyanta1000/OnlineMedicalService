@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf as WriterPdf;
 use Spatie\MediaLibrary\Conversions\ImageGenerators\Pdf as ImageGeneratorsPdf;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PrescriptionController extends Controller
 {
@@ -181,9 +182,23 @@ class PrescriptionController extends Controller
         //
     }
 
+    public function view($id)
+    {
+        $details = prescriptions::with('doctor','medicines_for_patients', 'test', 'patients_problems', 'referred_to', 'frequency', 'foodTime', 'duration')->find($id);
+        
+        return view('patient.pages.view_prescription', compact('details'));
+    }
+
+    public function report_delete($id)
+    {
+        Media::find($id)->delete();
+
+        return redirect()->back()->with('message', 'Report deleted successfully');
+    }
+
     public function update(Request $request)
     {
-        // dd($request->all(), $request->test_file[0]);
+        // dd($request->all(), $request->prescription_id, $request->tests_id[0]);
         // for ($i = 0; $i < count($request->tests_id); $i++) {
             $save = Test::where(['prescriptions_id' => $request->prescription_id, 'tests_id' => $request->tests_id[0]])->first();
             $save->addMedia($request->test_file[0])
@@ -194,13 +209,14 @@ class PrescriptionController extends Controller
         // }
 
         if ($save) {
-            return redirect()->back()->with(['status' => 'Reports added', 'prescriptions_id' => $save->prescriptions_id]);
+            return redirect()->back()->with(['message' => 'Reports added', 'prescriptions_id' => $save->prescriptions_id]);
         }
         return redirect()->back()->with('failed', 'Reports not added');
     }
 
     public function pdf($id)
     {
+        ini_set('max_execution_time', 300);
         $details = prescriptions::with('medicines_for_patients', 'test', 'patients_problems', 'referred_to', 'frequency', 'foodTime', 'duration')->find($id);
         
         for ($i = 0; $i < count($details->test); $i++) {

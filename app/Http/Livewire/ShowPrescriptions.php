@@ -173,12 +173,24 @@ class ShowPrescriptions extends Component
 
     public function deleteImageFromLibrary($id, $media_id)
     {
-        // $this->details = null;
+        $this->details = null;
 
         // $this->deleteImage = true;
 
         $this->confirmingDelete = $media_id;
+        $details = prescriptions::with('medicines_for_patients', 'test', 'patients_problems', 'referred_to', 'frequency', 'foodTime', 'duration')->find($id);
+        $this->details = $details;
+        $this->prescription_id = $details->id;
+        for ($i = 0; $i < count($details->test); $i++) {
+            $this->tests_id[$i] = $details->test[$i]->tests_id;
+            $this->test_file[$i] = '';
+        }
+        $this->updateMode = true;
+        return view('livewire.show-prescriptions', [
+            'details' => null,
+        ]);
 
+// dd($media_id);
         // dd($this->confirmingDelete, $media_id);
 
         // dd($id, $media_id);
@@ -194,10 +206,10 @@ class ShowPrescriptions extends Component
         //     $this->tests_id[$i] = $details->test[$i]->tests_id;
         //     $this->test_file[$i] = '';
         // }
-        $this->prescriptions = null;
-        $this->updateMode = true;
+        // $this->prescriptions = null;
+        // $this->updateMode = true;
 
-        $this->details = null;
+        // $this->details = null;
 
         // $details = prescriptions::with('medicines_for_patients', 'test', 'patients_problems', 'referred_to', 'frequency', 'foodTime', 'duration')->find($id);
         // $this->details = $details;
