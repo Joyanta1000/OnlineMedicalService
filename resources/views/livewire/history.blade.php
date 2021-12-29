@@ -129,7 +129,7 @@
                                     </span>
                                 @endif
                             </span>
-                            <br>
+                            {{-- <br>
                             @if (session()->get('role') == 3)
                                 <form action="{{ URL::to('prescription/prescriptions/update') }}" method="POST"
                                     enctype="multipart/form-data">
@@ -147,7 +147,7 @@
                                     <input type="submit" wire:click.prevent="store" value="Submit Test Report"
                                         class="btn btn-primary">
                                 </form>
-                            @endif
+                            @endif --}}
                             </span>
                             <br>
                         @endfor

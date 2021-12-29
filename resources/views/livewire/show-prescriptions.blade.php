@@ -71,6 +71,15 @@
                         </div>
                     </div>
                     <hr>
+                    <br>
+                    <div class="field" style="margin-left: 15px;">
+                        <b>General Information:</b>
+                        <br>
+                        <span>
+                            {!! nl2br(App\Models\GeneralHistory::where('prescription_id', $details->id)->first()->history ? App\Models\GeneralHistory::where('prescription_id', $details->id)->first()->history : 'N/A') !!}
+                        </span>
+                    </div>
+                    <br>
                     <div class="field" style="margin-left: 15px;">
                         <b>Test:</b> <br>
 
@@ -85,19 +94,21 @@
                                 @if ($details->test[$i]->getMedia('test_file')->count() > 0)
                                     <span class="{{ $details->test[$i]->getMedia('test_file') ? '' : 'disabled' }}">
                                         @if (pathinfo($details->test[$i]->getMedia('test_file')->last()->file_name ? $details->test[$i]->getMedia('test_file')->last()->file_name : $item->evidence, PATHINFO_EXTENSION) == 'pdf')
-                                        <a href="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}" download>  
-                                        <iframe src="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
-                                                class="btn btn-primary btn-sm" ></iframe> Download</a>
-                                            
+                                            <a href="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
+                                                download>
+                                                <iframe
+                                                    src="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
+                                                    class="btn btn-primary btn-sm"></iframe> Download</a>
+
                                         @else
-                                        
-                                            <a
-                                                href="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}" download><img
+
+                                            <a href="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
+                                                download><img
                                                     src="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
                                                     width="120px"
                                                     style="margin-top: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></a>
                                         @endif
-                                        
+
                                         {{-- <button class="material-icons btn btn-danger"
                                             wire:click="deleteImageFromLibrary({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
                                             style="font-size:10px;color:rgb(243, 231, 231);">&#10007;</button> --}}

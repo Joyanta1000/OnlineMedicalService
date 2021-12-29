@@ -492,9 +492,9 @@
                                     y +
                                     ']" value="1"> After Food</td><td><input class="form-control" type="date" id="duration' +
                                     y +
-                                    '" name="duration[]" onclick = "durationCount()"></td><td><input class="form-control" type="number" id = "qty' +
+                                    '" name="duration[]"><input class="btn btn-primary form-control" onclick = "durationCount()" value="Calculate Quantity" readonly> </td><td><input class="form-control" type="number" id = "qty' +
                                     y +
-                                    '" name="qty[]" readonly></td><td><a href="#"" class="delete btn btn-danger">Delete</a></td></tr>'
+                                    '" name="qty[]" required></td><td><a href="#"" class="delete btn btn-danger">Delete</a></td></tr>'
                                 );
                                 y++;
                                 myCount = y;

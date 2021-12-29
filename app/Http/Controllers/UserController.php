@@ -211,16 +211,19 @@ class UserController extends Controller
                 $doctors_profile_picture->profile_picture = '/Doctors_Files/Doctors_Profile_Pictures/' . $profile_pictures_name;
                 $doctors_profile_picture->save();
 
+                for($i=0; $i<count($request->pdf_file_of_certificate); $i++)
+                {
                 $extra_2 = Str::random(32);
 
                 $doctors_file = new doctors_files;
                 $doctors_file->doctors_id = $id;
-                $pdf_file_of_certificate = $request->file('pdf_file_of_certificate');
+                $pdf_file_of_certificate = $request->file('pdf_file_of_certificate')[$i];
                 $name_of_pdf_file_of_certificate = time() . '.' . $code . '.' . $extra_2 . '.' . $pdf_file_of_certificate->getClientOriginalExtension();
                 $path_of_pdf_file_of_certificate = public_path('/Doctors_Files/Doctors_Certificates_Pdf_Files/');
                 $pdf_file_of_certificate->move($path_of_pdf_file_of_certificate, $name_of_pdf_file_of_certificate);
                 $doctors_file->pdf_file_of_certificate = '/Doctors_Files/Doctors_Certificates_Pdf_Files/' . $name_of_pdf_file_of_certificate;
                 $doctors_file->save();
+                }
 
                 $contact_information = new contact_information;
                 $contact_information->doctors_id = $id;
@@ -273,7 +276,7 @@ class UserController extends Controller
                     $doctors_speciality->specialist_of = $data['specialist_of'][$i];
                     $doctors_speciality->save();
                 }
-
+                
                 $extra_3 = Str::random(32);
 
                 $doctors_other_information = new doctors_other_information;
@@ -284,6 +287,7 @@ class UserController extends Controller
                 $photo_of_signature->move($path_of_the_photo_of_signature, $name_of_the_photo_of_signature);
                 $doctors_other_information->photo_of_signature = '/Doctors_Files/Doctors_Photo_of_Signature/' . $name_of_pdf_file_of_certificate;
                 $doctors_other_information->save();
+                
 
                 $confirmation_code = array('confirmation_code' => $code);
 
@@ -376,17 +380,18 @@ class UserController extends Controller
                 $patients_profile_picture->patients_profile_picture = '/Patients_Files/Patients_Profile_Pictures/' . $profile_pictures_name;
                 $patients_profile_picture->save();
 
+                for($i=0; $i<count($request->patients_report); $i++)
+                {
                 $extra_2 = Str::random(32);
-
                 $patients_files = new patients_files;
                 $patients_files->patients_id = $id;
-                $pdf_file_of_report = $request->file('patients_report');
+                $pdf_file_of_report = $request->file('patients_report')[$i];
                 $name_of_pdf_file_of_report = time() . '.' . $code . '.' . $extra_2 . '.' . $pdf_file_of_report->getClientOriginalExtension();
                 $path_of_pdf_file_of_report = public_path('/Patients_Files/Patients_Reports_Pdf_Files/');
                 $pdf_file_of_report->move($path_of_pdf_file_of_report, $name_of_pdf_file_of_report);
                 $patients_files->patients_report = '/Patients_Files/Patients_Reports_Pdf_Files/' . $name_of_pdf_file_of_report;
                 $patients_files->save();
-
+                }
 
 
                 $address = new address;

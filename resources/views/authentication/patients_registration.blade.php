@@ -517,21 +517,15 @@
                                             <div class="input-group">
                                                 <div class="custom-file">
                                                     <!-- <input type="file" class="custom-file-input" id="exampleInputFile"> -->
-                                                    <caption style="color: red;">You have to combine all certificates
-                                                        images in one pdf</caption>
-                                                    <input type="file" id="exampleInputFile" name="patients_report"
+                                                    <caption style="color: red;">You have to give nid or birth certificate
+                                                        image by pdf</caption>
+                                                    <input type="file" id="exampleInputFile" name="patients_report[]"
                                                         class="form-control"
-                                                        value="{{ old('pdf_file_of_certificate') }}" required>
+                                                        value="{{ old('patients_report') }}" multiple required>
                                                 </div>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">Upload</span>
                                                 </div>
-                                            </div>
-                                            <br>
-                                            <div>
-                                                <img id="previewImg2" src=""
-                                                    style="height: 20%; width: 20%; border-radius: 5px;"
-                                                    alt="Select Pdf File">
                                             </div>
                                         </div>
                                     </div>

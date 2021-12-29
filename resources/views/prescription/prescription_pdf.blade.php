@@ -128,7 +128,7 @@
                 <div class="container">
                     <div style="background-color: #2c2f33;
             color: white;
-            height: 200px;">
+            height: 240px;">
                         <div>
                             <img class="img" style="max-height: 120px; max-width: 120px;"
                                 src="{{ asset('logo/logo_4.png') }}" alt="">
@@ -171,6 +171,15 @@
                         </div>
                     </div>
                     <hr>
+                    <br>
+                    <div class="field" style="margin-left: 15px;">
+                        <b>General Information:</b>
+                        <br>
+                        <span>
+                            {!! nl2br(App\Models\GeneralHistory::where('prescription_id', $details->id)->first()->history ? App\Models\GeneralHistory::where('prescription_id', $details->id)->first()->history : 'N/A') !!}
+                        </span>
+                    </div>
+                    <br>
                     <div class="" style="margin-left: 15px;">
                         <b>Test:</b> <br>
                         <form action="{{ URL::to('prescription/prescriptions/update') }}" method="POST"
@@ -186,6 +195,7 @@
                                     Name:
                                     {{ $details->test[$i]->tests_id ? App\Models\TestModel::find($details->test[$i]->tests_id)->test : 'N/A' }}
                                     <p style="color: blue">Details: {{ $details->test[$i]->details ?: 'N/A' }}</p>
+                                    <br>
                                     <span>
                                         @if (pathinfo($details->test[$i]->getMedia('test_file')->last()->file_name ? $details->test[$i]->getMedia('test_file')->last()->file_name : $item->evidence, PATHINFO_EXTENSION) == 'pdf')
                                             <a href="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
@@ -281,9 +291,10 @@
                                             {{ $nt[$l++] }}
                                         </td>
                                         <td> <input type="checkbox" name="" id=""
-                                                {{ $before_food[$p++] == 1 ? 'checked' : '' }}> Before Food <input
-                                                type="checkbox" name="" id=""
-                                                {{ $after_food[$q++] == 1 ? 'checked' : '' }}> After Food</td>
+                                                {{ $before_food[$p++] == 1 ? 'checked' : '' }} readonly> Before Food
+                                            <input type="checkbox" name="" id=""
+                                                {{ $after_food[$q++] == 1 ? 'checked' : '' }} readonly> After Food
+                                        </td>
                                         <td>Upto: {{ $duration[$o++] }}</td>
                                         <td>{{ $qty[$m++] }}</td>
                                     </tr>
