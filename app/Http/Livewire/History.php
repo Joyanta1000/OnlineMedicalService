@@ -35,31 +35,39 @@ class History extends Component
     public function render()
     {
         // $this->validate();
-        $userInfo = important_information::where('nid_card_number', $this->searchBy)
-            ->orWhere('birth_certificate_number', $this->searchBy)
-            ->orWhere('patients_id', $this->searchBy)
-            ->orWhere('doctors_id', $this->searchBy)->first();
-        
-        $appointment = Appointment::where('patient_id', $userInfo->patients_id)->orWhere('doctor_id', $userInfo->doctors_id)->get();
-        $prescription = prescriptions::where('patients_id', $userInfo->patients_id)->orWhere('doctors_id', $userInfo->doctors_id)->get();
-        // if ($this->searchBy) {
-        //     dd($appointment, $prescription);
-        // }
-        $this->aRR = array();
-        
+        $appointment = '';
+        $prescription = '';
+        $userInfo = '';
+        // $this->aRR = null;
+        if (isset($this->searchBy)) {
+            $userInfo = important_information::where('nid_card_number', $this->searchBy)
+                ->orWhere('birth_certificate_number', $this->searchBy)
+                ->orWhere('patients_id', $this->searchBy)
+                ->orWhere('doctors_id', $this->searchBy)->first();
+
+            $appointment = Appointment::where('patient_id', $userInfo ? $userInfo->patients_id : 0)->orWhere('doctor_id', $userInfo ? $userInfo->doctors_id : 0)->get();
+            $prescription = prescriptions::where('patients_id', $userInfo ? $userInfo->patients_id : 0)->orWhere('doctors_id', $userInfo ? $userInfo->doctors_id : 0)->get();
+            // if ($this->searchBy) {
+            //     dd($appointment, $prescription);
+            // }
+            $this->aRR = array();
+
             foreach ($prescription as $prescriptionBy) {
                 $test = Test::where('prescriptions_id', $prescriptionBy->id)->get();
-            array_push($this->aRR,$test);
+                array_push($this->aRR, $test);
             }
-        
 
-        // if(count($this->aRR)>2){
-        //     dd($this->aRR);
-        // }
+
+            // if(count($this->aRR)>2){
+            //     dd($this->aRR);
+            // }
+
+        }
 
         $this->appointment = $appointment;
         $this->prescription = $prescription;
         // $this->test = $test;
+
         return view('livewire.history', [
             'appointment' => $appointment,
             'prescription' => $prescription,

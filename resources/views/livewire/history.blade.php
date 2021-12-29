@@ -54,38 +54,15 @@
                                           @endforeach
                                       </h3>
 
-                                      <h3>
-                                          @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                              {{ $doctors_address->address }}
-                                              @if (!$loop->last)
-                                                  ,
-                                              @endif
-                                          @endforeach
-                                          , Zip:
-                                          @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                              {{ $doctors_address->zip_code }}
-                                              @if (!$loop->last)
-                                                  ,
-                                              @endif
-                                          @endforeach
-                                      </h3>
-                                      <h3>
-                                          @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                              {{ App\Models\area::where('id', $doctors_address->area_id)->first()->area }}
-                                          @endforeach
-                                          ,
-                                          @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                              {{ App\Models\thana::where('id', $doctors_address->thana_id)->first()->thana }}
-                                          @endforeach
-                                          ,
-                                          @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                              {{ App\Models\city::where('id', $doctors_address->city_id)->first()->city }}
-                                          @endforeach
-                                          ,
-                                          @foreach (App\Models\address::where('doctors_id', $details->doctors_id)->get() as $doctors_address)
-                                              {{ App\Models\country::where('id', $doctors_address->country_id)->first()->country }}
-                                          @endforeach
-                                      </h3>
+                                      <h3>Work Place:
+                                    {{ App\Models\contact_information::where('doctors_id', $details->doctors_id)->first()->work_place }}
+                                </h3>
+                                <h3>Work Mobile Number:
+                                    {{ App\Models\contact_information::where('doctors_id', $details->doctors_id)->first()->works_mobile_phone }}
+                                </h3>
+                                <h3>Fax:
+                                    {{ App\Models\contact_information::where('doctors_id', $details->doctors_id)->first()->fax }}
+                                </h3>
                                   </div>
                               </div>
                           </div>
@@ -104,44 +81,77 @@
                           <hr>
                           <div class="field" style="margin-left: 15px;">
                               <b>Test:</b> <br>
-                              <form action="{{ URL::to('prescription/prescriptions/update') }}" method="POST"
-                                  enctype="multipart/form-data">
-                                  @method('PUT')
-                                  @csrf
+                              
                                   <input type="hidden" name="prescription_id" wire:model="prescription_id"
                                       id="prescription_id">
                                   @for ($i = 0; $i < count($details->test); $i++)
-                                      {{-- {{$item->tests_id}} --}}
+                            {{-- {{$item->tests_id}} --}}
 
-                                      <span style="color: red">
-                                          Name:
-                                          {{ $details->test[$i]->tests_id ? App\Models\TestModel::find($details->test[$i]->tests_id)->test : 'N/A' }}
-                                          <p style="color: blue">Details: {{ $details->test[$i]->details ?: 'N/A' }}
-                                          </p>
+                            <span style="color: red">
+                                Name:
+                                {{ $details->test[$i]->tests_id ? App\Models\TestModel::find($details->test[$i]->tests_id)->test : 'N/A' }}
+                                <p style="color: blue">Details: {{ $details->test[$i]->details ?: 'N/A' }}</p>
+                                @if ($details->test[$i]->getMedia('test_file')->count() > 0)
+                                    <span class="{{ $details->test[$i]->getMedia('test_file') ? '' : 'disabled' }}">
+                                        @if (pathinfo($details->test[$i]->getMedia('test_file')->last()->file_name ? $details->test[$i]->getMedia('test_file')->last()->file_name : $item->evidence, PATHINFO_EXTENSION) == 'pdf')
+                                        <a href="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}" download>  
+                                        <iframe src="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
+                                                class="btn btn-primary btn-sm" ></iframe> Download</a>
+                                            
+                                        @else
+                                        
+                                            <a
+                                                href="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}" download><img
+                                                    src="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
+                                                    width="120px"
+                                                    style="margin-top: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></a>
+                                        @endif
+                                        
+                                        {{-- <button class="material-icons btn btn-danger"
+                                            wire:click="deleteImageFromLibrary({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
+                                            style="font-size:10px;color:rgb(243, 231, 231);">&#10007;</button> --}}
+                                        {{-- {{dd($confirmingDelete, $details->test[$i]->getMedia('test_file')->last()->id)}} --}}
+                                        {{-- @if ($confirmingDelete == $details->test[$i]->getMedia('test_file')->last()->id) --}}
+                                        {{-- {{dd($confirmingDelete)}} --}}
+                                        {{-- <button class="material-icons btn btn-danger"
+                                                wire:click="deleteImageFromLibrarySure({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
+                                                style="font-size:10px;color:rgb(243, 231, 231);">Sure?</button> --}}
+                                        {{-- {{dd($confirmingDelete, $details->test[$i]->getMedia('test_file')->last()->id)}} --}}
+                                        {{-- <button wire:click="deleteImageFromLibrarySure({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
+                                    class=" btn btn-danger ">Sure?</button> --}}
+                                        {{-- @elseif(session()->get('role') != 3)
+                                <button wire:click="deleteImageFromLibrary({{ $details->id }}, {{ $details->test[$i]->getMedia('test_file')->last()->id }})"
+                                    class=" btn btn-danger " style="font-size:10px;color:rgb(243, 231, 231);" >&#10007;</button>
+                               
+                            @endif --}}
 
-                                          <span><img
-                                                  src="{{ $details->test[$i]->getFirstMediaUrl('test_file', 'thumb') ? $details->test[$i]->getFirstMediaUrl('test_file', 'thumb') : asset('./default/nothing.jpg') }}"
-                                                  width="120px"
-                                                  style="margin-top: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></span>
-                                      </span>
-                                      <br>
-                                      @if (session()->get('role') == 3)
-                                          <input type="hidden" name="tests_id[]"
-                                              wire:model="tests_id.{{ $i }}">
+                                        <br>
+                                    </span>
+                                @endif
+                            </span>
+                            <br>
+                            @if (session()->get('role') == 3)
+                                <form action="{{ URL::to('prescription/prescriptions/update') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @method('PUT')
+                                    @csrf
+                                    <input type="hidden" name="prescription_id" wire:model="prescription_id"
+                                        id="prescription_id">
+                                    <input type="hidden" name="tests_id[]" wire:model="tests_id.{{ $i }}">
 
-                                          <input type="file" name="test_file[]" class="form-control"
-                                              wire:model="test_file.{{ $i }}" placeholder="Browse">
-                                          <div wire:loading wire:target="test_file.{{ $i }}">Getting
-                                              File...</div>
-                                      @endif
-
-                                      <br>
-                                  @endfor
-                                  @if (session()->get('role') == 3)
-                                      <input type="submit" wire:click.prevent="store" value="Submit Test Report"
-                                          class="btn btn-primary">
-                                  @endif
-                              </form>
+                                    <input type="file" name="test_file[]" class="form-control"
+                                        wire:model="test_file.{{ $i }}" placeholder="Browse">
+                                    <div wire:loading wire:target="test_file.{{ $i }}">Getting File...
+                                    </div>
+                                    <br>
+                                    <input type="submit" wire:click.prevent="store" value="Submit Test Report"
+                                        class="btn btn-primary">
+                                </form>
+                            @endif
+                            </span>
+                            <br>
+                        @endfor
+                              
                           </div>
                           <hr>
                           <div>
@@ -242,15 +252,17 @@
 
       @else
 
-          <div style="margin-top: 20px;" class="row row-cols-1 row-cols-md-3 g-4">
-              <div class="col">
+          <div style="margin-top: 20px;" class="row row-cols-1 row-cols-md-2 g-4">
+            @if($appointment != null)
+            <div class="col">
+                  
                   @foreach ($appointment as $appointmentBy)
                       <div class="card">
                           <div class="card-body">
                               <p class="card-text">
-                                  {{ App\Models\doctor::where('doctors_id', $appointmentBy->doctor_id)->first()->doctors_id == session()->get('id') ? 'You' : App\Models\doctor::where('doctors_id', $appointmentBy->doctor_id)->first()->first_name }}
+                                  {{ App\Models\doctor::where('doctors_id', $appointmentBy->doctor_id)->first() ? (App\Models\doctor::where('doctors_id', $appointmentBy->doctor_id)->first()->doctors_id == session()->get('id') ? 'You' : App\Models\doctor::where('doctors_id', $appointmentBy->doctor_id)->first()->first_name) : '' }}
                                   took appointment from
-                                  {{ App\Models\patient::where('patients_id', $appointmentBy->patient_id)->first()->patients_id == session()->get('id') ? 'You' : App\Models\patient::where('patients_id', $appointmentBy->patient_id)->first()->first_name }}
+                                  {{ App\Models\patient::where('patients_id', $appointmentBy->patient_id)->first() ? (App\Models\patient::where('patients_id', $appointmentBy->patient_id)->first()->patients_id == session()->get('id') ? 'You' : App\Models\patient::where('patients_id', $appointmentBy->patient_id)->first()->first_name) : '' }}
                                   on
                                   {{ $appointmentBy->created_at->format('d-m-Y') }}
                                   ({{ $appointmentBy->created_at->diffForHumans() }})
@@ -258,8 +270,11 @@
                           </div>
                       </div>
                   @endforeach
+                    
                   {{-- {{ $appointment->onEachSide(1)->links() }} --}}
               </div>
+              @endif
+              @if($prescription != null)
               <div class="col">
                   @foreach ($prescription as $prescriptionBy)
                       <div class="card" id="hover">
@@ -267,9 +282,9 @@
                               {{-- <button wire:click="view({{ $prescription->id }})"
                                     class=" btn btn-primary ">View</button> --}}
                               <p wire:click="view({{ $prescriptionBy->id }})" class="card-text">
-                                  {{ App\Models\doctor::where('doctors_id', $prescriptionBy->doctors_id)->first()->doctors_id == session()->get('id') ? 'You' : App\Models\doctor::where('doctors_id', $prescriptionBy->doctors_id)->first()->first_name }}
+                                  {{ App\Models\doctor::where('doctors_id', $prescriptionBy->doctors_id)->first() ? (App\Models\doctor::where('doctors_id', $prescriptionBy->doctors_id)->first()->doctors_id == session()->get('id') ? 'You' : App\Models\doctor::where('doctors_id', $prescriptionBy->doctors_id)->first()->first_name) : '' }}
                                   gave prescription to
-                                  {{ App\Models\patient::where('patients_id', $prescriptionBy->patients_id)->first()->patients_id == session()->get('id') ? 'You' : App\Models\patient::where('patients_id', $prescriptionBy->patients_id)->first()->first_name }}
+                                  {{ App\Models\patient::where('patients_id', $prescriptionBy->patients_id)->first() ? (App\Models\patient::where('patients_id', $prescriptionBy->patients_id)->first()->patients_id == session()->get('id') ? 'You' : App\Models\patient::where('patients_id', $prescriptionBy->patients_id)->first()->first_name) : '' }}
                                   on
                                   {{ $prescriptionBy->created_at->format('d-m-Y') }}
                                   ({{ $prescriptionBy->created_at->diffForHumans() }})
@@ -279,7 +294,8 @@
                   @endforeach
                   {{-- {{ $prescription->onEachSide(1)->links() }} --}}
               </div>
-              <div class="col">
+              @endif
+              {{-- <div class="col">
                   @foreach ($aRR as $testBy)
                       <div class="card">
                           <div class="card-body">
@@ -304,7 +320,7 @@
                           </div>
                       </div>
                   @endforeach
-              </div>
+              </div> --}}
           </div>
       @endif
   </div>
