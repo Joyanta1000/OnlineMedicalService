@@ -85,7 +85,7 @@
                                             </li>
                                         @endif
                                             
-                                        <a style="padding: 10px;" class="{{ App\Models\Appointment::where(['doctor_id' => $details->id, 'is_active' => 1])->get()->count() > 5
+                                        <a style="padding: 10px; display: {{App\Models\DoctorsSchedule::where(['doctors_id' => $details->doctor->first()->doctors_id, 'is_active' => 1])->get()->count() > 0 ? '' : 'none;' }}" class="{{ App\Models\Appointment::where(['doctor_id' => $details->id, 'is_active' => 1])->get()->count() > 5
     ? 'disabled'
     : '' }}"
                                             href="{{ route('appointment.checkout.index', $details->id) }}"
@@ -182,7 +182,7 @@
                                                     </div>
                                                 </div>
                                                 <hr>
-                                                <div>
+                                                <div style="display: {{App\Models\DoctorsSchedule::where(['doctors_id' => $details->doctor->first()->doctors_id, 'is_active' => 1])->get()->count() > 0 ? '' : 'none' }}">
                                                     <label for="" style="color: rgb(120, 120, 233);">Schedule For Taking
                                                         Appointment</label>
                                                     @php $jsn = json_decode($details->schedule->first()->schedule)  @endphp

@@ -779,7 +779,7 @@ class UserController extends Controller
             ->join('doctors_other_informations', 'users.id', '=', 'doctors_other_informations.doctors_id')
             ->join('doctors_schedules', 'users.id', '=', 'doctors_schedules.doctors_id')
             ->select('users.*','users.id as user_id', 'doctors.*', 'doctors_profile_pictures.*', 'doctors_files.*', 'contact_informations.*', 'addresses.*', 'permanent_addresses.*', 'doctors_other_informations.*', 'doctors_schedules.schedule')
-            ->paginate(4);
+            ->paginate(2);
 
         $doctors_social_networks = DB::table('users')
             ->join('social_networks', 'users.id', '=', 'social_networks.doctors_id')

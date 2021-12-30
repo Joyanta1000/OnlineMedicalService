@@ -9,6 +9,34 @@
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="{{ asset('../../plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('../../dist/css/adminlte.min.css') }}">
+    @push('style')
+	<style type="text/css">
+		.my-active span{
+			background-color: #5cb85c !important;
+			color: white !important;
+			border-color: #5cb85c !important;
+		}
+
+        li{
+            list-style: none;
+            position: inline-block;
+        }
+
+        ul.container {
+        display: table;
+        list-style-type: none;
+        margin-right: 24px;
+        position: relative;
+    }
+
+    ul.container li {
+        display: table-cell;
+        position: relative;
+    }
+	</style>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    
+@endpush
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -93,7 +121,7 @@
                                                     <i class="fas fa-user"></i> View profile
                                                 </a>
                                                 <a class="{{App\Models\Appointment::where(['doctor_id' => $doctor->doctors_id, 'is_active' => 1])->get()->count() > 5 ? 'disabled' : '' }}" href="{{ route('appointment.checkout.index', $doctor->doctors_id) }}"
-                                                    class="btn btn-sm btn-primary">
+                                                    class="btn btn-sm btn-primary" style="display: {{App\Models\DoctorsSchedule::where(['doctors_id' => $doctor->doctors_id, 'is_active' => 1])->get()->count() > 0 ? '' : 'none' }}">
                                                     <i class="fas fa-calendar"></i> Make Appointment
                                                 </a>
                                             </div>
@@ -105,9 +133,9 @@
                     </div>
                     <div class="card-footer">
                         <nav aria-label="Contacts Page Navigation">
-                            <ul class="pagination justify-content-center m-0">
-                                {!! $doctors->links() !!}
-                            </ul>
+                            {{-- <ul class="pagination justify-content-center m-0"> --}}
+                                {!! $doctors->links('vendor.pagination.custom') !!}
+                            {{-- </ul> --}}
                         </nav>
                     </div>
                 </div>
