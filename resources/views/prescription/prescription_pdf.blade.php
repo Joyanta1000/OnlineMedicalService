@@ -302,6 +302,15 @@
                             </tbody>
                         </table>
                     </div>
+                    <hr>
+                    <div style="padding: 25px;">
+                        <b>Recommended Pharmacy:</b>
+                        <div>
+                            @foreach (App\Models\pharmacies::all() as $pharmacy)
+                                <span>{{ $pharmacy->phermacies_name }}</span>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

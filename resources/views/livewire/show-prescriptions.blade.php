@@ -239,6 +239,15 @@
                     </div>
                 </div>
                 <hr>
+                <div style="padding: 25px;">
+                    <b>Recommended Pharmacy:</b>
+                    <div>
+                        @foreach ( App\Models\pharmacies::all() as $pharmacy)
+                        <span>{{$pharmacy->phermacies_name}}</span>
+                        @endforeach
+                    </div>
+                </div>
+                <hr>
                 <div>
                     <div style="position: inline; right: 10px; padding: 10px;">
                         <a href="{{ URL::to(session()->get('role') == 2 ? 'prescription/prescription_for_doctor/show' : 'prescription/prescriptions/show') }}"

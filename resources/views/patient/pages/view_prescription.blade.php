@@ -274,7 +274,7 @@
                                                             <b>General Information:</b>
                                                             <br>
                                                             <span>
-                                                              {!! nl2br(App\Models\GeneralHistory::where('prescription_id', $details->id)->first()->history ? App\Models\GeneralHistory::where('prescription_id', $details->id)->first()->history : 'N/A') !!}
+                                                                {!! nl2br(App\Models\GeneralHistory::where('prescription_id', $details->id)->first()->history ? App\Models\GeneralHistory::where('prescription_id', $details->id)->first()->history : 'N/A') !!}
                                                             </span>
                                                         </div>
                                                         <br>
@@ -426,6 +426,15 @@
                                                                     @endforeach
                                                                 </tbody>
                                                             </table>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div style="padding: 25px;">
+                                                        <b>Recommended Pharmacy:</b>
+                                                        <div>
+                                                            @foreach (App\Models\pharmacies::all() as $pharmacy)
+                                                                <span>{{ $pharmacy->phermacies_name }}</span>
+                                                            @endforeach
                                                         </div>
                                                     </div>
                                                     <hr>
