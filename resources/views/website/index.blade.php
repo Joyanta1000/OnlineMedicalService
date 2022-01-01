@@ -292,128 +292,31 @@
             </div>
             <div class="row element-animate">
                 <div class="major-caousel js-carousel-1 owl-carousel">
-                    <div>
-                        <div class="media d-block media-custom text-center">
-                            <img src="{{ asset('front_page_elements/img/doctor_1.jpg') }}" alt="Image Placeholder"
-                                class="img-fluid">
-                            <div class="media-body">
-                                <h3 class="mt-0 text-black">Dr. Carl Smith</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <p>
-                                    <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-twitter"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-linkedin"></span></a>
-                                </p>
+                    @foreach ($doctors as $doctor)
+                        <div>
+                            <div class="media d-block media-custom text-center">
+                                <img src="{{ asset($doctor->doctors_profile_picture->first()->profile_picture) }}"
+                                    alt="Image Placeholder" class="img-fluid">
+                                <div class="media-body">
+                                    <h3 class="mt-0 text-black">{{ $doctor->doctor->first()->first_name }}
+                                        {{ $doctor->doctor->first()->last_name }}</h3>
+                                    <p>
+                                        @foreach ($doctor->doctors_specialities as $speciality)
+                                            {{ $speciality->specialist_of }}
+                                            @if (!$loop->last)
+                                                ,
+                                            @endif
+                                        @endforeach
+                                    </p>
+                                    <p>
+                                        @foreach ($doctor->social_network as $doctors_social_network)
+                                            <a href="{{$doctors_social_network->social_network_link}}" class="p-2"><span class="fa fa-link"></span></a>
+                                        @endforeach
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div>
-                        <div class="media d-block media-custom text-center">
-                            <img src="{{ asset('front_page_elements/img/doctor_2.jpg') }}" alt="Image Placeholder"
-                                class="img-fluid">
-                            <div class="media-body">
-                                <h3 class="mt-0 text-black">Dr. Janice Doe</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <p>
-                                    <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-twitter"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-linkedin"></span></a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="media d-block media-custom text-center">
-                            <img src="{{ asset('front_page_elements/img/doctor_3.jpg') }}" alt="Image Placeholder"
-                                class="img-fluid">
-                            <div class="media-body">
-                                <h3 class="mt-0 text-black">Dr. Jean Doe</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <p>
-                                    <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-twitter"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-linkedin"></span></a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="media d-block media-custom text-center">
-                            <img src="{{ asset('front_page_elements/img/doctor_4.jpg') }}" alt="Image Placeholder"
-                                class="img-fluid">
-                            <div class="media-body">
-                                <h3 class="mt-0 text-black">Dr. Jessica Doe</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <p>
-                                    <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-twitter"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-linkedin"></span></a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="media d-block media-custom text-center">
-                            <img src="{{ asset('front_page_elements/img/doctor_1.jpg') }}" alt="Image Placeholder"
-                                class="img-fluid">
-                            <div class="media-body">
-                                <h3 class="mt-0 text-black">Dr. Carl Smith</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <p>
-                                    <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-twitter"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-linkedin"></span></a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="media d-block media-custom text-center">
-                            <img src="{{ asset('front_page_elements/img/doctor_2.jpg') }}" alt="Image Placeholder"
-                                class="img-fluid">
-                            <div class="media-body">
-                                <h3 class="mt-0 text-black">Dr. Janice Doe</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <p>
-                                    <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-twitter"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-linkedin"></span></a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="media d-block media-custom text-center">
-                            <img src="{{ asset('front_page_elements/img/doctor_3.jpg') }}" alt="Image Placeholder"
-                                class="img-fluid">
-                            <div class="media-body">
-                                <h3 class="mt-0 text-black">Dr. Jean Doe</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <p>
-                                    <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-twitter"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-linkedin"></span></a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="media d-block media-custom text-center">
-                            <img src="{{ asset('front_page_elements/img/doctor_4.jpg') }}" alt="Image Placeholder"
-                                class="img-fluid">
-                            <div class="media-body">
-                                <h3 class="mt-0 text-black">Dr. Jessica Doe</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <p>
-                                    <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-twitter"></span></a>
-                                    <a href="#" class="p-2"><span class="fa fa-linkedin"></span></a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
+                    @endforeach
                 </div>
                 <!-- END slider -->
             </div>

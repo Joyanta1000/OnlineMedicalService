@@ -121,4 +121,9 @@ class User extends Authenticatable
         return $this->hasMany(DoctorsSchedule::class, 'doctors_id');
     }
 
+    public function social_network()
+    {
+        return $this->hasMany(social_networks::class, 'doctors_id');
+    }
+
 }

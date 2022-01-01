@@ -155,10 +155,10 @@ Route::middleware(['isAdmin'])->group(function () {
         $countOffline = 0;
         foreach ($users as $user) {
             if (Cache::has('user-is-online-' . $user->id))
-            $countOnline++;
+                $countOnline++;
             else
-            $countOffline++;
-                // echo $user->email . " is offline. Last seen: " . Carbon::parse($user->last_seen)->diffForHumans() . " <br>";
+                $countOffline++;
+            // echo $user->email . " is offline. Last seen: " . Carbon::parse($user->last_seen)->diffForHumans() . " <br>";
         }
 
         return view('admin.index', compact('countUser', 'countAppointments', 'countPrescriptions', 'location', 'countOnline', 'countOffline'));
@@ -309,7 +309,7 @@ Route::middleware(['isDoctor'])->group(function () {
         }
     );
 
-    
+
     Route::get('prescription_pdf/{id}', [PrescriptionController::class, 'pdf'])->name('prescription_pdf');
 
     // Route::get('/historyCheck', History::class);
@@ -341,17 +341,12 @@ Route::middleware(['isPatient'])->group(function () {
     Route::get('prescription/view/{id}', [PrescriptionController::class, 'view'])->name('prescription.view');
     Route::get('report/delete/{id}', [PrescriptionController::class, 'report_delete'])->name('report.delete');
     // Route::post('/store', [ShowPrescriptions::class, 'store']);
-    Route::get('prescription_pdf_download_by_patient/{id}', [PrescriptionController::class, 'pdf'
+    Route::get('prescription_pdf_download_by_patient/{id}', [
+        PrescriptionController::class, 'pdf'
     ])->name('prescription_pdf_download_by_patient');
-
 });
 
 //Route::prefix('doctors')->group(function () {
-
-
-
-
-
 
 Route::middleware(['isPharmacist'])->group(function () {
 
