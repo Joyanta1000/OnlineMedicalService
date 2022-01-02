@@ -67,6 +67,10 @@ Route::get('migrate_fresh_seed', function () {
 
 Route::resource('/', WebsiteController::class);
 
+Route::get('/get_connected', function () {
+    return view('website/get_connected');
+})->name('get_connected');
+
 Route::get('/history', function () {
     return view('doctor/pages/history/history');
 })->name('history');
