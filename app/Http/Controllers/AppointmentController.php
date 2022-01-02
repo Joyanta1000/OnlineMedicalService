@@ -76,9 +76,8 @@ class AppointmentController extends Controller
 
         if ($appointed && $addedToChat) {
             //            return back()->with('status', "Payment received successfully and you appointed, wait for doctors message");
-            return redirect()->route('doctors')->withSuccess([
-                'success' => 'The provided credentials do not match our records.',
-            ]);
+            return redirect()->route('doctors')->with(
+                'success', 'You requested for consultation, wait for doctors response');
         } else {
             return back()->with('failed', "Payment Not Received successfully");
         }

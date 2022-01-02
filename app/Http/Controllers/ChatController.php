@@ -167,12 +167,15 @@ class ChatController extends Controller
             ->join('doctors_profile_pictures', function ($join) {
                 $join->on('chats.recievers_id', '=', 'doctors_profile_pictures.doctors_id')->orOn('chats.senders_id', '=', 'doctors_profile_pictures.doctors_id');
             })
-            ->where('chats.senders_id', $ids->senders_id)
-            ->orWhere('chats.recievers_id', $ids->senders_id)
-            ->where('chats.senders_id', session()->get('id'))
-            ->orWhere('chats.recievers_id', session()->get('id'))
             ->select('chats.*', 'users.email', 'patients_profile_pictures.patients_profile_picture', 'doctors_profile_pictures.profile_picture', 'doctors.first_name as doctors_first_name', 'patients.first_name as patients_first_name')
-            ->distinct('chats.id')
+            ->where(['chats.message_id' => $ids->message_id])
+            // ->orWhere(['chats.recievers_id' => $ids->senders_id , 'chats.senders_id' => $ids->recievers_id])
+            // ->distinct('chats.id')
+            
+            // ->where('chats.senders_id', session()->get('id'))
+            // ->orWhere('chats.recievers_id', session()->get('id'))
+            
+            // ->distinct('chats.id')
             ->get();
         $SendersProfilePicture = (new Search())
             ->registerModel(doctors_profile_pictures::class, 'doctors_id')

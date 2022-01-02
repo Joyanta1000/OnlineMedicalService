@@ -197,14 +197,18 @@
                                     <p style="color: blue">Details: {{ $details->test[$i]->details ?: 'N/A' }}</p>
                                     <br>
                                     <span>
-                                        @if (pathinfo($details->test[$i]->getMedia('test_file')->last()->file_name ? $details->test[$i]->getMedia('test_file')->last()->file_name : $item->evidence, PATHINFO_EXTENSION) == 'pdf')
-                                            <a href="{{ url('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
-                                                class="btn btn-primary btn-sm">View</a>
-                                            <br>
+                                        @if (pathinfo($details->test[$i]->getMedia('test_file')->last() ? $details->test[$i]->getMedia('test_file')->last()->file_name : '', PATHINFO_EXTENSION) == 'pdf')
+                                            <a href="{{ url('/storage/' . ($details->test[$i]->getMedia('test_file')->last() ? $details->test[$i]->getMedia('test_file')->last()->id : 0). '/' . ($details->test[$i]->getMedia('test_file')->last() ? $details->test[$i]->getMedia('test_file')->last()->file_name : '')) }}"
+                                                download>
+                                                <iframe
+                                                    src="{{ url('/storage/' . ($details->test[$i]->getMedia('test_file')->last() ? $details->test[$i]->getMedia('test_file')->last()->id : 0). '/' . ($details->test[$i]->getMedia('test_file')->last() ? $details->test[$i]->getMedia('test_file')->last()->file_name : '')) }}"
+                                                    class="btn btn-primary btn-sm"></iframe> Download</a>
+
                                         @else
-                                            <a
-                                                href="{{ asset('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"><img
-                                                    src="{{ asset('/storage/' . $details->test[$i]->getMedia('test_file')->last()->id . '/' . $details->test[$i]->getMedia('test_file')->last()->file_name) }}"
+
+                                            <a href="{{ url('/storage/' . ($details->test[$i]->getMedia('test_file')->last() ? $details->test[$i]->getMedia('test_file')->last()->id : 0). '/' . ($details->test[$i]->getMedia('test_file')->last() ? $details->test[$i]->getMedia('test_file')->last()->file_name : '')) }}"
+                                                download><img
+                                                    src="{{ url('/storage/' . ($details->test[$i]->getMedia('test_file')->last() ? $details->test[$i]->getMedia('test_file')->last()->id : 0). '/' . ($details->test[$i]->getMedia('test_file')->last() ? $details->test[$i]->getMedia('test_file')->last()->file_name : '')) }}"
                                                     width="120px"
                                                     style="margin-top: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></a>
                                         @endif

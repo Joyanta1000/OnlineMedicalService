@@ -890,12 +890,7 @@ Website: http://emilcarlsson.se/
                         </ul>
                     </div>
                     <div id="expanded">
-                        <label for="twitter"><i class="fa fa-facebook fa-fw" aria-hidden="true"></i></label>
-                        <input name="twitter" type="text" value="mikeross" />
-                        <label for="twitter"><i class="fa fa-twitter fa-fw" aria-hidden="true"></i></label>
-                        <input name="twitter" type="text" value="ross81" />
-                        <label for="twitter"><i class="fa fa-instagram fa-fw" aria-hidden="true"></i></label>
-                        <input name="twitter" type="text" value="mike.ross" />
+                        <a type="button" class="btn btn-primary" style="text-decoration: none; color: white;" href="{{route(session()->get('role')==2 ?  'doctor_dashboard' : 'patient_dashboard')}}"><i class="fa fa-dashboard"></i> Back to dashboard </a>
                     </div>
                 </div>
             </div>

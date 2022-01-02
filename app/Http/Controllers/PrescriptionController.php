@@ -218,7 +218,7 @@ class PrescriptionController extends Controller
     {
         ini_set('max_execution_time', 300);
         $details = prescriptions::with('medicines_for_patients', 'test', 'patients_problems', 'referred_to', 'frequency', 'foodTime', 'duration')->find($id);
-        
+ 
         for ($i = 0; $i < count($details->test); $i++) {
             $this->tests_id[$i] = $details->test[$i]->tests_id;
             $this->test_file[$i] = '';

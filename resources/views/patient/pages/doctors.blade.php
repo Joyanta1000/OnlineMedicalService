@@ -10,33 +10,34 @@
     <link rel="stylesheet" href="{{ asset('../../plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('../../dist/css/adminlte.min.css') }}">
     @push('style')
-	<style type="text/css">
-		.my-active span{
-			background-color: #5cb85c !important;
-			color: white !important;
-			border-color: #5cb85c !important;
-		}
+        <style type="text/css">
+            .my-active span {
+                background-color: #5cb85c !important;
+                color: white !important;
+                border-color: #5cb85c !important;
+            }
 
-        li{
-            list-style: none;
-            position: inline-block;
-        }
+            li {
+                list-style: none;
+                position: inline-block;
+            }
 
-        ul.container {
-        display: table;
-        list-style-type: none;
-        margin-right: 24px;
-        position: relative;
-    }
+            ul.container {
+                display: table;
+                list-style-type: none;
+                margin-right: 24px;
+                position: relative;
+            }
 
-    ul.container li {
-        display: table-cell;
-        position: relative;
-    }
-	</style>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    
-@endpush
+            ul.container li {
+                display: table-cell;
+                position: relative;
+            }
+
+        </style>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    @endpush
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -66,7 +67,19 @@
                     </div>
                 </div>
             </section>
+
             <section class="content">
+                @if (session('success'))
+                    <div class="alert alert-success" role="alert">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        {{ session('success') }}
+                    </div>
+                @elseif(session('failed'))
+                    <div class="alert alert-danger" role="alert">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        {{ session('failed') }}
+                    </div>
+                @endif
                 <div class="card card-solid">
                     <div class="card-body pb-0">
                         @foreach ($doctors as $doctor)
@@ -117,11 +130,18 @@
                                         </div>
                                         <div class="card-footer">
                                             <div class="text-right">
-                                                <a href="{{route('view_doctor_for_patient', $doctor->doctors_id)}}" class="btn btn-sm bg-teal">
+                                                <a href="{{ route('view_doctor_for_patient', $doctor->doctors_id) }}"
+                                                    class="btn btn-sm bg-teal">
                                                     <i class="fas fa-user"></i> View profile
                                                 </a>
-                                                <a class="{{App\Models\Appointment::where(['doctor_id' => $doctor->doctors_id, 'is_active' => 1])->get()->count() > 5 ? 'disabled' : '' }}" href="{{ route('appointment.checkout.index', $doctor->doctors_id) }}"
-                                                    class="btn btn-sm btn-primary" style="display: {{App\Models\DoctorsSchedule::where(['doctors_id' => $doctor->doctors_id, 'is_active' => 1])->get()->count() > 0 ? '' : 'none' }}">
+                                                <a class="{{ App\Models\Appointment::where(['doctor_id' => $doctor->doctors_id, 'is_active' => 1])->get()->count() > 5
+                                                    ? 'disabled'
+                                                    : '' }}"
+                                                    href="{{ route('appointment.checkout.index', $doctor->doctors_id) }}"
+                                                    class="btn btn-sm btn-primary"
+                                                    style="display: {{ App\Models\DoctorsSchedule::where(['doctors_id' => $doctor->doctors_id, 'is_active' => 1])->get()->count() > 0
+                                                        ? ''
+                                                        : 'none' }}">
                                                     <i class="fas fa-calendar"></i> Make Appointment
                                                 </a>
                                             </div>
@@ -134,7 +154,7 @@
                     <div class="card-footer">
                         <nav aria-label="Contacts Page Navigation">
                             {{-- <ul class="pagination justify-content-center m-0"> --}}
-                                {!! $doctors->links('vendor.pagination.custom') !!}
+                            {!! $doctors->links('vendor.pagination.custom') !!}
                             {{-- </ul> --}}
                         </nav>
                     </div>
