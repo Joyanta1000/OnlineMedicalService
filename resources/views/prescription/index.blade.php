@@ -31,7 +31,7 @@
         integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
     <style>
         .header {
-            background-color: #2c2f33;
+            background-color: #343a40;
             color: white;
             max-width: 100%;
             max-height: 500px;
@@ -133,7 +133,7 @@
             padding-top: 12px;
             padding-bottom: 12px;
             text-align: left;
-            background-color: #0b0c0c;
+            background-color: #343a40;
             color: white;
         }
 
@@ -261,8 +261,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
-                                <div>
+                                {{-- <hr> --}}
+                                {{-- <div>
                                     <div>
                                         <div class="field">
                                             <select id="select-problem" placeholder="Select patients problem...">
@@ -278,8 +278,8 @@
                                         <div class="problemShow">
                                         </div>
                                     </div>
-                                </div>
-                                <hr>
+                                </div> --}}
+                                {{-- <hr> --}}
                                 <div>
                                     <div>
                                         <div class="field">
@@ -296,21 +296,13 @@
                                     </div>
                                 </div>
                                 <hr>
+                                @include('prescription.includes.medicine_type')
+                                <hr>
                                 <div>
                                     <div>
-                                        <div class="field">
-                                            <select id="select-state" placeholder="Pick a medicine...">
-                                                <option value="">Select a medicine...</option>
-                                                @foreach ($medicines as $medicine)
-                                                    <option value="{{ $medicine->id }}">
-                                                        {{ $medicine->medicines_name }}</option>
-                                                @endforeach
-                                            </select>
-                                            Or
-                                            <input type="text" class="form-control" id="medicineD" name=""
-                                                placeholder="Enter medicine..." onkeypress="medicineData()" />
-                                            <br>
-                                            <div id="appearToAddMedicine"></div>
+                                        <div class="medcines">
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -323,7 +315,7 @@
                                             <th>Frequency</th>
                                             <th>Time </th>
                                             <th>Duration</th>
-                                            <th>Qty</th>
+                                            <th>Qty & Short Note</th>
                                             <th>Action</th>
                                         </thead>
                                         <tbody class="rows">
@@ -364,7 +356,9 @@
                 // $('#duration' + i).remove();
 
                 var duration = document.getElementById('duration' + i).value;
-                var date1 = new Date();
+                var duration_time = document.getElementById('duration_time' + i).value;
+                console.log(duration, duration_time);
+                // var date1 = new Date();
 
                 var mn = document.getElementById('mn' + i);
                 var af = document.getElementById('af' + i);
@@ -373,27 +367,35 @@
                 var before_food = document.getElementById('before_food' + i);
                 var after_food = document.getElementById('after_food' + i);
 
-                var date2 = new Date(duration);
+                // var date2 = new Date(duration);
 
-                function formatDate(date) {
-                    var d = new Date(date),
-                        month = '' + (d.getMonth() + 1),
-                        day = '' + d.getDate(),
-                        year = d.getFullYear();
+                // function formatDate(date) {
+                //     var d = new Date(date),
+                //         month = '' + (d.getMonth() + 1),
+                //         day = '' + d.getDate(),
+                //         year = d.getFullYear();
 
-                    if (month.length < 2)
-                        month = '0' + month;
-                    if (day.length < 2)
-                        day = '0' + day;
+                //     if (month.length < 2)
+                //         month = '0' + month;
+                //     if (day.length < 2)
+                //         day = '0' + day;
 
-                    return [year, month, day].join('-');
-                }
-                var diffTime = Math.abs(date2 - date1);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                console.log(diffDays, mn.checked, af.checked, en.checked, nt.checked, before_food.checked, after_food
-                    .checked);
+                //     return [year, month, day].join('-');
+                // }
+                // var diffTime = Math.abs(date2 - date1);
+                // const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                // console.log(diffDays, mn.checked, af.checked, en.checked, nt.checked, before_food.checked, after_food
+                //     .checked);
 
-                document.getElementById('qty' + i).value = diffDays * ((mn.checked * (before_food.checked + after_food.checked)) + (af.checked * (before_food.checked + after_food.checked)) + (en.checked * (before_food.checked + after_food.checked)) + (nt.checked * (before_food.checked + after_food.checked)));
+                // document.getElementById('qty' + i).value = diffDays * ((mn.checked * (before_food.checked + after_food
+                //     .checked)) + (af.checked * (before_food.checked + after_food.checked)) + (en.checked * (
+                //     before_food.checked + after_food.checked)) + (nt.checked * (before_food.checked + after_food
+                //     .checked)));
+
+                document.getElementById('qty' + i).value = (duration*(duration_time == 0 ? 1 : (duration_time == 1 ? 30 : (duration_time == 2 ? 365 : 0) ))) * ((mn.checked * (before_food.checked + after_food
+                    .checked)) + (af.checked * (before_food.checked + after_food.checked)) + (en.checked * (
+                    before_food.checked + after_food.checked)) + (nt.checked * (before_food.checked + after_food
+                    .checked)));
 
 
             }
@@ -417,7 +419,7 @@
             $(wrapperTest).append(
                 '<span><input type="hidden" name="test_new[]" value="' + document.getElementById("testD").value +
                 '"/><button class="btn btn-primary">"' + document.getElementById("testD").value +
-                '" </button><br><br><textarea class="form-control" name="details_new[]" placeholder="Enter Details" required></textarea><br><a href="#"" class="deleteTest btn btn-danger">Delete</a><br> <br></span>'
+                '" </button><br><br><textarea class="form-control" name="details_new[]" placeholder="Enter Details"></textarea><br><a href="#"" class="deleteTest btn btn-danger">Delete</a><br> <br></span>'
             );
             $(wrapperTest).on("click", ".deleteTest", function(e) {
                 e.preventDefault();
@@ -447,11 +449,11 @@
                     var x = 1;
                     var y = 0;
                     var max_fields = 10;
+                    
 
                     var callback = function() {
 
                         var wrapper = $(".rows");
-
                         if (document.getElementById("medicineD").value != '' || $('#select-state')
                             .val() != '') {
                             if (x < max_fields) {
@@ -490,11 +492,15 @@
                                     ']" /><input type="checkbox" id="after_food' + y +
                                     '" name="after_food[' +
                                     y +
-                                    ']" value="1"> After Food</td><td><input class="form-control" type="date" id="duration' +
+                                    ']" value="1"> After Food</td><td><input class="form-control" type="number" id="duration' +
                                     y +
-                                    '" name="duration[]"><input class="btn btn-primary form-control" onclick = "durationCount()" value="Calculate Quantity" readonly> </td><td><input class="form-control" type="number" id = "qty' +
+                                    '" name="duration[]"><select id = "duration_time' +
                                     y +
-                                    '" name="qty[]" required></td><td><a href="#"" class="delete btn btn-danger">Delete</a></td></tr>'
+                                    '" name="duration_time[]" class="form-control"><option value="0">Day/Days</option><option value="1">Month/Months</option><option value="2">Year/Years</option></select><input class="btn btn-primary form-control" onclick = "durationCount()" value="Calculate Quantity" readonly> </td><td><input class="form-control" type="number" id = "qty' +
+                                    y +
+                                    '" name="qty[]" placeholder="Quantity...."><textarea id = "short_note' +
+                                    y +
+                                    '" name="short_note[]" class="form-control" placeholder="Short Note...."></textarea></td><td><a href="#"" class="delete btn btn-danger">Delete</a></td></tr>'
                                 );
                                 y++;
                                 myCount = y;
@@ -586,6 +592,31 @@
                         e.preventDefault();
                         $(this).closest("span").remove();
                         x--;
+                    });
+
+
+                    var wrapperMedicineType = $(".appearToAddMedicineType");
+
+                    $('#select-medicine-type').change(function() {
+
+                        console.log($(this).val());
+                        console.log($('#select-medicine-type').find("option:selected").text());
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                    'content')
+                            }
+                        });
+
+                        var id = $(this).val();
+                        dataType: "html",
+                            $.get('/get_medicines/' + id, function(data) {
+
+                                let medicines = $(".medcines");
+                                medicines.html(data);
+
+                            })
                     });
 
                     $('select').selectize({

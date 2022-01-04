@@ -313,6 +313,7 @@ Route::middleware(['isDoctor'])->group(function () {
         }
     );
 
+    Route::get('/get_medicines/{id}', [PrescriptionController::class, 'get_medicines'])->name('get_medicines');
 
     Route::get('prescription_pdf/{id}', [PrescriptionController::class, 'pdf'])->name('prescription_pdf');
 

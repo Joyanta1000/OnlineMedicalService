@@ -12,6 +12,7 @@ class Duration extends Model
     protected $fillable = [
         'prescriptions_id',
         'duration',
+        'duration_time'
     ];
 
     public function prescription()

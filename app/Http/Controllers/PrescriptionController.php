@@ -8,6 +8,7 @@ use App\Models\Duration;
 use App\Models\FoodTime;
 use App\Models\Frequency;
 use App\Models\GeneralHistory;
+use App\Models\medicine_types;
 use App\Models\medicines;
 use App\Models\medicines_for_patients;
 use App\Models\patients_having_problems;
@@ -33,7 +34,9 @@ class PrescriptionController extends Controller
     {
         $appointment_id = request()->appointment_id;
 
-        $medicines = medicines::where('is_active', 1)->get();
+        $medicine_types = medicine_types::where('is_active', 1)->get();
+
+        // $medicines = medicines::where('is_active', 1)->get();
 
         $problems = problems::where('is_active', 1)->get();
 
@@ -54,7 +57,14 @@ class PrescriptionController extends Controller
         $prescription = prescriptions::orderBy('created_at', 'DESC')->first();
 
         $tests = TestModel::all();
-        return view('prescription.index', compact('appointment_id', 'medicines', 'doctorsInfo', 'doctors', 'doctorsAddresses', 'patientsInfo', 'prescription', 'problems', 'tests'));
+        return view('prescription.index', compact('appointment_id', 'medicine_types', 'doctorsInfo', 'doctors', 'doctorsAddresses', 'patientsInfo', 'prescription', 'problems', 'tests'));
+    }
+
+    public function get_medicines($id)
+    {
+        $medicines = medicines::where('medicines_type_id', $id)->where('is_active', 1)->get();
+        // return response()->json($medicines);
+        return view('prescription.includes.medicine', compact('medicines'));
     }
 
     public function store(Request $request)
@@ -158,11 +168,13 @@ class PrescriptionController extends Controller
         $duration = Duration::create([
             'prescriptions_id' => $createPrescription->id,
             'duration' => json_encode($request->duration),
+            'duration_time' => json_encode($request->duration_time),
         ]);
 
         $duration = Quantity::create([
             'prescriptions_id' => $createPrescription->id,
             'qty' => json_encode($request->qty),
+            'short_note' => json_encode($request->short_note),
         ]);
 
         if ($createPrescription) {

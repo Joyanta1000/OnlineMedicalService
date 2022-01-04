@@ -11,6 +11,7 @@ class Quantity extends Model
 
     protected $fillable = [
         'prescriptions_id',
-        'qty'
+        'qty',
+        'short_note'
     ];
 }
