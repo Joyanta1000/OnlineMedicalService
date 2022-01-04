@@ -29,6 +29,7 @@
     <link rel="stylesheet"
         href="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css') }}"
         integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <style>
         .header {
             background-color: #343a40;
@@ -307,6 +308,12 @@
                                     </div>
                                 </div>
                                 <hr>
+                                {{-- <div id="app"> --}}
+
+                                    {{-- <about-us /> --}}
+
+                                {{-- </div> --}}
+                                {{-- <hr> --}}
                                 <div>
                                     <table style="width: 100%; font-size: 15px; text-align: center; padding: 20px;"
                                         id="prescription">
@@ -336,6 +343,7 @@
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
     </div>
+    <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microplugin/0.0.3/microplugin.min.js"
         integrity="sha512-7amIsiQ/hxbdPNawBZwmWBWPiwQRNEJlxTj6eVO+xmWd71fs79Iydr4rYARHwDf0rKHpysFxWbj64fjPRHbqfA=="
@@ -392,7 +400,8 @@
                 //     before_food.checked + after_food.checked)) + (nt.checked * (before_food.checked + after_food
                 //     .checked)));
 
-                document.getElementById('qty' + i).value = (duration*(duration_time == 0 ? 1 : (duration_time == 1 ? 30 : (duration_time == 2 ? 365 : 0) ))) * ((mn.checked * (before_food.checked + after_food
+                document.getElementById('qty' + i).value = (duration * (duration_time == 0 ? 1 : (duration_time == 1 ? 30 :
+                    (duration_time == 2 ? 365 : 0)))) * ((mn.checked * (before_food.checked + after_food
                     .checked)) + (af.checked * (before_food.checked + after_food.checked)) + (en.checked * (
                     before_food.checked + after_food.checked)) + (nt.checked * (before_food.checked + after_food
                     .checked)));
@@ -449,7 +458,7 @@
                     var x = 1;
                     var y = 0;
                     var max_fields = 10;
-                    
+
 
                     var callback = function() {
 
@@ -496,7 +505,7 @@
                                     y +
                                     '" name="duration[]"><select id = "duration_time' +
                                     y +
-                                    '" name="duration_time[]" class="form-control"><option value="0">Day/Days</option><option value="1">Month/Months</option><option value="2">Year/Years</option></select><input class="btn btn-primary form-control" onclick = "durationCount()" value="Calculate Quantity" readonly> </td><td><input class="form-control" type="number" id = "qty' +
+                                    '" name="duration_time[]" class="form-control" ><option value="0">Day/Days</option><option value="1">Month/Months</option><option value="2">Year/Years</option></select><input class="btn btn-primary form-control" onclick = "durationCount()" value="Calculate Quantity" readonly> </td><td><input class="form-control" type="number" id = "qty' +
                                     y +
                                     '" name="qty[]" placeholder="Quantity...."><textarea id = "short_note' +
                                     y +
