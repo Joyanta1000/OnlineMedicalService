@@ -7,8 +7,8 @@
     <title>AdminLTE 3 | DataTables</title>
     <style>
         .header {
-            background-color: #2c2f33;
-            color: white;
+            background-color: #eff2f7;
+            color: rgb(36, 32, 32);
             /* text-align: center; */
             max-width: 100%;
             max-height: 500px;
@@ -17,7 +17,7 @@
 
         .h {
             float: right;
-            color: rgb(248, 244, 244);
+            color: rgb(5, 5, 5);
             margin-left: 0px;
             margin-top: 10px;
             font-size: 10px;
@@ -110,7 +110,7 @@
             padding-top: 12px;
             padding-bottom: 12px;
             text-align: left;
-            background-color: #0b0c0c;
+            background-color: #2a2e2e;
             color: white;
         }
 
@@ -126,52 +126,121 @@
         <div class="">
             <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 <div class="container">
-                    <div style="background-color: #2c2f33;
-            color: white;
-            height: 240px;">
+                    <div style=" background-color: #343a40;
+            
+            height: 150px; border-radius: 5px;">
                         <div>
-                            <img class="img" style="max-height: 120px; max-width: 120px;"
-                                src="{{ asset('logo/logo_4.png') }}" alt="">
-                            <div class="h" style="margin: 15px;">
-                                <h1>
+                            <div class="h" style="margin: 15px; color: white;">
+                            <h1>
                                     {{ App\Models\doctor::where('doctors_id', $details->doctors_id)->first()->first_name }}
                                     {{ App\Models\doctor::where('doctors_id', $details->doctors_id)->first()->last_name }}
                                 </h1>
-                                <h3>
+                                <span style="font-size: 15px; color: white;">
                                     @foreach (App\Models\doctors_specialities::where('doctors_id', $details->doctors_id)->get() as $doctors_specialities)
                                         {{ $doctors_specialities->specialist_of }}
                                         @if (!$loop->last)
                                             ,
                                         @endif
                                     @endforeach
-                                </h3>
-
-                                <h3>Work Place:
+                                </span>
+                                <br>
+                                <span style="font-size: 15px; color: white;">Work Place:
                                     {{ App\Models\contact_information::where('doctors_id', $details->doctors_id)->first()->work_place }}
-                                </h3>
-                                <h3>Work Mobile Number:
+                                </span>
+                                <br>
+                                <span style="font-size: 15px; color: white;">Work Mobile Number:
                                     {{ App\Models\contact_information::where('doctors_id', $details->doctors_id)->first()->works_mobile_phone }}
-                                </h3>
-                                <h3>Fax:
+                                </span>
+                                <br>
+                                <span style="font-size: 15px; color: white;">Fax:
                                     {{ App\Models\contact_information::where('doctors_id', $details->doctors_id)->first()->fax }}
-                                </h3>
+                                </span>
+                            
+                                
                             </div>
+                            <img class="img" style="height: 80px; max-width: 100px;"
+                                src="{{ asset('logo/logo_4.png') }}" alt="">
                         </div>
-                    </div>
-                    <div class="another_div">
-                        <div>
-                            <h2>{{ App\Models\patient::where('patients_id', $details->patients_id)->first()->first_name }}
-                                {{ App\Models\patient::where('patients_id', $details->patients_id)->first()->last_name }}
-                            </h2>
-                            <h3>Patient No: {{ $details->patients_id }}</h3>
-                        </div>
-                        <div class="time" style="margin-right: 30px;">
-                            <h3>{{ $details->created_at->format('d-m-Y') }}</h3>
-                            <h3>Prescription No: {{ $details->id }} </h3>
                         </div>
                     </div>
                     <hr>
-                    <br>
+                    <div class="another_div" style="padding-left: 85px;">
+                        <div class="col-md5">
+                            <span>Patient Name:
+                                {{ App\Models\patient::where('patients_id', $details->patients_id)->first()->first_name }}
+                                {{ App\Models\patient::where('patients_id', $details->patients_id)->first()->last_name }}
+                            </span><br>
+                            <span>Patient No: {{ $details->patients_id }}</span>
+                        </div>
+                        <div class="time" style="margin-left: 60px;">
+                            <span>Prescribed Date: {{ $details->created_at->format('d-m-Y') }}</span><br>
+                            <span>Prescription No: {{ $details->id }} </span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="margin: 15px;">
+                        <table style="width: 100%; font-size: 15px; text-align: center; padding: 20px;"
+                            id="prescription">
+
+                            <tbody class="rows">
+
+                                @php $mn = json_decode(App\Models\Frequency::where('prescriptions_id', $details->id)->first()->mn)  @endphp
+                                @php $af = json_decode(App\Models\Frequency::where('prescriptions_id', $details->id)->first()->af)  @endphp
+                                @php $en = json_decode(App\Models\Frequency::where('prescriptions_id', $details->id)->first()->en)  @endphp
+                                @php $nt = json_decode(App\Models\Frequency::where('prescriptions_id', $details->id)->first()->nt)  @endphp
+                                @php $qty = json_decode(App\Models\Quantity::where('prescriptions_id', $details->id)->first()->qty)  @endphp
+                                @php $short_note = json_decode(App\Models\Quantity::where('prescriptions_id', $details->id)->first()->short_note)  @endphp
+                                @php $duration = json_decode(App\Models\Duration::where('prescriptions_id', $details->id)->first()->duration)  @endphp
+                                @php $duration_time = json_decode(App\Models\Duration::where('prescriptions_id', $details->id)->first()->duration_time)  @endphp
+                                @php $before_food = json_decode(App\Models\FoodTime::where('prescriptions_id', $details->id)->first()->before_food)  @endphp
+                                @php $after_food = json_decode(App\Models\FoodTime::where('prescriptions_id', $details->id)->first()->after_food)  @endphp
+                                @php
+                                    $i = 0;
+                                    $j = 0;
+                                    $k = 0;
+                                    $l = 0;
+                                    $m = 0;
+                                    $o = 0;
+                                    $p = 0;
+                                    $q = 0;
+                                    $r = 0;
+                                    $s = 0;
+                                    $t = 0;
+                                    $u = 0;
+                                    $v = 0;
+                                    $w = 0;
+                                    $x = 0;
+                                @endphp
+                                <tr>
+                                    <th>Medicine</th>
+                                    <th>Frequency</th>
+                                    <th>Time </th>
+                                    <th>Duration</th>
+                                    <th>Qty/Short Note</th>
+                                </tr>
+                                @foreach (App\Models\medicines_for_patients::where('prescriptions_id', $details->id)->get() as $medicines)
+                                    <tr>
+                                        <td>{{ App\Models\medicines::where('id', $medicines->medicines_id)->first()->medicines_name }}
+                                        </td>
+                                        <td>
+                                            {{ $mn[$i++] }} -
+                                            {{ $af[$j++] }} -
+                                            {{ $en[$k++] }} -
+                                            {{ $nt[$l++] }}
+                                        </td>
+                                        <td> <input type="checkbox" name="" id=""
+                                                {{ $before_food[$p++] == 1 ? 'checked' : '' }} readonly> Before Food
+                                            <input type="checkbox" name="" id=""
+                                                {{ $after_food[$q++] == 1 ? 'checked' : '' }} readonly> After Food
+                                        </td>
+                                        <td>{{ $duration[$o++] }} @if ($duration_time[$r++] == 0) Day/Days @endif @if ($duration_time[$t++] == 1) Month/Months  @endif @if ($duration_time[$u++] == 2) Year/Years  @endif</td>
+                                        <td> Qty: {{ $qty[$m++] }} <br> S. Note: {{ $short_note[$s++] }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
                     <div class="field" style="margin-left: 15px;">
                         <b>General Information:</b>
                         <br>
@@ -179,7 +248,7 @@
                             {!! nl2br(App\Models\GeneralHistory::where('prescription_id', $details->id)->first()->history ? App\Models\GeneralHistory::where('prescription_id', $details->id)->first()->history : 'N/A') !!}
                         </span>
                     </div>
-                    <br>
+                    {{-- <br>
                     <div class="" style="margin-left: 15px;">
                         <b>Test:</b> <br>
                         <form action="{{ URL::to('prescription/prescriptions/update') }}" method="POST"
@@ -189,7 +258,6 @@
                             <input type="hidden" name="prescription_id" wire:model="prescription_id"
                                 id="prescription_id">
                             @for ($i = 0; $i < count($details->test); $i++)
-                                {{-- {{$item->tests_id}} --}}
 
                                 <span style="color: red">
                                     Name:
@@ -220,26 +288,7 @@
                             @endfor
 
                         </form>
-                    </div>
-                    <hr>
-                    <div>
-                        <div>
-                            <div class="" style="margin-left: 15px;">
-                                <b>Patients Problems:</b>
-                                @php $jsn = json_decode(App\Models\patients_problems::where('prescriptions_id', $details->id)->first()->problem)  @endphp
-                                @foreach ($jsn as $key => $value)
-                                    <span
-                                        style="color: red">{{ App\Models\problems::where('id', $value)->first()->problems_name }}</span>
-                                    @if (!$loop->last)
-                                        ,
-                                    @endif
-                                @endforeach
-                            </div>
-                            <hr>
-                            <div class="problemShow">
-                            </div>
-                        </div>
-                    </div>
+                    </div> --}}
                     <hr>
 
                     <div>
@@ -249,65 +298,10 @@
                                 {{ App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first() ? App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first()->first_name : '' }}
                                 {{ App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first() ? App\Models\doctor::where('doctors_id', App\Models\referred_to::where('prescriptions_id', $details->id)->first()->referred_to)->first()->last_name : '' }}
                             </div>
-                            <hr>
                         </div>
                     </div>
                     <hr>
-                    <div style="margin: 15px;">
-                        <table style="width: 100%; font-size: 15px; text-align: center; padding: 20px;"
-                            id="prescription">
-
-                            <tbody class="rows">
-
-                                @php $mn = json_decode(App\Models\Frequency::where('prescriptions_id', $details->id)->first()->mn)  @endphp
-                                @php $af = json_decode(App\Models\Frequency::where('prescriptions_id', $details->id)->first()->af)  @endphp
-                                @php $en = json_decode(App\Models\Frequency::where('prescriptions_id', $details->id)->first()->en)  @endphp
-                                @php $nt = json_decode(App\Models\Frequency::where('prescriptions_id', $details->id)->first()->nt)  @endphp
-                                @php $qty = json_decode(App\Models\Quantity::where('prescriptions_id', $details->id)->first()->qty)  @endphp
-                                @php $duration = json_decode(App\Models\Duration::where('prescriptions_id', $details->id)->first()->duration)  @endphp
-                                @php $before_food = json_decode(App\Models\FoodTime::where('prescriptions_id', $details->id)->first()->before_food)  @endphp
-                                @php $after_food = json_decode(App\Models\FoodTime::where('prescriptions_id', $details->id)->first()->after_food)  @endphp
-                                @php
-                                    $i = 0;
-                                    $j = 0;
-                                    $k = 0;
-                                    $l = 0;
-                                    $m = 0;
-                                    $o = 0;
-                                    $p = 0;
-                                    $q = 0;
-                                @endphp
-                                <tr>
-                                    <th>Medicine</th>
-                                    <th>Frequency</th>
-                                    <th>Time </th>
-                                    <th>Duration</th>
-                                    <th>Qty</th>
-                                </tr>
-                                @foreach (App\Models\medicines_for_patients::where('prescriptions_id', $details->id)->get() as $medicines)
-                                    <tr>
-                                        <td>{{ App\Models\medicines::where('id', $medicines->medicines_id)->first()->medicines_name }}
-                                        </td>
-                                        <td>
-                                            {{ $mn[$i++] }} -
-                                            {{ $af[$j++] }} -
-                                            {{ $en[$k++] }} -
-                                            {{ $nt[$l++] }}
-                                        </td>
-                                        <td> <input type="checkbox" name="" id=""
-                                                {{ $before_food[$p++] == 1 ? 'checked' : '' }} readonly> Before Food
-                                            <input type="checkbox" name="" id=""
-                                                {{ $after_food[$q++] == 1 ? 'checked' : '' }} readonly> After Food
-                                        </td>
-                                        <td>Upto: {{ $duration[$o++] }}</td>
-                                        <td>{{ $qty[$m++] }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <hr>
-                    <div style="padding: 25px;">
+                    <div style="padding: 15px;">
                         <b>Recommended Pharmacy:</b>
                         <div>
                             @foreach (App\Models\pharmacies::all() as $pharmacy)
