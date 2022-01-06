@@ -29,7 +29,7 @@
                     <hr class="border-t">
                 </div>
                 <div class="col-md-6 col-sm-12 copyright">
-                    <p>&copy; 2018 Medi H+. Designed &amp; Developed by <a
+                    <p>&copy; 2021 Medi H+. Designed &amp; Developed by <a
                             href="#">JRS</a></p>
                 </div>
                 <div class="col-md-6 col-sm-12 text-md-right text-sm-left">
