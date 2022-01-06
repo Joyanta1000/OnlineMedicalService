@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-md-4 mb-5">
                     <h3>Location &amp; Contact</h3>
-                    <p class="mb-5">134 Street Name, City Name Here, United States</p>
+                    <p class="mb-5">Sirajuddowla Road, Chittagong, Bangladesh</p>
 
                     <h4 class="text-uppercase mb-3 h6 text-white">Email</h5>
                         <p class="mb-5"><a href="mailto:joyanta740.3.20202@gmail.com">info@medihplus.com</a></p>
