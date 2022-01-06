@@ -478,7 +478,7 @@ class UserController extends Controller
                 $id = IdGenerator::generate(['table' => 'users', 'length' => 10, 'prefix' => date('ym')]);
                 $code = Str::random(30);
                 $to_email = $data['email'];
-                $to_name = $data['phermacies_name'];
+                $to_name = $data['pharmacies_name'];
 
                 $user = new User;
                 $user->id = $id;
@@ -771,16 +771,16 @@ class UserController extends Controller
         $doctors = DB::table('users')
             ->join('doctors', 'users.id', '=', 'doctors.doctors_id')
             ->join('doctors_profile_pictures', 'users.id', '=', 'doctors_profile_pictures.doctors_id')
-            ->join('doctors_files', 'users.id', '=', 'doctors_files.doctors_id')
+            // ->join('doctors_files', 'users.id', '=', 'doctors_files.doctors_id')
             ->join('contact_informations', 'users.id', '=', 'contact_informations.doctors_id')
             ->join('addresses', 'users.id', '=', 'addresses.doctors_id')
             ->join('permanent_addresses', 'users.id', '=', 'permanent_addresses.doctors_id')
             // ->join('important_informations', 'users.id', '=', 'important_informations.doctors_id')
             ->join('doctors_other_informations', 'users.id', '=', 'doctors_other_informations.doctors_id')
             ->join('doctors_schedules', 'users.id', '=', 'doctors_schedules.doctors_id')
-            ->select('users.*','users.id as user_id', 'doctors.*', 'doctors_profile_pictures.*', 'doctors_files.*', 'contact_informations.*', 'addresses.*', 'permanent_addresses.*', 'doctors_other_informations.*', 'doctors_schedules.schedule')
+            ->select('users.*','users.id as user_id', 'doctors.*', 'doctors_profile_pictures.*', 'contact_informations.*', 'addresses.*', 'permanent_addresses.*', 'doctors_other_informations.*', 'doctors_schedules.schedule')
             ->paginate(2);
-
+            
         $doctors_social_networks = DB::table('users')
             ->join('social_networks', 'users.id', '=', 'social_networks.doctors_id')
             ->select('social_networks.*')

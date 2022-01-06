@@ -256,7 +256,7 @@
                     <b>Recommended Pharmacy:</b>
                     <div>
                         @foreach (App\Models\pharmacies::all() as $pharmacy)
-                            <span>{{ $pharmacy->phermacies_name }}</span>
+                            <span>{{ $pharmacy->pharmacies_name }}</span>
                         @endforeach
                     </div>
                 </div>

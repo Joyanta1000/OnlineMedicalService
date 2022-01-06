@@ -148,6 +148,8 @@ class CoreDataSeeder extends Seeder
             'password' => md5('12345'), // password
             'role' => 1,
             'is_active' => 1,
+            'is_enable' => 1,
+            'active_status' => 1,
             'remember_token' => Str::random(10),
         ])->assignRole('Admin');
     }
