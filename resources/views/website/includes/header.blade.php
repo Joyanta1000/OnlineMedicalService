@@ -1,7 +1,7 @@
     <header role="banner">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container">
-                <a class="navbar-brand" href="{{URL::to('/')}}">Medi<span>+</span> </a>
+                <a class="navbar-brand" href="{{URL::to('/')}}">Medi<span>H+</span> </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05"
                     aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,7 +21,7 @@
 
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('login.User_Login')}}">Get In</a>
+                            <a class="nav-link" href="{{route('login.User_Login')}}">Log In</a>
                         </li>
 
                     </ul>

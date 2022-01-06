@@ -16,10 +16,10 @@
                     <p class="mb-5">134 Street Name, City Name Here, United States</p>
 
                     <h4 class="text-uppercase mb-3 h6 text-white">Email</h5>
-                        <p class="mb-5"><a href="mailto:info@yourdomain.com">info@yourdomain.com</a></p>
+                        <p class="mb-5"><a href="mailto:joyanta740.3.20202@gmail.com">info@medihplus.com</a></p>
 
                         <h4 class="text-uppercase mb-3 h6 text-white">Phone</h5>
-                            <p>+1 24 435 3533</p>
+                            <p>+1 269-528-8696</p>
 
                 </div>
             </div>
@@ -29,8 +29,8 @@
                     <hr class="border-t">
                 </div>
                 <div class="col-md-6 col-sm-12 copyright">
-                    <p>&copy; 2018 Colorlib Medi+. Designed &amp; Developed by <a
-                            href="https://colorlib.com/">Colorlib</a></p>
+                    <p>&copy; 2018 Medi H+. Designed &amp; Developed by <a
+                            href="#">JRS</a></p>
                 </div>
                 <div class="col-md-6 col-sm-12 text-md-right text-sm-left">
                     <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>

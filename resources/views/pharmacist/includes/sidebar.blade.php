@@ -16,7 +16,7 @@
                     alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ session()->get('phermacies_name') }}</a>
+                <a href="#" class="d-block">{{ session()->get('pharmacies_name') }}</a>
             </div>
         </div>
         <div class="form-inline">

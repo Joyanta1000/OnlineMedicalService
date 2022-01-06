@@ -19,8 +19,8 @@ class CreateAddressesTable extends Migration
             $table->foreign('doctors_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('patients_id')->nullable();
             $table->foreign('patients_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedBigInteger('phermacies_id')->nullable();
-            $table->foreign('phermacies_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('pharmacies_id')->nullable();
+            $table->foreign('pharmacies_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('country_id')->nullable();
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('city_id')->nullable();

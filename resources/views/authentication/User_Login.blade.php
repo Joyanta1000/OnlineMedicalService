@@ -25,7 +25,7 @@
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="../../index2.html" class="h1"><b>Admin</b>LTE</a>
+                <a href="{{URL::to('/')}}" class="h1"><b>Medi H</b>+</a>
             </div>
 
             @include('authentication.flush-message')
@@ -97,12 +97,12 @@
                 </form>
 
                 <div class="social-auth-links text-center mt-2 mb-3">
-                    <a href="#" class="btn btn-block btn-primary">
+                    {{-- <a href="#" class="btn btn-block btn-primary">
                         <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
                     </a>
                     <a href="#" class="btn btn-block btn-danger">
                         <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-                    </a>
+                    </a> --}}
                 </div>
                 <!-- /.social-auth-links -->
 

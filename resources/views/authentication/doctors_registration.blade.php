@@ -40,13 +40,30 @@
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
     </script>
 
+    {{-- for sebsite headers/includes --}}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300, 400, 700" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ asset('front_page_elements/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('front_page_elements/css/animate.css') }}">
+    <link rel="stylesheet" href="{{ asset('front_page_elements/css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('front_page_elements/css/bootstrap-datepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('front_page_elements/css/jquery.timepicker.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('front_page_elements/fonts/ionicons/css/ionicons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('front_page_elements/fonts/fontawesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('front_page_elements/fonts/flaticon/font/flaticon.css') }}">
+
 </head>
 
 <body class="hold-transition sidebar-mini">
+    @include('website.includes.header')
     <form action="{{ route('registration.register_doctor') }}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-        <div class="wrapper">
-            @include('authentication.includes.nav')
+        <div class="wrapper" style="padding: 30px;">
+            
             <hr>
             <section class="content">
                 <div class="container-fluid">
@@ -362,7 +379,7 @@
                                 <div class="col-md-12">
                                     <div class="card card-default">
                                         <div class="card-header">
-                                            <h3 class="card-title">bs-stepper</h3>
+                                            
                                         </div>
                                         <div class="card-body p-0">
                                             <div class="bs-stepper">
@@ -445,10 +462,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            Visit <a
-                                                href="https://github.com/Johann-S/bs-stepper/#how-to-use-it">bs-stepper
-                                                documentation</a> for more examples and information about
-                                            the plugin.
+
                                         </div>
                                     </div>
                                 </div>
@@ -485,9 +499,7 @@
                                 <div class="col-md-12">
                                     <div class="card card-default">
                                         <div class="card-header">
-                                            <h3 class="card-title">Dropzone.js <small><em>jQuery File
-                                                        Upload</em> like
-                                                    look</small></h3>
+                                            
                                         </div>
                                         <div class="card-body">
                                             <div id="actions" class="row">
@@ -512,9 +524,7 @@
 
                                         </div>
                                         <div class="card-footer">
-                                            Visit <a href="https://www.dropzonejs.com">dropzone.js
-                                                documentation</a> for more
-                                            examples and information about the plugin.
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -564,11 +574,7 @@
                                     <h5></h5>
                                 </div>
                                 <div class="card-footer">
-                                    Visit <a href="https://select2.github.io/">Select2 documentation</a>
-                                    for
-                                    more examples and
-                                    information about
-                                    the plugin.
+                                    
                                 </div>
                             </div>
                             <div class="card card-default">
@@ -607,11 +613,7 @@
                                     <h5></h5>
                                 </div>
                                 <div class="card-footer">
-                                    Visit <a href="https://select2.github.io/">Select2 documentation</a>
-                                    for
-                                    more examples and
-                                    information about
-                                    the plugin.
+                                    
                                 </div>
                             </div>
                             <div class="card card-default">
@@ -657,11 +659,7 @@
                                     <h5></h5>
                                 </div>
                                 <div class="card-footer">
-                                    Visit <a href="https://select2.github.io/">Select2 documentation</a>
-                                    for
-                                    more examples and
-                                    information about
-                                    the plugin.
+                                   
                                 </div>
                             </div>
                             <div class="card card-default">
@@ -700,21 +698,14 @@
                                     <h5></h5>
                                 </div>
                                 <div class="card-footer">
-                                    Visit <a href="https://select2.github.io/">Select2 documentation</a>
-                                    for
-                                    more examples and
-                                    information about
-                                    the plugin.
+                                    
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="card card-default">
                                         <div class="card-header">
-                                            <h3 class="card-title">Dropzone.js <small><em>jQuery
-                                                        File
-                                                        Upload</em> like
-                                                    look</small></h3>
+                                            
                                         </div>
                                         <div class="card-body">
                                             <div id="actions" class="row">
@@ -746,9 +737,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            Visit <a href="https://www.dropzonejs.com">dropzone.js
-                                                documentation</a> for more
-                                            examples and information about the plugin.
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -797,11 +786,7 @@
                                     <h5></h5>
                                 </div>
                                 <div class="card-footer">
-                                    Visit <a href="https://select2.github.io/">Select2 documentation</a>
-                                    for
-                                    more examples and
-                                    information about
-                                    the plugin.
+                                   
                                 </div>
                             </div>
                         </div>

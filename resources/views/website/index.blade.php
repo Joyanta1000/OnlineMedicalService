@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Medi+</title>
+    <title>Medi H+</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="{{ asset('front_page_elements/fonts/ionicons/css/ionicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('front_page_elements/fonts/fontawesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('front_page_elements/fonts/flaticon/font/flaticon.css') }}">
-
 
     <!-- Theme Style -->
     <link rel="stylesheet" href="{{ asset('front_page_elements/css/style.css') }}">
@@ -35,8 +34,8 @@
                 <div class="row slider-text align-items-center">
                     <div class="col-md-7 col-sm-12 element-animate">
                         <h1>We Care For You</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi unde impedit,
-                            necessitatibus, soluta sit quam minima expedita atque corrupti reiciendis.</p>
+                        <p>Our doctors are waiting for your treatment.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -49,8 +48,9 @@
                 <div class="row slider-text align-items-center">
                     <div class="col-md-7 col-sm-12 element-animate">
                         <h1>We Provide Health Care Solutions</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi unde impedit,
-                            necessitatibus, soluta sit quam minima expedita atque corrupti reiciendis.</p>
+                        <p> You can see a doctor online and get medical advice along with necessary prescriptions.
+
+Getting care at home with an online doctor appointment is convenient for social distancing, or if you’re short on time, transportation, or child care. While telehealth can’t replace face-to-face medical care entirely, it can break down barriers to accessing health care.</p>
                     </div>
                 </div>
             </div>
@@ -67,8 +67,7 @@
                 <div class="col-inner p-xl-5 p-lg-5 p-md-4 p-sm-4 p-4">
                     <span class="icon flaticon-hospital-bed"></span>
                     <h2>Patient Services</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi unde impedit, necessitatibus,
-                        soluta sit quam minima expedita atque corrupti reiciendis.</p>
+                    <p>We provide the opportunities for patients of taking appointment via online and consulting with doctors via online or face to face, and you will get the digital prescription via online, we will recommend you pharmacy.</p>
                 </div>
                 <a href="{{route('registration.patients_registration')}}" class="btn-more">Get Connected</a>
             </div>
@@ -76,8 +75,7 @@
                 <div class="col-inner p-xl-5 p-lg-5 p-md-4 p-sm-4 p-4">
                     <span class="icon flaticon-doctor"></span>
                     <h2>Doctors Services</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi unde impedit, necessitatibus,
-                        soluta sit quam minima expedita atque corrupti reiciendis.</p>
+                    <p>Doctors can get the appointment request after patients payment confirmation, Doctors can consult with patients via online too, and can prescribe patients.</p>
                 </div>
                 <a href="{{route('registration.doctors_registration')}}" class="btn-more">Get Connected</a>
             </div>
@@ -85,8 +83,7 @@
                 <div class="col-inner p-xl-5 p-lg-5 p-md-4 p-sm-4 p-4">
                     <span class="icon flaticon-first-aid-kit"></span>
                     <h2>Pharmacy Services</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi unde impedit, necessitatibus,
-                        soluta sit quam minima expedita atque corrupti reiciendis.</p>
+                    <p>Pharmacy can give the information, and pharmacy will be recommended by the prescription.</p>
                 </div>
                 <a href="{{route('registration.pharmacists_registration')}}" class="btn-more">Get Connected</a>
             </div>
@@ -99,7 +96,7 @@
             <div class="row justify-content-center mb-5 element-animate">
                 <div class="col-md-8 text-center mb-5">
                     <h2 class="text-uppercase heading border-bottom mb-4">Why Choose Us</h2>
-                    <p class="mb-0 lead">We provide the opportunities of taking appointment and consulting with doctors, and you will get the digital prescription </p>
+                    <p class="mb-0 lead">We provide the opportunities of taking appointment via online and consulting with doctors via online or face to face, and you will get the digital prescription via online, we will recommend you pharmacy </p>
                 </div>
             </div>
             <div class="row align-items-center">
@@ -116,7 +113,7 @@
                                 <span class="icon flaticon-hospital"></span>
                                 <div class="media-body">
                                     <h3 class="mt-0 text-black">Amenities</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    <p>Maximum medical services will be provided via online, pharmacies will be recommended.</p>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +122,7 @@
                                 <span class="icon flaticon-first-aid-kit"></span>
                                 <div class="media-body">
                                     <h3 class="mt-0 text-black">Pharmacy Services</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    <p>Pharmacy can give the information, and pharmacy will be recommended by the prescription</p>
                                 </div>
                             </div>
                         </div>
@@ -137,7 +134,7 @@
                                 <span class="icon flaticon-hospital-bed"></span>
                                 <div class="media-body">
                                     <h3 class="mt-0 text-black">Patient Services</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    <p>We provide the opportunities for patients of taking appointment via online and consulting with doctors via online or face to face, and you will get the digital prescription via online, we will recommend you pharmacy</p>
                                 </div>
                             </div>
                         </div>
@@ -146,7 +143,7 @@
                                 <span class="icon flaticon-doctor"></span>
                                 <div class="media-body">
                                     <h3 class="mt-0 text-black">Expert Doctors</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    <p>Doctors can get the appointment request after patients payment confirmation, Doctors can consult with patients via online too, and can prescribe patients</p>
                                 </div>
                             </div>
                         </div>
@@ -184,49 +181,42 @@
                             aria-labelledby="v-pills-home-tab">
                             <span class="icon flaticon-hospital"></span>
                             <h2 class="text-primary">Amenities</h2>
-                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt
-                                voluptate, quibusdam sunt iste dolores consequatur</p>
-                            <p>Inventore fugit error iure nisi reiciendis fugiat illo pariatur quam sequi quod iusto
-                                facilis officiis nobis sit quis molestias asperiores rem, blanditiis! Commodi
-                                exercitationem vitae deserunt qui nihil ea, tempore et quam natus quaerat doloremque.
-                            </p>
-                            <p><a href="#" class="btn btn-primary">Learn More</a></p>
+                            <p class="lead">Maximum medical services will be provided via online, pharmacies will be recommended.</p>
+                            <p>Doctors can get the appointment request after patients payment confirmation, Doctors can consult with patients via online too, and can prescribe patients, pharmacies will be recommended.</p>
+                            
                         </div>
                         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
                             aria-labelledby="v-pills-profile-tab">
                             <span class="icon flaticon-first-aid-kit"></span>
                             <h2 class="text-primary">Pharmacy Services</h2>
-                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                Nesciunt voluptate, quibusdam sunt iste dolores consequatur</p>
-                            <p>Inventore fugit error iure nisi reiciendis fugiat illo pariatur quam sequi quod iusto
+                            <p class="lead">Pharmacy can give the information, and pharmacy will be recommended by the prescription.</p>
+                            {{-- <p>Inventore fugit error iure nisi reiciendis fugiat illo pariatur quam sequi quod iusto
                                 facilis officiis nobis sit quis molestias asperiores rem, blanditiis! Commodi
                                 exercitationem vitae deserunt qui nihil ea, tempore et quam natus quaerat doloremque.
-                            </p>
-                            <p><a href="#" class="btn btn-primary">Learn More</a></p>
+                            </p> --}}
+                            {{-- <p><a href="#" class="btn btn-primary">Learn More</a></p> --}}
                         </div>
                         <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
                             aria-labelledby="v-pills-messages-tab">
                             <span class="icon flaticon-hospital-bed"></span>
                             <h2 class="text-primary">Patient Services</h2>
-                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                Nesciunt voluptate, quibusdam sunt iste dolores consequatur</p>
-                            <p>Inventore fugit error iure nisi reiciendis fugiat illo pariatur quam sequi quod iusto
+                            <p class="lead">We provide the opportunities for patients of taking appointment via online and consulting with doctors via online or face to face, and you will get the digital prescription via online, we will recommend you pharmacy.</p>
+                            {{-- <p>Inventore fugit error iure nisi reiciendis fugiat illo pariatur quam sequi quod iusto
                                 facilis officiis nobis sit quis molestias asperiores rem, blanditiis! Commodi
                                 exercitationem vitae deserunt qui nihil ea, tempore et quam natus quaerat doloremque.
                             </p>
-                            <p><a href="#" class="btn btn-primary">Learn More</a></p>
+                            <p><a href="#" class="btn btn-primary">Learn More</a></p> --}}
                         </div>
                         <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
                             aria-labelledby="v-pills-settings-tab">
                             <span class="icon flaticon-doctor"></span>
                             <h2 class="text-primary">Expert Doctors</h2>
-                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                Nesciunt voluptate, quibusdam sunt iste dolores consequatur</p>
-                            <p>Inventore fugit error iure nisi reiciendis fugiat illo pariatur quam sequi quod iusto
+                            <p class="lead">Doctors can get the appointment request after patients payment confirmation, Doctors can consult with patients via online too, and can prescribe patients.</p>
+                            {{-- <p>Inventore fugit error iure nisi reiciendis fugiat illo pariatur quam sequi quod iusto
                                 facilis officiis nobis sit quis molestias asperiores rem, blanditiis! Commodi
                                 exercitationem vitae deserunt qui nihil ea, tempore et quam natus quaerat doloremque.
                             </p>
-                            <p><a href="#" class="btn btn-primary">Learn More</a></p>
+                            <p><a href="#" class="btn btn-primary">Learn More</a></p> --}}
                         </div>
                     </div>
                 </div>
@@ -240,8 +230,7 @@
             <div class="row justify-content-center mb-5 element-animate">
                 <div class="col-md-8 text-center mb-5">
                     <h2 class="text-uppercase heading border-bottom mb-4">Our Doctors</h2>
-                    <p class="mb-0 lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi unde
-                        impedit, necessitatibus, soluta sit quam minima expedita atque corrupti reiciendis.</p>
+                    <p class="mb-0 lead">They are verified, they are sincere to take care of you.</p>
                 </div>
             </div>
             <div class="row element-animate">
@@ -283,9 +272,7 @@
             <div class="row text-center justify-content-center">
                 <div class="col-md-10">
                     <h2 class="heading element-animate">Experience Our Advance Facilities</h2>
-                    <p class="sub-heading element-animate mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Commodi unde impedit, necessitatibus, soluta sit quam minima expedita atque corrupti
-                        reiciendis.</p>
+                    <p class="sub-heading element-animate mb-5">You will get appointments confirmation via mobile phone message and mail, you can upload test reports via online in individual prescription. Doctors and patients can chat with each other</p>
                     <p class="element-animate"><a href="{{route('get_connected')}}" class="btn btn-primary btn-lg">Get In Touch</a></p>
                 </div>
             </div>

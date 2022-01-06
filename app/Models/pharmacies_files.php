@@ -11,6 +11,6 @@ class pharmacies_files extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'phermacies_id');
+        return $this->belongsTo(User::class, 'pharmacies_id');
     }
 }

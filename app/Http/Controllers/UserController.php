@@ -443,7 +443,7 @@ class UserController extends Controller
     public function register_pharmacy(Request $request)
     {
         $rules = [
-            'phermacies_name' => 'required',
+            'pharmacies_name' => 'required',
             'country_id' => 'required',
             'city_id' => 'required',
             'thana_id' => 'required',
@@ -490,14 +490,14 @@ class UserController extends Controller
                 $user->save();
 
                 $patient = new pharmacies;
-                $patient->phermacies_id = $id;
-                $patient->phermacies_name = $to_name;
+                $patient->pharmacies_id = $id;
+                $patient->pharmacies_name = $to_name;
                 $patient->save();
 
                 $extra_1 = Str::random(32);
 
                 $pharmacies_profile_picture = new pharmacies_profile_pictures;
-                $pharmacies_profile_picture->phermacies_id = $id;
+                $pharmacies_profile_picture->pharmacies_id = $id;
                 $profile_picture = $request->file('pharmacies_profile_picture');
                 $profile_pictures_name = time() . '.' . $code . '.' . $extra_1 . '.' . $profile_picture->getClientOriginalExtension();
                 $profile_pictures_path = public_path('/Pharmacies_Files/Pharmacies_Profile_Pictures/');
@@ -508,7 +508,7 @@ class UserController extends Controller
                 $extra_2 = Str::random(32);
 
                 $pharmacies_files = new pharmacies_files;
-                $pharmacies_files->phermacies_id = $id;
+                $pharmacies_files->pharmacies_id = $id;
                 $pdf_file_of_evidence = $request->file('evidence');
                 $name_of_pdf_file_of_evidence = time() . '.' . $code . '.' . $extra_2 . '.' . $pdf_file_of_evidence->getClientOriginalExtension();
                 $path_of_pdf_file_of_evidence = public_path('/Pharmacies_Files/Pharmacies_Evidences/');
@@ -519,7 +519,7 @@ class UserController extends Controller
 
 
                 $address = new address;
-                $address->patients_id = $id;
+                $address->pharmacies_id = $id;
                 $address->country_id = $data['country_id'];
                 $address->city_id = $data['city_id'];
                 $address->thana_id = $data['thana_id'];
@@ -529,7 +529,7 @@ class UserController extends Controller
                 $address->save();
 
                 $permanent_address = new permanent_address;
-                $permanent_address->patients_id = $id;
+                $permanent_address->pharmacies_id = $id;
                 $permanent_address->permanent_country_id = $data['permanent_country_id'];
                 $permanent_address->permanent_city_id = $data['permanent_city_id'];
                 $permanent_address->permanent_thana_id = $data['permanent_thana_id'];
@@ -678,11 +678,11 @@ class UserController extends Controller
 
     public function IndexForPharmacist()
     {
-        $pharmacyInfo = pharmacies::where('phermacies_id', session()->get('id'))
+        $pharmacyInfo = pharmacies::where('pharmacies_id', session()->get('id'))
             ->first();
-        $pharmacyProPic = pharmacies_profile_pictures::where('phermacies_id', session()->get('id'))
+        $pharmacyProPic = pharmacies_profile_pictures::where('pharmacies_id', session()->get('id'))
             ->first();
-        session()->put('phermacies_name', $pharmacyInfo->phermacies_name);
+        session()->put('pharmacies_name', $pharmacyInfo->phermacies_name);
         session()->put('pharmacies_profile_picture', $pharmacyProPic->pharmacies_profile_picture);
         return redirect('pharmacist_dashboard');
     }

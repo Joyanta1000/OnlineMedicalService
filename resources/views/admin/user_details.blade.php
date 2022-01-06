@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | DataTables</title>
+    <title>Medi H+</title>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="{{ asset('../../plugins/fontawesome-free/css/all.min.css') }}">
@@ -63,7 +63,7 @@
                                             alt="User profile picture">
                                     </div>
                                     <h3 class="profile-username text-center">
-                                        {{ $details->doctor->first() ? $details->doctor->first()->first_name : $details->pharmacy->first()->phermacies_name }}
+                                        {{ $details->doctor->first() ? $details->doctor->first()->first_name : $details->pharmacy->first()->pharmacies_name }}
                                         {{ $details->doctor->first() ? $details->doctor->first()->last_name : '' }}
                                     </h3>
                                     <p class="text-muted text-center">
@@ -147,7 +147,7 @@
                                                         src="{{ $details->doctors_profile_picture->first() ? $details->doctors_profile_picture->first()->profile_picture : $details->pharmacy_profile_picture->first()->pharmacies_profile_picture }}"
                                                         alt="User Image">
                                                     <span class="username">
-                                                        <a href="#">{{ $details->doctor->first() ? $details->doctor->first()->first_name : $details->pharmacy->first()->phermacies_name }}
+                                                        <a href="#">{{ $details->doctor->first() ? $details->doctor->first()->first_name : $details->pharmacy->first()->pharmacies_name }}
                                                             {{ $details->doctor->first() ? $details->doctor->first()->last_name : '' }}</a>
                                                     </span>
                                                     <span

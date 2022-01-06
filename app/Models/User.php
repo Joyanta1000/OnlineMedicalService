@@ -45,7 +45,7 @@ class User extends Authenticatable
     public function address()
     {
         return $this->hasMany(address::class, 'doctors_id');
-        return $this->hasMany(address::class, 'phermacies_id');
+        return $this->hasMany(address::class, 'pharmacies_id');
     }
 
     public function doctor()
@@ -65,7 +65,7 @@ class User extends Authenticatable
 
     public function pharmacy_profile_picture()
     {
-        return $this->hasMany(pharmacies_profile_pictures::class, 'phermacies_id');
+        return $this->hasMany(pharmacies_profile_pictures::class, 'pharmacies_id');
     }
 
     public function doctors_specialities()
@@ -90,12 +90,12 @@ class User extends Authenticatable
 
     public function pharmacy()
     {
-        return $this->hasMany(pharmacies::class, 'phermacies_id');
+        return $this->hasMany(pharmacies::class, 'pharmacies_id');
     }
 
     public function pharmacy_file()
     {
-        return $this->hasMany(pharmacies_files::class, 'phermacies_id');
+        return $this->hasMany(pharmacies_files::class, 'pharmacies_id');
     }
 
     public function appointment()

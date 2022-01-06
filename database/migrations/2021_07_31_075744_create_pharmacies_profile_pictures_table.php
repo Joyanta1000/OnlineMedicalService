@@ -15,8 +15,8 @@ class CreatePharmaciesProfilePicturesTable extends Migration
     {
         Schema::create('pharmacies_profile_pictures', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('phermacies_id')->nullable();
-            $table->foreign('phermacies_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('pharmacies_id')->nullable();
+            $table->foreign('pharmacies_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('pharmacies_profile_picture')->nullable();
             $table->timestamps();
         });

@@ -36,11 +36,12 @@
 </head>
 
 <body class="hold-transition sidebar-mini">
+    @include('website.includes.header')
     <form action="{{ route('registration.register_patient') }}" method="post" enctype="multipart/form-data"
         autocomplete="off">
         @csrf
-        <div class="wrapper">
-            @include('authentication.includes.nav_for_patient')
+        <div class="wrapper" style="padding: 30px;">
+
             <hr>
             <section class="content">
                 <div class="container-fluid">
@@ -138,9 +139,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and
-                            information about
-                            the plugin.
+
                         </div>
                     </div>
                     <script>
@@ -356,9 +355,7 @@
                             <h5></h5>
                         </div>
                         <div class="card-footer">
-                            Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and
-                            information about
-                            the plugin.
+
                         </div>
                     </div>
                     <div class="card card-default">
@@ -399,16 +396,14 @@
                             <h5></h5>
                         </div>
                         <div class="card-footer">
-                            Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and
-                            information about
-                            the plugin.
+
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card card-default">
                                 <div class="card-header">
-                                    <h3 class="card-title">bs-stepper</h3>
+
                                 </div>
                                 <div class="card-body p-0">
                                     <div class="bs-stepper">
@@ -485,8 +480,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    Visit <a href="https://github.com/Johann-S/bs-stepper/#how-to-use-it">bs-stepper
-                                        documentation</a> for more examples and information about the plugin.
+                                    
                                 </div>
                             </div>
                         </div>
@@ -507,8 +501,7 @@
                         <div class="col-md-12">
                             <div class="card card-default">
                                 <div class="card-header">
-                                    <h3 class="card-title">Dropzone.js <small><em>jQuery File Upload</em> like
-                                            look</small></h3>
+                                    
                                 </div>
                                 <div class="card-body">
                                     <div id="actions" class="row">
@@ -531,8 +524,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    Visit <a href="https://www.dropzonejs.com">dropzone.js documentation</a> for more
-                                    examples and information about the plugin.
+                                    
                                 </div>
                             </div>
                         </div>
@@ -577,9 +569,7 @@
                             <h5></h5>
                         </div>
                         <div class="card-footer">
-                            Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and
-                            information about
-                            the plugin.
+                            
                         </div>
                     </div>
                 </div>

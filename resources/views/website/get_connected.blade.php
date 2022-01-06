@@ -34,8 +34,7 @@
                 <div class="row slider-text align-items-center">
                     <div class="col-md-7 col-sm-12 element-animate">
                         <h1>Services</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi unde impedit,
-                            necessitatibus, soluta sit quam minima expedita atque corrupti reiciendis.</p>
+                        <p>Doctors can get the appointment request after patients payment confirmation, Doctors can consult with patients via online too, and can prescribe patients, pharmacies will be recommended. You will get appointments confirmation via mobile phone message and mail, you can upload test reports via online in individual prescription. Doctors and patients can chat with each other</p>
                     </div>
                 </div>
             </div>
@@ -51,8 +50,8 @@
             <div class="media d-block media-feature text-center mb-5">
               <span class="icon flaticon-hospital"></span>
               <div class="media-body">
-                <h3 class="mt-0 text-black">Services</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                <h3 class="mt-0 text-black">Amenities</h3>
+                <p>Maximum medical services will be provided via online, pharmacies will be recommended.</p>
                 <p><a href="{{route('login.User_Login')}}" class="btn btn-secondary btn-sm">Get in</a></p>
               </div>
             </div>
@@ -62,7 +61,7 @@
               <span class="icon flaticon-first-aid-kit"></span>
               <div class="media-body">
                 <h3 class="mt-0 text-black">Pharmacy Services</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                <p>Pharmacy can give the information, and pharmacy will be recommended by the prescription.</p>
                 <p><a href="{{route('registration.pharmacists_registration')}}" class="btn btn-secondary btn-sm">Get Connected</a></p>
               </div>
             </div>
@@ -72,7 +71,7 @@
               <span class="icon flaticon-hospital-bed"></span>
               <div class="media-body">
                 <h3 class="mt-0 text-black">Patient Services</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                <p>We provide the opportunities for patients of taking appointment via online and consulting with doctors via online or face to face, and you will get the digital prescription via online, we will recommend you pharmacy.</p>
                 <p><a href="{{route('registration.patients_registration')}}" class="btn btn-secondary btn-sm">Get Connected</a></p>
               </div>
             </div>
@@ -82,7 +81,7 @@
               <span class="icon flaticon-doctor"></span>
               <div class="media-body">
                 <h3 class="mt-0 text-black">Expert Doctors</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                <p>Doctors can get the appointment request after patients payment confirmation, Doctors can consult with patients via online too, and can prescribe patients.</p>
                 <p><a href="{{route('registration.doctors_registration')}}" class="btn btn-secondary btn-sm">Get Connected</a></p>
               </div>
             </div>

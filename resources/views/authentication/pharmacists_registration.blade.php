@@ -1,33 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- header -->
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AdminLTE 3 | Advanced form elements</title>
-
-  <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="{{asset('../../plugins/fontawesome-free/css/all.min.css')}}">
-  <!-- daterange picker -->
   <link rel="stylesheet" href="{{asset('../../plugins/daterangepicker/daterangepicker.css')}}">
-  <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="{{asset('../../plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
-  <!-- Bootstrap Color Picker -->
   <link rel="stylesheet" href="{{asset('../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css')}}">
-  <!-- Tempusdominus Bootstrap 4 -->
   <link rel="stylesheet" href="{{asset('../../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
-  <!-- Select2 -->
   <link rel="stylesheet" href="{{asset('../../plugins/select2/css/select2.min.css')}}">
   <link rel="stylesheet" href="{{asset('../../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
-  <!-- Bootstrap4 Duallistbox -->
   <link rel="stylesheet" href="{{asset('../../plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css')}}">
-  <!-- BS Stepper -->
   <link rel="stylesheet" href="{{asset('../../plugins/bs-stepper/css/bs-stepper.min.css')}}">
-  <!-- dropzonejs -->
   <link rel="stylesheet" href="{{asset('../../plugins/dropzone/min/dropzone.min.css')}}">
-  <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('../../dist/css/adminlte.min.css')}}">
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -47,13 +34,14 @@
 
 <body class="hold-transition sidebar-mini">
 
+  @include('website.includes.header')
+
   <form action="{{route('registration.register_pharmacy')}}" method="post" enctype="multipart/form-data">
 
     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 
-<div class="wrapper">
+<div class="wrapper" style="padding: 30px;">
   <!-- Navbar -->
-  @include('authentication.includes.nav_for_pharmacy')
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
@@ -119,7 +107,7 @@
                     <option>Washington</option>
                   </select> -->
 
-                  <input type="text" name="phermacies_name" class="form-control" style="width: 100%;" value="{{old('phermacies_name')}}">
+                  <input type="text" name="pharmacies_name" class="form-control" style="width: 100%;" value="{{old('phermacies_name')}}">
                 </div>
                 <!-- /.form-group -->
                 
@@ -142,8 +130,7 @@
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
-            Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and information about
-            the plugin.
+            
           </div>
         </div>
 
@@ -1019,7 +1006,7 @@
           <div class="col-md-12">
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">bs-stepper</h3>
+
               </div>
               <div class="card-body p-0">
                 <div class="bs-stepper">
@@ -1087,7 +1074,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                Visit <a href="https://github.com/Johann-S/bs-stepper/#how-to-use-it">bs-stepper documentation</a> for more examples and information about the plugin.
+               
               </div>
             </div>
             <!-- /.card -->
@@ -1115,7 +1102,7 @@
           <div class="col-md-12">
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">Dropzone.js <small><em>jQuery File Upload</em> like look</small></h3>
+                
               </div>
               <div class="card-body">
                 <div id="actions" class="row">
@@ -1206,7 +1193,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                Visit <a href="https://www.dropzonejs.com">dropzone.js documentation</a> for more examples and information about the plugin.
+                
               </div>
             </div>
             <!-- /.card -->
@@ -1349,8 +1336,7 @@ Thanks for being with us.
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
-            Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and information about
-            the plugin.
+            
           </div>
         </div>
 <!--  -->
