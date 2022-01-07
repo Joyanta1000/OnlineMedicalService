@@ -146,10 +146,16 @@ class ChatController extends Controller
             return redirect()->route('chat.index', ['id' => $return->id]);
         }
         $ids = chats::find($request->id);
+        $messageId = chats::where('message_id', $ids->message_id)->get();
         if ($ids->senders_id != session()->get('id')) {
-            $updateChat = DB::table('chats')
-                ->where('id', $ids->id)
-                ->update(['is_seen' => 1]);
+            for($i=0; $i<count($messageId); $i++){
+                $updateChat = chats::find($messageId[$i]->id);
+                $updateChat->is_seen = 1;
+                $updateChat->save();
+            }
+            // $updateChat = DB::table('chats')
+            //     ->where('id', $ids->id)
+            //     ->update(['is_seen' => 1]);
         }
         $messageData = DB::table('chats')
             ->join('users', function ($join) {
