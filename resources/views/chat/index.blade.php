@@ -1336,8 +1336,18 @@ messageData +="<li class='replies'><img style='height: 32px;' src='"+dataResult.
                     if(row.message != null){
                         messageData +="<p>"+row.message+"<br><small>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
                     }
+                    
                             if(row.file != null){
-                        messageData += "<br><p style='margin-right: 20px;'><img style='height: 100px; width: 100px; border-radius: 2px;' src='"+row.file+"' alt='' /><br><small>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
+                                
+                        var fileName = row.file;
+                                console.log(fileName.split('.').pop(), 'file');
+                                if(fileName.split('.').pop() != 'jpg' && fileName.split('.').pop() != 'jpeg' && fileName.split('.').pop() != 'JPG' && fileName.split('.').pop() != 'JPEG' && fileName.split('.').pop() != 'png' && fileName.split('.').pop() != 'PNG')
+                                {
+                                    messageData += "<br><p style='margin-left: 20px;'><a style='height: 100px; width: 100px; border-radius: 2px;' href='"+row.file+"' alt=''><i class='fa fa-file-o' style='font-size:48px;color:white'></i></a><br><small>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
+                                }
+                                else{
+                        messageData += "<br><p style='margin-left: 20px;'><a href='"+row.file+"'><img style='height: 100px; width: 100px; border-radius: 2px;' src='"+row.file+"' alt='' /></a><br><small>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
+                    }
                     }
                     messageData += "</li>";
                       
@@ -1376,8 +1386,16 @@ messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.Rec
                     }
 
                     if(row.file != null){
-                        messageData += "<br><p style='margin-left: 20px;'><img style='height: 100px; width: 100px; border-radius: 2px;' src='"+row.file+"' alt='' /><br><small>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
+                        var fileName = row.file;
+                                console.log(fileName.split('.').pop(), 'file');
+                                if(fileName.split('.').pop() != 'jpg' && fileName.split('.').pop() != 'jpeg' && fileName.split('.').pop() != 'JPG' && fileName.split('.').pop() != 'JPEG' && fileName.split('.').pop() != 'png' && fileName.split('.').pop() != 'PNG')
+                                {
+                                    messageData += "<br><p style='margin-left: 20px;'><a style='height: 100px; width: 100px; border-radius: 2px;' href='"+row.file+"' alt=''><i class='fa fa-file-o' style='font-size:48px;color:white'></i></a><br><small>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
+                                }
+                                else{
+                        messageData += "<br><p style='margin-left: 20px;'><a href='"+row.file+"'><img style='height: 100px; width: 100px; border-radius: 2px;' src='"+row.file+"' alt='' /></a><br><small>"+(minutes < 61 ? (minutes < 1 ? seconds + " seconds ago" : minutes + " minutes ago") : hours + " hours ago")+"</small></p>";
                     }
+                }
                     messageData += "</li>";    
                     }
                       

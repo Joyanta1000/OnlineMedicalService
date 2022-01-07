@@ -306,7 +306,7 @@
 
                   <div class="form-group">
                     <label for="country">Country</label>
-                    <select class="form-control" id="country" v-model="countries_id" name="permanent_country_id" value="{{old('countries_id')}}">
+                    <select class="form-control" id="" v-model="countries_id" name="permanent_country_id" value="{{old('countries_id')}}">
                       
                       <option value="">--Select--</option>
 
@@ -1855,7 +1855,7 @@ if (!this.countries_id) {
   fetchData: function (id) {
     console.log(id);
    axios.get('./get_city_for_thana/' + id).then(response=>{
-    console.log(response.data.data);
+    console.log(JSON.parse(response.data.data));
     
     this.cities_values = response.data.data,
     application.cities_id = '';

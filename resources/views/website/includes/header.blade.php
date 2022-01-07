@@ -2,7 +2,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container">
                 @include('website.includes.logo')
-                <a class="navbar-brand" href="{{URL::to('/')}}">Medi<span>H+</span> </a>
+                <a class="navbar-brand" href="{{URL::to('/')}}">MEDI <span>H+</span> </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05"
                     aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
