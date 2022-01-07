@@ -293,7 +293,7 @@ class UserController extends Controller
 
                 Mail::send('authentication/emailverify', $confirmation_code, function ($message) use ($to_email, $to_name) {
                     $message->to($to_email, $to_name)->subject('Email verification mail');
-                    $message->from('example@gmail.com', 'Example');
+                    $message->from('medih+@gmail.com', 'MEDI H+');
                 });
 
                 return redirect()->back()->with('status', "You Registered Successfully, Please Verify Your Email ID");
@@ -430,7 +430,7 @@ class UserController extends Controller
 
                 Mail::send('authentication/emailverify', $confirmation_code, function ($message) use ($to_email, $to_name) {
                     $message->to($to_email, $to_name)->subject('Email verification mail');
-                    $message->from('example@gmail.com', 'Example');
+                    $message->from('medih+@gmail.com', 'MEDI H+');
                 });
 
                 return redirect()->back()->with('status', "You Registered Successfully, Please Verify Your Email ID");
@@ -543,7 +543,7 @@ class UserController extends Controller
 
                 Mail::send('authentication/emailverify', $confirmation_code, function ($message) use ($to_email, $to_name) {
                     $message->to($to_email, $to_name)->subject('Email verification mail');
-                    $message->from('example@gmail.com', 'Example');
+                    $message->from('medih+@gmail.com', 'MEDI H+');
                 });
 
                 return redirect()->back()->with('status', "You Registered Successfully, Please Verify Your Email ID");
@@ -714,7 +714,7 @@ class UserController extends Controller
 
                 Mail::send('authentication/reset_password_mail', $token, function ($message) use ($to_email) {
                     $message->to($to_email)->subject('Reset Your Password');
-                    $message->from('example@gmail.com', 'Example');
+                    $message->from('medih+@gmail.com', 'MEDI H+');
                 });
 
                 return redirect()->back()->with('status', "Your mail for resetting password send successfully");
