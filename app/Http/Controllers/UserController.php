@@ -682,7 +682,7 @@ class UserController extends Controller
             ->first();
         $pharmacyProPic = pharmacies_profile_pictures::where('pharmacies_id', session()->get('id'))
             ->first();
-        session()->put('pharmacies_name', $pharmacyInfo->phermacies_name);
+        session()->put('pharmacies_name', $pharmacyInfo->pharmacies_name);
         session()->put('pharmacies_profile_picture', $pharmacyProPic->pharmacies_profile_picture);
         return redirect('pharmacist_dashboard');
     }
