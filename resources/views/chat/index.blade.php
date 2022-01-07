@@ -1230,6 +1230,7 @@ window.value=100;
           }, '', newUrl);
 
           $("#messageData").html('');
+          $("#bodyData").html('');
 
         $.ajax({
                 url: "{{ route('message.chatData') }}",
@@ -1406,7 +1407,7 @@ messageData +="<li class='sent'><img style='height: 32px;' src='"+dataResult.Rec
                     messageData += "<div class='message-input'><div class='wrap'><input type='text' name='message' id='message' placeholder='Write your message...' /><label for='fileInput'><i class='fa fa-paperclip attachment' aria-hidden='true'></i></label><input type='file' name='file' class='fileInput hide' id='fileInput'><button class='submit' onclick='submitMessage("+recievers_id+","+senders_id+","+message_id+")'><i class='fa fa-paper-plane' aria-hidden='true'></i></button></div></div>";
                     
                     $("#messageData").append(messageData);
-                    $("#bodyData").html('');
+                    
                     contactList();
                     
                     $(".messages").animate({
@@ -1515,7 +1516,7 @@ var minutes = Math.floor(diffTime / 60000);
             }
 
         function submitMessage(recievers_id, senders_id, message_id) {
-
+            
         console.log($("#message").val());
         console.log(fileInput.files[0]);
         console.log(recievers_id, 'hey');
@@ -1542,7 +1543,8 @@ var minutes = Math.floor(diffTime / 60000);
     formData.append("message", $("#message").val());
     formData.append("file", fileInput.files[0]);
     formData.append("_token", CSRF_TOKEN);
-        
+        $("#messageData").html('');
+            $("#bodyData").html('');
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1559,11 +1561,8 @@ $.ajaxSetup({
                 dataType: 'json',
                 success: function(dataResult) {
                     console.log(dataResult);
-                    $("#bodyData").html('');
-                    // contactList();
-
-                    $("#messageData").html('');
                     
+                    // contactList();
                     myFunction(dataResult.data.id);
                 }
             });
