@@ -119,7 +119,7 @@ class AppointmentController extends Controller
                 $message = "Appointment Scheduled." . "\n" . " Doctor: " . $doctorName->first_name . " " . $doctorName->last_name . ".\n" . " His/Her Email: " . $doctorEmail . ".\n" . " Your Ticket: " . $ticket . ".\n" . " Place: " . $workplace . ".\n" . " Time or anything will be informed by chat, you can consult with him/her by chatting also.";
 
                 $details = [
-                    'title' => 'Mail from Online Medical Service',
+                    'title' => 'Mail from MEDI H+',
                     'body' => $message
                 ];
 
@@ -154,7 +154,7 @@ class AppointmentController extends Controller
                 $doctorEmail = User::find($appointment->where('id', $id)->first()->doctor_id)->email;
                 $message = "Appointment Canceled. " . "\n" . "Doctor: " . $doctorName->first_name . " " . $doctorName->last_name . ".\n" . " His/Her Email: " . $doctorEmail . ".\n" . " Your Ticket: " . $appointment->find($id)->ticket . ".";
                 $details = [
-                    'title' => 'Mail from Online Medical Service',
+                    'title' => 'Mail from MEDI H+',
                     'body' => $message
                 ];
 
