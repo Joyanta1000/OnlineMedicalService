@@ -17,8 +17,9 @@
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
-        @include('doctor.includes.navbar')
-        @include('doctor.includes.sidebar')
+        @include(session()->get('role') == 2 ? 'doctor.includes.navbar' : 'patient.includes.navbar')
+        @include(session()->get('role') == 2 ? 'doctor.includes.sidebar' : 'patient.includes.sidebar')
+
         <div class="content-wrapper">
             <section class="content-header">
                 <div class="container-fluid">
@@ -86,11 +87,11 @@
                                                     <td>{{ $appointment->payment_from }}</td>
                                                     <td>{{ $appointment->payment_method_types }}</td>
                                                     <td>
-                                                        <a href="{{ route('appointment.status_change', $appointment->is_active == 1 ? ['id' => $appointment->id, 'requestFor' => 'cancelation'] : $appointment->id) }}"
-                                                            class="{{ $appointment->is_active == 1 ? 'btn btn-primary' : 'btn btn-danger' }}">{{ $appointment->is_active == 2 ? 'Canceled' : ($appointment->is_active == 1 ? 'Scheduled' : 'Request') }}</a>
+                                                        <a href="{{session()->get('role') == 3 && $appointment->is_active == 2 ? '#' : (route((session()->get('role') == 2 ? 'appointment.status_change' : 'appointment_of_patient.status_change'), $appointment->is_active == 1 ? ['id' => $appointment->id, 'requestFor' => 'cancelation'] : $appointment->id) )}}"
+                                                            class="{{ $appointment->is_active == 1 ? 'btn btn-primary' : 'btn btn-danger' }} {{session()->get('role') == 3 && $appointment->is_active == 0 ? 'disabled' : ''}}" >{{ $appointment->is_active == 2 ? 'Canceled' : ($appointment->is_active == 1 ? 'Scheduled' : 'Request') }}</a>
 
                                                         <a style="margin: 2px;"
-                                                            href="{{ route('appointment.status_change', ['id' => $appointment->id, 'requestFor' => 'cancelation']) }}"
+                                                            href="{{ route((session()->get('role') == 2 ? 'appointment.status_change' : 'appointment_of_patient.status_change'), ['id' => $appointment->id, 'requestFor' => 'cancelation']) }}"
                                                             class="btn btn-danger {{ $appointment->is_active == 0 ? '' : 'disabled' }}"
                                                             onclick="return confirm('Are you sure?')">Cancel</a>
                                                     </td>
@@ -99,7 +100,7 @@
                                                     <td>
                                                         <div class="btn-group">
                                                             <a href="{{ route('prescription_for_doctor.index', ['id' => $appointment->patient_id, 'appointment_id' => $appointment->id]) }}"
-                                                                class="btn btn-success">Prescribe</a>
+                                                                class="btn btn-success {{session()->get('role') == 3 ? 'disabled': ''}}">Prescribe</a>
 
                                                             <a style="margin: 2px;"
                                                                 href="{{ route('message.chatData', ['patient_id' => $appointment->patient_id, 'doctor_id' => $appointment->doctor_id]) }}"
@@ -131,7 +132,7 @@
                 </div>
             </section>
         </div>
-        @include('doctor.includes.footer')
+        @include(session()->get('role') == 2 ? 'doctor.includes.footer' : 'patient.includes.footer')
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
     </div>

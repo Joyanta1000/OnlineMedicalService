@@ -34,8 +34,11 @@
         </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item {{ request()->is('appointment/list') ? 'menu-open' : null }} ">
-                    <a href="#" class="nav-link {{ request()->is('appointment/list') ? 'active' : null }}">
+                @if(session()->get('role') == 2 || session()->get('role') == 3)
+                <li
+                    class="nav-item {{ request()->is('appointment/list') || request()->is('appointment_of_patient/list') ? 'menu-open' : null }} ">
+                    <a href="#"
+                        class="nav-link {{ request()->is('appointment/list') || request()->is('appointment_of_patient/list') ? 'active' : null }}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             Appointment
@@ -44,14 +47,15 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('appointment.list') }}"
-                                class="nav-link {{ request()->is('appointment/list') ? 'active' : null }}">
+                            <a href="{{ URL::to( session()->get('role') == 3 ? 'appointment_of_patient/list' : 'appointment/list') }}"
+                                class="nav-link {{ request()->is('appointment/list') || request()->is('appointment_of_patient/list') ? 'active' : null }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Appointments</p>
                             </a>
                         </li>
                     </ul>
                 </li>
+                @endif
                 <li
                     class="nav-item {{ request()->is('prescription/prescriptions/show') || request()->is('prescription/prescription_for_doctor/show') ? 'menu-open' : null }} ">
                     <a href="#"

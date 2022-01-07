@@ -343,6 +343,11 @@ Route::middleware(['isPatient'])->group(function () {
         }
     );
 
+    Route::prefix('appointment_of_patient')->group(function () {
+        Route::get('/list', [AppointmentController::class, 'list'])->name('appointment_of_patient.list');
+        Route::get('/status_change/{id}', [AppointmentController::class, 'changeStatus'])->name('appointment_of_patient.status_change');
+    });
+
     Route::get('prescription/view/{id}', [PrescriptionController::class, 'view'])->name('prescription.view');
     Route::get('report/delete/{id}', [PrescriptionController::class, 'report_delete'])->name('report.delete');
     // Route::post('/store', [ShowPrescriptions::class, 'store']);

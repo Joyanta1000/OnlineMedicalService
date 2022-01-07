@@ -90,7 +90,9 @@ class AppointmentController extends Controller
             ->join('doctors', 'appointments.doctor_id', '=', 'doctors.doctors_id')
             ->join('patients', 'appointments.patient_id', '=', 'patients.patients_id')
             ->select('appointments.*', 'doctors.first_name as doctorsFirstName', 'doctors.last_name as doctorsLastName', 'patients.first_name as patientsFirstName', 'patients.last_name as patientsLastName')
-            ->where('doctor_id', session()->get('id'))->get();
+            ->where('doctor_id', session()->get('id'))
+            ->orWhere('patient_id', session()->get('id'))
+            ->get();
         //dd($appointed);
         return view('doctor.pages.appointments', compact('appointed'));
     }
@@ -110,19 +112,18 @@ class AppointmentController extends Controller
 
                 $receiverEmail = User::find($appointment->where('id', $id)->first()->patient_id)->email;
 
-                $details = [
-                    'title' => 'Mail from Online Medical Service',
-                    'body' => 'Your appointment scheduled check your phones inbox, which phone number given.'
-                ];
-
-                $workplace = contact_information::where('doctors_id',$appointment->where('id', $id)->first()->doctor_id)->first()->work_place;
-
-                Mail::to($receiverEmail)->send(new \App\Mail\MyMail($details));
-
                 $doctorName = doctor::where('doctors_id', $appointment->where('id', $id)->first()->doctor_id)->first();
                 $receiverNumber = PatientsContactInfo::where('patient_id', $appointment->where('id', $id)->first()->patient_id)->first()->phonenumber;
                 $doctorEmail = User::find($appointment->where('id', $id)->first()->doctor_id)->email;
-                $message = "Appointment Scheduled By Doctor " . $doctorName->first_name . " " . $doctorName->last_name . "," . " His/Her Email: " . $doctorEmail . "," . " Your Ticket: " . $ticket . "," . " Place: " . $workplace . "," . " Time or anything will be informed by chat, you can consult with him/her by chatting also.";
+                $workplace = contact_information::where('doctors_id', $appointment->where('id', $id)->first()->doctor_id)->first()->work_place;
+                $message = "Appointment Scheduled." . "\n" . " Doctor: " . $doctorName->first_name . " " . $doctorName->last_name . ".\n" . " His/Her Email: " . $doctorEmail . ".\n" . " Your Ticket: " . $ticket . ".\n" . " Place: " . $workplace . ".\n" . " Time or anything will be informed by chat, you can consult with him/her by chatting also.";
+
+                $details = [
+                    'title' => 'Mail from Online Medical Service',
+                    'body' => $message
+                ];
+
+                Mail::to($receiverEmail)->send(new \App\Mail\MyMail($details));
 
                 try {
 
@@ -147,19 +148,17 @@ class AppointmentController extends Controller
             if ($appointment->where('id', $id)->update(['is_active' => 2])) {
 
                 $receiverEmail = User::find($appointment->where('id', $id)->first()->patient_id)->email;
-
-                $details = [
-                    'title' => 'Mail from Online Medical Service',
-                    'body' => 'Your Appointment Canceled'
-                ];
-
-                Mail::to($receiverEmail)->send(new \App\Mail\MyMail($details));
-
                 $doctorName = doctor::where('doctors_id', $appointment->where('id', $id)->first()->doctor_id)->first();
                 $receiverNumber = PatientsContactInfo::where('patient_id', $appointment->where('id', $id)->first()->patient_id)->first()->phonenumber;
                 // dd($receiverNumber);
                 $doctorEmail = User::find($appointment->where('id', $id)->first()->doctor_id)->email;
-                $message = "Appointment Canceled By Doctor " . $doctorName->first_name . " " . $doctorName->last_name . "," . " His Email: " . $doctorEmail . "," . " Your Ticket: " . $appointment->find($id)->ticket;
+                $message = "Appointment Canceled. " . "\n" . "Doctor: " . $doctorName->first_name . " " . $doctorName->last_name . ".\n" . " His/Her Email: " . $doctorEmail . ".\n" . " Your Ticket: " . $appointment->find($id)->ticket . ".";
+                $details = [
+                    'title' => 'Mail from Online Medical Service',
+                    'body' => $message
+                ];
+
+                Mail::to($receiverEmail)->send(new \App\Mail\MyMail($details));
 
                 try {
 
