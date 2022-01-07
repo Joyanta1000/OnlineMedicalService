@@ -717,7 +717,7 @@ class UserController extends Controller
                     $message->from('example@gmail.com', 'Example');
                 });
 
-                return redirect()->back()->with('status', "Your mail send successfully");
+                return redirect()->back()->with('status', "Your mail for resetting password send successfully");
             } catch (Exception $e) {
                 return redirect()->back()->with('failed', "operation failed");
             }
@@ -780,7 +780,7 @@ class UserController extends Controller
             ->join('doctors_schedules', 'users.id', '=', 'doctors_schedules.doctors_id')
             ->select('users.*','users.id as user_id', 'doctors.*', 'doctors_profile_pictures.*', 'contact_informations.*', 'addresses.*', 'permanent_addresses.*', 'doctors_other_informations.*', 'doctors_schedules.schedule')
             ->paginate(2);
-            
+
         $doctors_social_networks = DB::table('users')
             ->join('social_networks', 'users.id', '=', 'social_networks.doctors_id')
             ->select('social_networks.*')

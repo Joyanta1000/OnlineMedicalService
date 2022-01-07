@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-    <title>Medi H+</title>
+    <title>@include('website.includes.title')</title>
+    @include('website.includes.icon')
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 

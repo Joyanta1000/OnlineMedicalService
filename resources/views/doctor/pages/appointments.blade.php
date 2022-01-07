@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | DataTables</title>
+    <title>@include('website.includes.title')</title>
+    @include('website.includes.icon')
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="{{ asset('../../plugins/fontawesome-free/css/all.min.css') }}">
@@ -30,7 +31,7 @@
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Appointments</li>
+                                <li class="breadcrumb-item active">Appointment</li>
                             </ol>
                         </div>
                     </div>
@@ -58,7 +59,7 @@
                             @endif
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">DataTable with default features</h3>
+                                    <h3 class="card-title">Appointment</h3>
                                 </div>
 
                                 <div class="card-body">

@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Log in (v2)</title>
-
+  <title>@include('website.includes.title')</title>
+  @include('website.includes.icon')
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -19,7 +19,7 @@
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="../../index2.html" class="h1"><b>Admin</b>LTE</a>
+      <a href="{{URL::to('/')}}" class="h1">@include('website.includes.logo')</a>
     </div>
 
     @if (session('status'))
@@ -45,7 +45,7 @@
 @endif
 
     <div class="card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Give email to reset password</p>
 
       <form action="/send_mail_to_reset_password" method="post">
       <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">

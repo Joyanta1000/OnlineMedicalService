@@ -5,7 +5,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Advanced form elements</title>
+    <title>@include('website.includes.title')</title>
+    @include('website.includes.icon')
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="{{ asset('../../plugins/fontawesome-free/css/all.min.css') }}">
@@ -480,7 +481,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -501,7 +502,7 @@
                         <div class="col-md-12">
                             <div class="card card-default">
                                 <div class="card-header">
-                                    
+
                                 </div>
                                 <div class="card-body">
                                     <div id="actions" class="row">
@@ -510,11 +511,12 @@
                                             <div class="input-group">
                                                 <div class="custom-file">
                                                     <!-- <input type="file" class="custom-file-input" id="exampleInputFile"> -->
-                                                    <caption style="color: red;">You have to give nid or birth certificate
+                                                    <caption style="color: red;">You have to give nid or birth
+                                                        certificate
                                                         image by pdf</caption>
                                                     <input type="file" id="exampleInputFile" name="patients_report[]"
-                                                        class="form-control"
-                                                        value="{{ old('patients_report') }}" multiple required>
+                                                        class="form-control" value="{{ old('patients_report') }}"
+                                                        multiple required>
                                                 </div>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">Upload</span>
@@ -524,7 +526,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -569,7 +571,7 @@
                             <h5></h5>
                         </div>
                         <div class="card-footer">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -582,6 +584,7 @@
         var input = document.querySelector("#phone");
         window.intlTelInput(input, ({}));
         var count = 0;
+
         function process(event) {
             var countryCode = $('.iti__selected-flag').attr('title');
             var countryCode = countryCode.replace(/[^0-9]/g, '')

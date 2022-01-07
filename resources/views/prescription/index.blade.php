@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="user-id" content="{{ Session::get('id') }}" />
-    <title>AdminLTE 3 | Advanced form elements</title>
+    <title>@include('website.includes.title')</title>
+    @include('website.includes.icon')
     @push('styles')
     @endpush
     <link rel="stylesheet"

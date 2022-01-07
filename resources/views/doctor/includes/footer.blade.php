@@ -1,6 +1,6 @@
 <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.1.0-rc
+    <strong>Copyright &copy; 2021 <a href="#">JRS</a>.</strong> All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Developed By</b> JRS
     </div>
-    <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
 </footer>

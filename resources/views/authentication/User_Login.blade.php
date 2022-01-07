@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Log in (v2)</title>
+    <title>@include('website.includes.title')</title>
+    @include('website.includes.icon')
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -25,7 +26,8 @@
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="{{URL::to('/')}}" class="h1"><b>Medi H</b>+</a>
+                <a href="{{URL::to('/')}}" class="h1" >@include('website.includes.logo')
+    </a>
             </div>
 
             @include('authentication.flush-message')
