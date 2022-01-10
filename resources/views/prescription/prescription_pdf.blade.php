@@ -248,7 +248,7 @@
                             {!! nl2br(App\Models\GeneralHistory::where('prescription_id', $details->id)->first()->history ? App\Models\GeneralHistory::where('prescription_id', $details->id)->first()->history : 'N/A') !!}
                         </span>
                     </div>
-                    {{-- <br>
+                    <br>
                     <div class="" style="margin-left: 15px;">
                         <b>Test:</b> <br>
                         <form action="{{ URL::to('prescription/prescriptions/update') }}" method="POST"
@@ -264,7 +264,7 @@
                                     {{ $details->test[$i]->tests_id ? App\Models\TestModel::find($details->test[$i]->tests_id)->test : 'N/A' }}
                                     <p style="color: blue">Details: {{ $details->test[$i]->details ?: 'N/A' }}</p>
                                     <br>
-                                    <span>
+                                    {{-- <span>
                                         @if (pathinfo($details->test[$i]->getMedia('test_file')->last() ? $details->test[$i]->getMedia('test_file')->last()->file_name : '', PATHINFO_EXTENSION) == 'pdf')
                                             <a href="{{ url('/storage/' . ($details->test[$i]->getMedia('test_file')->last() ? $details->test[$i]->getMedia('test_file')->last()->id : 0). '/' . ($details->test[$i]->getMedia('test_file')->last() ? $details->test[$i]->getMedia('test_file')->last()->file_name : '')) }}"
                                                 download>
@@ -280,7 +280,7 @@
                                                     width="120px"
                                                     style="margin-top: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"></a>
                                         @endif
-                                        <br>
+                                        <br> --}}
                                     </span>
 
                                 </span>
@@ -288,7 +288,7 @@
                             @endfor
 
                         </form>
-                    </div> --}}
+                    </div>
                     <hr>
 
                     <div>
