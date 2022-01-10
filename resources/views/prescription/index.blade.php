@@ -231,6 +231,36 @@
                                     </div>
                                 </div>
                                 <hr>
+                                @include('prescription.includes.medicine_type')
+                                <hr>
+                                <div>
+                                    <div>
+                                        <div class="medcines">
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <div>
+                                    <table style="width: 100%; font-size: 15px; text-align: center; padding: 20px;"
+                                        id="prescription">
+                                        <thead>
+                                            <th>Medicine</th>
+                                            <th>Frequency</th>
+                                            <th>Time </th>
+                                            <th>Duration</th>
+                                            <th>Qty & Short Note</th>
+                                            <th>Action</th>
+                                        </thead>
+                                        <tbody class="rows">
+                                        </tbody>
+                                    </table>
+                                    <input type="hidden" name="appointment_id" value="{{ $appointment_id }}" />
+
+                                </div>
+                                <hr>
                                 <div>
                                     <div>
                                         <div class="field">
@@ -297,42 +327,16 @@
                                         <hr>
                                     </div>
                                 </div>
-                                <hr>
-                                @include('prescription.includes.medicine_type')
-                                <hr>
-                                <div>
-                                    <div>
-                                        <div class="medcines">
 
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
+                                <button type="submit" name="submit"
+                                    class="btn btn-primary form-control">Prescribe</button>
                                 {{-- <div id="app"> --}}
 
-                                    {{-- <about-us /> --}}
+                                {{-- <about-us /> --}}
 
                                 {{-- </div> --}}
                                 {{-- <hr> --}}
-                                <div>
-                                    <table style="width: 100%; font-size: 15px; text-align: center; padding: 20px;"
-                                        id="prescription">
-                                        <thead>
-                                            <th>Medicine</th>
-                                            <th>Frequency</th>
-                                            <th>Time </th>
-                                            <th>Duration</th>
-                                            <th>Qty & Short Note</th>
-                                            <th>Action</th>
-                                        </thead>
-                                        <tbody class="rows">
-                                        </tbody>
-                                    </table>
-                                    <input type="hidden" name="appointment_id" value="{{ $appointment_id }}" />
-                                    <button type="submit" name="submit"
-                                        class="btn btn-primary form-control">Prescribe</button>
-                                </div>
+
                             </div>
                         </div>
                     </form>
