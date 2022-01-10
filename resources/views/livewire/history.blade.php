@@ -1,8 +1,8 @@
   <div>
-      <input class="form-control" type="search" id="searchBy" wire:model="searchBy" name="searchBy"
+      <input class="form-control {{session()->get('role')==3 ? 'disabled' : ''}}" type="search" id="searchBy" wire:model="searchBy" name="searchBy"
           placeholder="Search History">
       @error('searchBy') <span class="error">{{ $message }}</span> @enderror
-      <label style="margin: 10px 0px 0px 0px; color: red;">Type NID/Birth Certificate/Patient Id</label>
+      <label style="margin: 10px 0px 0px 0px; color: red;" class="{{session()->get('role')==3 ? 'disabled' : ''}}">Type NID/Birth Certificate/Patient Id</label>
 
       @if (isset($details))
 
