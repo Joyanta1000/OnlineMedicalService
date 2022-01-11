@@ -1855,7 +1855,7 @@ if (!this.countries_id) {
   fetchData: function (id) {
     console.log(id);
    axios.get('./get_city_for_thana/' + id).then(response=>{
-    console.log(JSON.parse(response.data.data));
+    console.log(response.data.data);
     
     this.cities_values = response.data.data,
     application.cities_id = '';
