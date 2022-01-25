@@ -251,12 +251,15 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div style="padding: 25px;">
                     <b>Recommended Pharmacy:</b>
                     <div>
                         @foreach (App\Models\pharmacies::all() as $pharmacy)
                             <span>{{ $pharmacy->pharmacies_name }}</span>
+                            @if (!$loop->last)
+                                ,
+                            @endif
                         @endforeach
                     </div>
                 </div>

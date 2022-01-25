@@ -74,6 +74,28 @@
                     </ul>
                 </li>
                 @endif
+                @if(session()->get('role') == 3)
+                <li
+                    class="nav-item {{ request()->is('appointment/list') || request()->is('appointment_of_patient/list') ? 'menu-open' : null }} ">
+                    <a href="#"
+                        class="nav-link {{ request()->is('appointment/list') || request()->is('appointment_of_patient/list') ? 'active' : null }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Appointment
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ URL::to( session()->get('role') == 3 ? 'appointment_of_patient/list' : 'appointment/list') }}"
+                                class="nav-link {{ request()->is('appointment/list') || request()->is('appointment_of_patient/list') ? 'active' : null }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Appointments</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
                 <li
                     class="nav-item {{ request()->is('prescription/prescriptions/show') || request()->is('prescription/prescription_for_doctor/show') ? 'menu-open' : null }} ">
                     <a href="#"
@@ -94,6 +116,35 @@
                         </li>
                     </ul>
                 </li>
+                @if(session()->get('role') == 2)
+                <li class="nav-item {{ request()->is('add_schedule') ? 'menu-open' : null }} ">
+                    <a href="#" class="nav-link {{ request()->is('add_schedule') ? 'active' : null }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Schedule
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    @if (session()->get('role') == 2)
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('schedules') }}"
+                                    class="nav-link {{ request()->is('schedules') ? 'active' : null }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Schedule</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('add_schedule') }}"
+                                    class="nav-link {{ request()->is('add_schedule') ? 'active' : null }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Add Schedule</p>
+                                </a>
+                            </li>
+                        </ul>
+                    @endif
+                </li>
+                @endif
                 <li class="nav-item {{ request()->is('history') ? 'menu-open' : null }} ">
                     <a href="#" class="nav-link {{ request()->is('history') ? 'active' : null }}">
                         <i class="nav-icon fas fa-edit"></i>

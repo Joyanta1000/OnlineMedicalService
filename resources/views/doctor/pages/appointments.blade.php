@@ -67,7 +67,7 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Patient</th>
+                                                <th>{{session()->get('role') == 3 ? 'Doctor' : 'Patient'}}</th>
                                                 <th>Description</th>
                                                 <th>Amount</th>
                                                 <th>Payment From</th>
@@ -81,7 +81,7 @@
                                             @foreach ($appointed as $appointment)
                                                 <tr>
                                                     <td>{{ $appointment->id }}</td>
-                                                    <td>{{ $appointment->patientsFirstName }} &nbsp;
+                                                    <td>{{ session()->get('role') == 3 ? ($appointment->user->doctor->first()->first_name . '' . $appointment->user->doctor->first()->last_name ) : $appointment->patientsFirstName }} &nbsp;
                                                         {{ $appointment->patientsLastName }}</td>
                                                     <td>{{ $appointment->description }}</td>
                                                     <td>{{ $appointment->amount }}</td>

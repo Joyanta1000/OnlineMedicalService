@@ -261,9 +261,9 @@
                       <div class="card">
                           <div class="card-body">
                               <p class="card-text">
-                                  {{ App\Models\doctor::where('doctors_id', $appointmentBy->doctor_id)->first() ? (App\Models\doctor::where('doctors_id', $appointmentBy->doctor_id)->first()->doctors_id == session()->get('id') ? 'You' : App\Models\doctor::where('doctors_id', $appointmentBy->doctor_id)->first()->first_name) : '' }}
-                                  took appointment from
                                   {{ App\Models\patient::where('patients_id', $appointmentBy->patient_id)->first() ? (App\Models\patient::where('patients_id', $appointmentBy->patient_id)->first()->patients_id == session()->get('id') ? 'You' : App\Models\patient::where('patients_id', $appointmentBy->patient_id)->first()->first_name) : '' }}
+                                  took appointment from
+                                  {{ App\Models\doctor::where('doctors_id', $appointmentBy->doctor_id)->first() ? (App\Models\doctor::where('doctors_id', $appointmentBy->doctor_id)->first()->doctors_id == session()->get('id') ? 'You' : App\Models\doctor::where('doctors_id', $appointmentBy->doctor_id)->first()->first_name) : '' }}
                                   on
                                   {{ $appointmentBy->created_at->format('d-m-Y') }}
                                   ({{ $appointmentBy->created_at->diffForHumans() }})

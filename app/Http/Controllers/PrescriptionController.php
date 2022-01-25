@@ -81,26 +81,27 @@ class PrescriptionController extends Controller
 
         $createHistory = GeneralHistory::create([
             'prescription_id' => $createPrescription->id,
-            'history' => $request->history,
+            'history' => $request->history ? $request->history : 'N/A',
         ]);
+        if (!empty($request->medicines_id)) {
+            foreach ($request->medicines_id as $key => $value) {
 
-        foreach ($request->medicines_id as $key => $value) {
-
-            if(is_numeric($value) == false){
-                $medicine = medicines::create([
-                    'medicines_name' => $value,
-                    'is_active' => 1,
+                if (is_numeric($value) == false) {
+                    $medicine = medicines::create([
+                        'medicines_name' => $value,
+                        'is_active' => 1,
+                    ]);
+                    $value = $medicine->id;
+                }
+                $medicines_for_patients = medicines_for_patients::create([
+                    'prescriptions_id' => $createPrescription->id,
+                    'medicines_id' => $value,
                 ]);
-                $value = $medicine->id;
             }
-            $medicines_for_patients = medicines_for_patients::create([
-                'prescriptions_id' => $createPrescription->id,
-                'medicines_id' => $value,
-            ]);
         }
 
-        $mergedTest = $request->tests_id;
-        $mergedDetails = $request->details;
+        $mergedTest = $request->tests_id ? $request->tests_id : null;
+        $mergedDetails = $request->details ? $request->details : null;
 
         if (isset($request->test_new)) {
             $mergedTest = null;
@@ -131,32 +132,33 @@ class PrescriptionController extends Controller
 
         // dd($mergedTest);
 
+        if (!empty($mergedTest)) {
 
-
-        for ($i = 0; $i < count($mergedTest); $i++) {
-            $test_for_patients = Test::create([
-                'prescriptions_id' => $createPrescription->id,
-                'tests_id' => $mergedTest[$i],
-                'details' => $mergedDetails[$i],
-            ]);
+            for ($i = 0; $i < count($mergedTest); $i++) {
+                $test_for_patients = Test::create([
+                    'prescriptions_id' => $createPrescription->id,
+                    'tests_id' => $mergedTest[$i],
+                    'details' => $mergedDetails[$i],
+                ]);
+            }
         }
 
         $having_problems = patients_problems::create([
             'prescriptions_id' => $createPrescription->id,
-            'problem' => json_encode($request->problem),
+            'problem' => $request->problem ? json_encode($request->problem) : null,
         ]);
 
         $refer = referred_to::create([
             'prescriptions_id' => $createPrescription->id,
-            'referred_to' => $request->refer,
+            'referred_to' => $request->refer ? $request->refer : null,
         ]);
 
         $frequency = Frequency::create([
             'prescriptions_id' => $createPrescription->id,
-            'mn' => json_encode($request->mn),
-            'af' => json_encode($request->af),
-            'en' => json_encode($request->en),
-            'nt' => json_encode($request->nt),
+            'mn' => $request->mn ? json_encode($request->mn) : null,
+            'af' => $request->af ? json_encode($request->af) : null,
+            'en' => $request->en ? json_encode($request->en) : null,
+            'nt' => $request->nt ? json_encode($request->nt) : null,
         ]);
 
         $foodTime = FoodTime::create([
@@ -196,8 +198,8 @@ class PrescriptionController extends Controller
 
     public function view($id)
     {
-        $details = prescriptions::with('doctor','medicines_for_patients', 'test', 'patients_problems', 'referred_to', 'frequency', 'foodTime', 'duration')->find($id);
-        
+        $details = prescriptions::with('doctor', 'medicines_for_patients', 'test', 'patients_problems', 'referred_to', 'frequency', 'foodTime', 'duration')->find($id);
+
         return view('patient.pages.view_prescription', compact('details'));
     }
 
@@ -212,12 +214,12 @@ class PrescriptionController extends Controller
     {
         // dd($request->all(), $request->prescription_id, $request->tests_id[0]);
         // for ($i = 0; $i < count($request->tests_id); $i++) {
-            $save = Test::where(['prescriptions_id' => $request->prescription_id, 'tests_id' => $request->tests_id[0]])->first();
-            $save->addMedia($request->test_file[0])
-                ->toMediaCollection('test_file');
-            $mediaItems = $save->load('media')->getMedia('test_file');
-            $save->test_file = str_replace($request->test_file[0], $mediaItems[count($mediaItems) - 1]->getFullUrl(), $save->test_file);
-            $save->update();
+        $save = Test::where(['prescriptions_id' => $request->prescription_id, 'tests_id' => $request->tests_id[0]])->first();
+        $save->addMedia($request->test_file[0])
+            ->toMediaCollection('test_file');
+        $mediaItems = $save->load('media')->getMedia('test_file');
+        $save->test_file = str_replace($request->test_file[0], $mediaItems[count($mediaItems) - 1]->getFullUrl(), $save->test_file);
+        $save->update();
         // }
 
         if ($save) {
@@ -230,7 +232,7 @@ class PrescriptionController extends Controller
     {
         ini_set('max_execution_time', 300);
         $details = prescriptions::with('medicines_for_patients', 'test', 'patients_problems', 'referred_to', 'frequency', 'foodTime', 'duration')->find($id);
- 
+
         for ($i = 0; $i < count($details->test); $i++) {
             $this->tests_id[$i] = $details->test[$i]->tests_id;
             $this->test_file[$i] = '';
